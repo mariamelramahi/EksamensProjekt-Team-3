@@ -1,0 +1,93 @@
+﻿<Window x:Class="EksamensProjekt.TenancyView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EksamensProjekt"
+        xmlns:vm="clr-namespace:EksamensProjekt.Utilities"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="646" Width="999"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <vm:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
+    </Window.Resources>
+
+    <Grid>
+
+        <Rectangle HorizontalAlignment="Left" Height="630" VerticalAlignment="Center" Width="170" Fill="#FF006DA0"/>
+        <!--Buttons-->
+        <Button Margin="928,0,6,559" BorderBrush="{x:Null}" Command="{Binding ExitCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Background="{x:Null}" >
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Images/ExitImage.png" Height="45"/>
+            </StackPanel>
+        </Button>
+        <Button Content="Tilføj nyt"
+HorizontalAlignment="Left"
+Margin="236,80,0,0"
+VerticalAlignment="Top"
+Width="109"
+Background="White"
+Foreground="#FF006DA0"
+Height="32"
+FontFamily="Bahnschrift Light" 
+Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="#FF006DA0">
+            <Button.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Content="Historik"
+    HorizontalAlignment="Left"
+    Margin="791,10,0,0"
+    VerticalAlignment="Top"
+    Width="109"
+    Background="White"
+    Foreground="#FF006DA0"
+    Height="32"
+    FontFamily="Bahnschrift Light" 
+    Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="#FF006DA0">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <!--images-->
+        <Image Margin="0,-13,909,553" Source="/Images/LogoImage.png" Stretch="Uniform" Width="90"/>
+
+
+
+        <ComboBox HorizontalAlignment="Left" Margin="25,293,0,0" VerticalAlignment="Top" Width="120" BorderBrush="{x:Null}" Foreground="Black"/>
+        <ComboBox HorizontalAlignment="Left" Margin="25,365,0,0" VerticalAlignment="Top" Width="120" BorderBrush="{x:Null}" Foreground="Black"/>
+        <ComboBox HorizontalAlignment="Left" Margin="25,210,0,0" VerticalAlignment="Top" Width="120" BorderBrush="{x:Null}" Foreground="Black"/>
+        <Label Content="Lejligheder - Oversigt" HorizontalAlignment="Left" Margin="226,36,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Tahoma" Foreground="#FF006DA0"/>
+        <Rectangle HorizontalAlignment="Left" Height="27" Margin="683,80,0,0" Stroke="#FFA4A4A4" VerticalAlignment="Top" Width="293">
+        </Rectangle>
+        <!--Searchbox-->
+        <Grid HorizontalAlignment="Left" Margin="683,80,0,0" VerticalAlignment="Top">
+            <!-- TextBox for user input -->
+            <TextBox x:Name="SearchBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="27" FontSize="18" FontFamily="Tahoma" BorderBrush="{x:Null}" Foreground="Black"/>
+
+            <!-- Placeholder TextBlock -->
+            <TextBlock Text="Søg"
+                       VerticalAlignment="Center"
+                       Margin="5,0,0,0"
+                       Foreground="#FFA4A4A4"
+                       IsHitTestVisible="False"
+                       Visibility="{Binding Text.Length, ElementName=SearchBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
+        </Grid>
+        <Rectangle StrokeThickness="2" Margin="919,273,55,334">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/Images/SearchIconImage.png" Stretch="Uniform"/>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Rectangle StrokeThickness="2" Margin="938,81,0,502">
+            <Rectangle.Fill>
+                <ImageBrush ImageSource="/Images/SearchIconImage.png" Stretch="Uniform"/>
+            </Rectangle.Fill>
+        </Rectangle>
+    </Grid>
+</Window>

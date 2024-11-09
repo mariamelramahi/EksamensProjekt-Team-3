@@ -12,13 +12,20 @@ using System.Windows.Shapes;
 namespace EksamensProjekt
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class LoginView : Window
     {
-        public MainWindow()
+        public LoginView()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            TenancyView _TenancyView = new TenancyView();
+            this.Close();
+            _TenancyView.Show();
         }
     }
 }
