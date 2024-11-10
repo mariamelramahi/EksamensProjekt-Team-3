@@ -55,7 +55,11 @@ namespace EksamensProjekt
             // Her kunne du evt. implementere yderligere logik for at opdatere lejemålsdataene permanent (fx i en database)
         }
 
-       
+        private void NewTenant_Click(object sender, RoutedEventArgs e)
+        {
+            AddTenantView _AddTenantView = new AddTenantView();
+            _AddTenantView.Show();
+        }
     }
     public class Lejemål
     {

@@ -90,7 +90,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
         <ListBox x:Name="AddressListBox"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.CanContentScroll="False"
-                 Margin="226,133,48,33">
+                 Margin="226,133,48,33" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Expander Header="{Binding Address}" Padding="5" FontSize="16" Margin="5" ExpandDirection="Down">
@@ -114,7 +114,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
                                 <!-- Tenancy ID -->
                                 <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Lejemåls ID: " FontWeight="Bold"/>
-                                    <TextBox Width="100" Text="{Binding TenancyID}" IsReadOnly="True" Margin="10,0,0,0"/>
+                                    <TextBlock Width="100" Text="{Binding TenancyID}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
                                 <!-- Tenancy Status -->
@@ -144,7 +144,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
 
                                 <!-- Rent -->
                                 <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
-                                    <TextBlock Text="Husleje: " FontWeight="Bold"/>
+                                    <TextBlock Text="Husleje i kr.: " FontWeight="Bold"/>
                                     <TextBox Width="100" Text="{Binding Rent}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
@@ -196,7 +196,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
                                             </Style>
                                         </Button.Resources>
                                     </Button>
-                                    <Button Content="Tilføj Lejer" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100">
+                                    <Button x:Name="NewTenant" Content="Tilføj Lejer" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100" Click="NewTenant_Click">
                                         <Button.Resources>
                                             <Style TargetType="{x:Type Border}">
                                                 <Setter Property="CornerRadius" Value="5"/>
