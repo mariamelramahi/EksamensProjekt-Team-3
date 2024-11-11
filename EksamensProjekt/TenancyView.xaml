@@ -15,10 +15,14 @@
     </Window.Resources>
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="341*"/>
+            <RowDefinition Height="289*"/>
+        </Grid.RowDefinitions>
 
-        <Rectangle HorizontalAlignment="Left" Height="630" VerticalAlignment="Center" Width="170" Fill="#FF006DA0"/>
+        <Rectangle HorizontalAlignment="Left" Height="630" VerticalAlignment="Top" Width="170" Fill="#FF006DA0" Grid.RowSpan="2"/>
         <!--Buttons-->
-        <Button Margin="928,0,6,559" BorderBrush="{x:Null}" Command="{Binding ExitCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Background="{x:Null}" >
+        <Button Margin="928,0,6,270" BorderBrush="{x:Null}" Command="{Binding ExitCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Background="{x:Null}" >
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Images/ExitImage.png" Height="45"/>
             </StackPanel>
@@ -56,12 +60,147 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
             </Button.Resources>
         </Button>
         <!--images-->
-        <Image Margin="0,-13,909,553" Source="/Images/LogoImage.png" Stretch="Uniform" Width="90"/>
+        <Image Margin="0,-13,909,264" Source="/Images/LogoImage.png" Stretch="Uniform" Width="90"/>
 
         <!--Comboboxes-->
-        <ComboBox HorizontalAlignment="Left" Margin="25,293,0,0" VerticalAlignment="Top" Width="120" BorderBrush="{x:Null}" Foreground="Black"/>
-        <ComboBox HorizontalAlignment="Left" Margin="25,365,0,0" VerticalAlignment="Top" Width="120" BorderBrush="{x:Null}" Foreground="Black"/>
-        <ComboBox HorizontalAlignment="Left" Margin="25,210,0,0" VerticalAlignment="Top" Width="120" BorderBrush="{x:Null}" Foreground="Black"/>
+        <Expander HorizontalAlignment="Left"
+          Height="85"
+          Header="Opgaver"
+          Margin="10,125,0,0"
+          VerticalAlignment="Top"
+          Width="124"
+          FontFamily="Tahoma"
+          ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <Expander.Template>
+                <ControlTemplate TargetType="{x:Type Expander}">
+                    <Border Background="Transparent"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                        <StackPanel>
+                            <ToggleButton x:Name="HeaderSite"
+                                  Background="White"
+                                  BorderBrush="{TemplateBinding Background}"
+                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                  IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                <ContentPresenter ContentSource="Header" />
+                            </ToggleButton>
+                            <Border x:Name="ContentSiteBorder"
+                            Background="White"
+                            Visibility="{Binding IsExpanded, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                <ContentPresenter x:Name="ContentSite"
+                                          ContentSource="Content" />
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Expander.Template>
+            <StackPanel>
+                <CheckBox Content="C"
+                  IsChecked="{Binding FilterService.FilterAssignmentTypeC, Mode=TwoWay}"
+                  Command="{Binding ApplyFilterCommand}"
+                  HorizontalAlignment="Left"
+                  Margin="10,10,0,0"
+                  VerticalAlignment="Top" />
+                <CheckBox Content="D"
+                  IsChecked="{Binding FilterService.FilterAssignmentTypeD, Mode=TwoWay}"
+                  Command="{Binding ApplyFilterCommand}"
+                  HorizontalAlignment="Left"
+                  Margin="10,10,0,0"
+                  VerticalAlignment="Top" />
+            </StackPanel>
+        </Expander>
+        <Expander HorizontalAlignment="Left"
+          Height="74"
+          Header="Retur opgaver"
+          Margin="10,218,0,0"
+          VerticalAlignment="Top"
+          Width="124"
+          FontFamily="Bahnshcrift"
+          ScrollViewer.HorizontalScrollBarVisibility="Visible">
+            <Expander.Template>
+                <ControlTemplate TargetType="{x:Type Expander}">
+                    <Border Background="Transparent"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}">
+                        <StackPanel>
+                            <ToggleButton x:Name="HeaderSite"
+                                  Background="Transparent"
+                                  BorderBrush="{TemplateBinding Background}"
+                                  BorderThickness="{TemplateBinding BorderThickness}"
+                                  IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                <ContentPresenter ContentSource="Header" />
+                            </ToggleButton>
+                            <Border x:Name="ContentSiteBorder"
+                            Background="White"
+                            Visibility="{Binding IsExpanded, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                <ContentPresenter x:Name="ContentSite"
+                                          ContentSource="Content" />
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Expander.Template>
+            <StackPanel>
+                <CheckBox Content="Samme dato"
+                  IsChecked="{Binding FilterService.FilterSameDate, Mode=TwoWay}"
+                  Command="{Binding ApplyFilterCommand}"
+                  HorizontalAlignment="Left"
+                  Margin="10,10,0,0"
+                  VerticalAlignment="Top" />
+                <CheckBox Content="På vejen hjem"
+                  IsChecked="{Binding FilterService.FilterOnTheWayHome, Mode=TwoWay}"
+                  Command="{Binding ApplyFilterCommand}"
+                  HorizontalAlignment="Left"
+                  Margin="10,10,0,0"
+                  VerticalAlignment="Top" />
+            </StackPanel>
+        </Expander>
+        <Expander HorizontalAlignment="Left"
+    Height="74"
+    Header="Retur opgaver"
+    Margin="10,341,0,0"
+    VerticalAlignment="Top"
+    Width="124"
+    FontFamily="Bahnshcrift"
+    ScrollViewer.HorizontalScrollBarVisibility="Visible" Grid.RowSpan="2">
+            <Expander.Template>
+                <ControlTemplate TargetType="{x:Type Expander}">
+                    <Border Background="Transparent"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+                        <StackPanel>
+                            <ToggleButton x:Name="HeaderSite"
+                        Background="Transparent"
+                        BorderBrush="{TemplateBinding Background}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                <ContentPresenter ContentSource="Header" />
+                            </ToggleButton>
+                            <Border x:Name="ContentSiteBorder"
+                        Background="White"
+                        Visibility="{Binding IsExpanded, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                <ContentPresenter x:Name="ContentSite"
+                            ContentSource="Content" />
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Expander.Template>
+            <StackPanel>
+                <CheckBox Content="Samme dato"
+            IsChecked="{Binding FilterService.FilterSameDate, Mode=TwoWay}"
+            Command="{Binding ApplyFilterCommand}"
+            HorizontalAlignment="Left"
+            Margin="10,10,0,0"
+            VerticalAlignment="Top" />
+                <CheckBox Content="På vejen hjem"
+            IsChecked="{Binding FilterService.FilterOnTheWayHome, Mode=TwoWay}"
+            Command="{Binding ApplyFilterCommand}"
+            HorizontalAlignment="Left"
+            Margin="10,10,0,0"
+            VerticalAlignment="Top" />
+            </StackPanel>
+        </Expander>
         <!--Labels-->
         <Label Content="Lejligheder - Oversigt" HorizontalAlignment="Left" Margin="226,36,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Tahoma" Foreground="#FF006DA0"/>
 
@@ -81,7 +220,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
                        IsHitTestVisible="False"
                        Visibility="{Binding Text.Length, ElementName=SearchBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
         </Grid>
-        <Rectangle StrokeThickness="2" Margin="938,81,0,502">
+        <Rectangle StrokeThickness="2" Margin="938,81,0,213">
             <Rectangle.Fill>
                 <ImageBrush ImageSource="/Images/SearchIconImage.png" Stretch="Uniform"/>
             </Rectangle.Fill>
@@ -90,7 +229,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
         <ListBox x:Name="AddressListBox"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.CanContentScroll="False"
-                 Margin="226,133,48,33" d:ItemsSource="{d:SampleData ItemCount=5}">
+                 Margin="226,133,48,33" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.RowSpan="2">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Expander Header="{Binding Address}" Padding="5" FontSize="16" Margin="5" ExpandDirection="Down">
@@ -210,6 +349,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        
 
     </Grid>
 </Window>

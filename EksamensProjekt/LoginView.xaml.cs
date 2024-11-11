@@ -23,7 +23,7 @@ namespace EksamensProjekt
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            TenancyView _TenancyView = new TenancyView();
+            TenancyView _TenancyView = new();
             this.Close();
             _TenancyView.Show();
         }

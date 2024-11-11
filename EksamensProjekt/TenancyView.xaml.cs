@@ -23,8 +23,8 @@ namespace EksamensProjekt
     {
         public ObservableCollection<Lejemål> LejemålList { get; set; }
         public ObservableCollection<string> TenantList { get; set; }
-        public ObservableCollection<string> TenancyStatusList { get; set; } = new ObservableCollection<string> { "udlejet", "lejet", "opsagt" };
-        public ObservableCollection<string> DogAllowedList { get; set; } = new ObservableCollection<string> { "ja", "nej" };
+        public ObservableCollection<string> TenancyStatusList { get; set; } = new ObservableCollection<string> { "udlejet", "lejet", "Under Renovering" };
+        public ObservableCollection<string> DogAllowedList { get; set; } = ["ja", "nej"];
         public TenancyView()
         {
             InitializeComponent();
@@ -60,6 +60,8 @@ namespace EksamensProjekt
             AddTenantView _AddTenantView = new AddTenantView();
             _AddTenantView.Show();
         }
+
+       
     }
     public class Lejemål
     {
