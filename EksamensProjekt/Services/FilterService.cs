@@ -1,16 +1,128 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EksamensProjekt.Model;
+
+using System.Collections.ObjectModel; // Provides ObservableCollection for data binding.
+using System.ComponentModel; // Provides ICollectionView and filtering capabilities.
+using System.Windows.Data; // Provides CollectionViewSource to create ICollectionView.
 
 namespace EksamensProjekt.Services
 {
     public class FilterService
     {
-        public void FilterTenancyMatchType() { }
-        public void FilterTenancyZipCode() { }
-        public void FilterTenancyStreet() { }
-        public void FilterTenancyStatus() { }
+        private readonly ICollectionView _tenancyCollectionView; // Read-only view used for filtering and sorting tenancies.
+        private readonly ObservableCollection<Tenancy> _tenancies; // Collection of tenancies managed by this service.
+
+
+        public FilterService(ObservableCollection<Tenancy> tenancies)
+        {
+            _tenancies = tenancies; 
+
+            //GetDefaultView provides features that allows you to filter, sort etc. on collections without modifying original data
+            _tenancyCollectionView = CollectionViewSource.GetDefaultView(_tenancies);
+        }
+
+        //this is for binding to viewModelLayer    
+        public ICollectionView TenancyCollectionView => _tenancyCollectionView;
+
+        public void FilterTenancyMatchType(string matchType)
+        {
+
+            if (_tenancyCollectionView == null) return;
+
+            // Sets a filter predicate on the collection view.
+            _tenancyCollectionView.Filter = tenancy =>
+            {
+                // Checks if the current item in the view is of type Tenancy.
+                if (tenancy is Tenancy t)
+                {
+                    // Calculate the address match score (A, B or C)
+                    var matchScore = TenancyService.CalculateAddressMatchScore(t); 
+
+                    // If no filter is provided (empty or null), show all items.
+                    // Otherwise, filter based on the calculated match score matching the requested matchType.
+                    if (string.IsNullOrEmpty(matchType))
+                    {
+                        // Show all items if no specific matchType is provided.
+                        return true;
+                    }
+
+                    // Compare the match score with the matchType (A, B or C)
+                    return matchScore == matchType;
+                }
+
+                return false;
+            };
+
+            // Refreshes the view to apply the newly set filter.
+            _tenancyCollectionView.Refresh();
+        }
+
+        public void FilterTenancyZipCode(string zipCode)
+        {
+            if (_tenancyCollectionView == null) return;
+
+            // Sets a filter predicate on the collection view for zip code.
+            _tenancyCollectionView.Filter = tenancy =>
+            {
+                if (tenancy is Tenancy t)
+                {
+                    // Check if the zip code is provided and matches the tenancy's zip code.
+                    return string.IsNullOrEmpty(zipCode) || t.StandardAddress.ZipCode == zipCode;
+                }
+                return false;
+            };
+
+            // Refresh the view to apply the newly set filter.
+            _tenancyCollectionView.Refresh();
+        }
+        public void FilterTenancyStreet(string street)
+        {
+            if (_tenancyCollectionView == null) return;
+
+            // Set a filter predicate on the collection view for zip code.
+            _tenancyCollectionView.Filter = tenancy =>
+            {
+                if (tenancy is Tenancy t)
+                {
+                    // Check if the zip code is provided and matches the tenancy's zip code.
+                    return string.IsNullOrEmpty(street) || t.StandardAddress.Street == street;
+                }
+                return false;
+            };
+
+            // Refresh the view to apply the newly set filter.
+            _tenancyCollectionView.Refresh();
+        }
+        public void FilterTenancyStatus(string status)
+        {
+            if (_tenancyCollectionView == null) return;
+
+            // Set a filter predicate on the collection view for TenancyStatus.
+            _tenancyCollectionView.Filter = tenancy =>
+            {
+                if (tenancy is Tenancy t)
+                {
+                    // Check if the status is provided and matches the tenancy's TenancyStatus.
+                    // If status is provided, check if it matches, otherwise show all items.
+                    if (string.IsNullOrEmpty(status))
+                    {
+                        return true; // If no status is provided, show all tenancies.
+                    }
+
+                    // Parse the string status to the corresponding enum value and compare.
+                    if (Enum.TryParse(typeof(Tenancy.Status), status, true, out var parsedStatus))
+                    {
+                        return t.TenancyStatus == (Tenancy.Status)parsedStatus;
+                    }
+
+                    return false; // Return false if the status doesn't match any known value.
+                }
+                return false; // If the tenancy is not of type Tenancy, exclude it.
+            };
+
+            // Refresh the view to apply the newly set filter.
+            _tenancyCollectionView.Refresh();
+        }
+
     }
 }
+

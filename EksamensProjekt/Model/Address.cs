@@ -8,6 +8,8 @@ namespace EksamensProjekt.Model
 {
     public class Address
     {
+        public string ZipCode { get; set; }
+        public string Street { get; set; } 
         public Address() { }
     }
 }

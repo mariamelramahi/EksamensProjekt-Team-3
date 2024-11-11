@@ -143,6 +143,113 @@ namespace EksamensProjekt.Services
             tenantRepo.Add(tenant);
         }
 
-        public void CalculateAdressMatchScore() { }
+        public List<MatchResult> CompareImportedAddressesWithDatabase(List<string> importedAddresses, List<string> databaseAddresses)
+        {
+            List<MatchResult> matchResults = new List<MatchResult>();
+
+            // Loop through each imported address
+            foreach (var importedAddress in importedAddresses)
+            {
+                // Compare the imported address with each database address
+                foreach (var dbAddress in databaseAddresses)
+                {
+                    // Calculate the match score using the Levenshtein distance algorithm
+                    string matchType = CalculateAddressMatchScore(dbAddress, importedAddress);
+
+                    // Store the result with the imported address, database address, and match type
+                    matchResults.Add(new MatchResult
+                    {
+                        ImportedAddress = importedAddress,
+                        DatabaseAddress = dbAddress,
+                        MatchType = matchType
+                    });
+                }
+            }
+
+            // Sort the results by match type to rank the best matches first
+            var sortedResults = matchResults.OrderByDescending(r => GetMatchScore(r.MatchType)).ToList();
+
+            return sortedResults;
+        }
+
+        // Method to calculate the address match score based on Levenshtein distance
+        public string CalculateAddressMatchScore(string standardStreet, string importedAddress)
+        {
+            // Calculate the Levenshtein distance between the two addresses
+            int distance = LevenshteinDistance(standardStreet, importedAddress);
+
+            // Normalize the Levenshtein distance to get a match percentage
+            int maxLength = Math.Max(standardStreet.Length, importedAddress.Length);
+            double matchPercentage = (1 - (double)distance / maxLength) * 100;
+
+            // Classify the result based on the match percentage into types A, B, or C
+            string matchType;
+            if (matchPercentage >= 90)
+            {
+                matchType = "Type A";  // 90% or greater (perfect or near-perfect match)
+            }
+            else if (matchPercentage >= 75)
+            {
+                matchType = "Type B";  // 75%-89% (close match, minor differences)
+            }
+            else if (matchPercentage >= 50)
+            {
+                matchType = "Type C";  // 50%-74% (substantial differences)
+            }
+            else
+            {
+                matchType = "Type D";  // below 50% (poor match)
+            }
+
+            return matchType;
+        }
+
+        // Levenshtein Distance algorithm to calculate the number of edits needed to transform one string into another
+        public static int LevenshteinDistance(string source, string target)
+        {
+            int n = source.Length;
+            int m = target.Length;
+            int[,] d = new int[n + 1, m + 1];
+
+            // If one string is empty, return the length of the other string (all insertions)
+            if (n == 0) return m;
+            if (m == 0) return n;
+
+            // Initialize the matrix
+            for (int i = 0; i <= n; d[i, 0] = i++) ;
+            for (int j = 0; j <= m; d[0, j] = j++) ;
+
+            // Fill the matrix with the minimum edit distance calculations
+            for (int i = 1; i <= n; i++)
+            {
+                for (int j = 1; j <= m; j++)
+                {
+                    int cost = (target[j - 1] == source[i - 1]) ? 0 : 1;
+                    d[i, j] = Math.Min(Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1), d[i - 1, j - 1] + cost);
+                }
+            }
+
+            return d[n, m];
+        }
+
+        // Helpermethod to convert match type to a numerical score (for sorting purposes)
+        private int GetMatchScore(string matchType)
+        {
+            switch (matchType)
+            {
+                case "Type A":
+                    return 5;
+                case "Type B":
+                    return 3;
+                case "Type C":
+                    return 1;
+                default:
+                    return 0;  // For "Type D" or no match
+            }
+        }
     }
+
+          
+
+    
 }

@@ -15,6 +15,7 @@
         public Address StandardAddress { get; set; }
         public Company Company { get; set; }
 
+
         public Tenancy(Status tenancyStatus, DateTime moveInDate, DateTime moveOutDate, string squareMeter, int rent, int rooms, int bathRooms, bool petsAllowed, List<Tenant> tenants, Address standardAddress, Company company)
         {
             TenancyStatus = tenancyStatus;
