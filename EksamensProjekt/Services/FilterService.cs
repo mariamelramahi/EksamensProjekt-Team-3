@@ -54,7 +54,7 @@ namespace EksamensProjekt.Services
             // Refresh the view to apply the filter
             _tenancyCollectionView.Refresh();
         }
-    }
+    
 
     public void FilterTenancyZipCode(string zipCode)
         {
