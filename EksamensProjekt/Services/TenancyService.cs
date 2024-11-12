@@ -1,4 +1,5 @@
 ﻿using EksamensProjekt.Model;
+using System.Collections.ObjectModel;
 
 namespace EksamensProjekt.Services
 {
@@ -6,11 +7,12 @@ namespace EksamensProjekt.Services
     {
         public IRepo<Tenancy> tenancyRepo;
         public IRepo<Tenant> tenantRepo;
+        public IRepo<StandardAddress> standardAddressRepo;
 
         public void CreateNewTenancy(
            Tenancy.Status tenancyStatus,
-           DateTime moveInDate,
-           DateTime moveOutDate,
+           DateTime? moveInDate,
+           DateTime? moveOutDate,
            string squareMeter,
            int rent,
            int rooms,
@@ -51,7 +53,7 @@ namespace EksamensProjekt.Services
         public void UpdateTenancyDetails(
             int tenancyID,
             Tenancy.Status? tenancyStatus = null,
-            DateTime? moveInDate = null,
+            DateTime? moveInDate = null, //what if there are no tenants so tou want to set the moveIn and moveOut to null?
             DateTime? moveOutDate = null,
             string? squareMeter = null,
             int? rent = null,
@@ -74,8 +76,7 @@ namespace EksamensProjekt.Services
 
             // Checks each field for values
             if (tenancyStatus.HasValue)
-                tenancy.TenancyStatus = tenancyStatus.Value;
-
+                tenancy.TenancyStatus = tenancyStatus.Value;        
             if (moveInDate.HasValue)
                 tenancy.MoveInDate = moveInDate.Value;
 
@@ -107,6 +108,37 @@ namespace EksamensProjekt.Services
                 tenancy.Company = company;
 
             tenancyRepo.Update(tenancy);
+        }
+        private void UpdateTenancyDetailsFromExcel(Tenancy tenancy, ModifiedExcelAddress importedAddress)
+        {
+            // Update the address fields if available
+            if (!string.IsNullOrEmpty(importedAddress.StreetName))
+                tenancy.StandardAddress.StreetName = importedAddress.StreetName;
+
+            if (!string.IsNullOrEmpty(importedAddress.Number))
+                tenancy.StandardAddress.Number = importedAddress.Number;
+
+            if (!string.IsNullOrEmpty(importedAddress.Floor))
+                tenancy.StandardAddress.Floor = importedAddress.Floor;
+
+            if (!string.IsNullOrEmpty(importedAddress.ZipCode))
+                tenancy.StandardAddress.ZipCode = importedAddress.ZipCode;
+
+            if (!string.IsNullOrEmpty(importedAddress.City))
+                tenancy.StandardAddress.City = importedAddress.City;
+
+            if (!string.IsNullOrEmpty(importedAddress.Country))
+                tenancy.StandardAddress.Country = importedAddress.Country;
+
+            // Update tenancy-specific fields if available
+            if (importedAddress.MoveInDate.HasValue)
+                tenancy.MoveInDate = importedAddress.MoveInDate.Value;
+
+            if (importedAddress.MoveOutDate.HasValue)
+                tenancy.MoveOutDate = importedAddress.MoveOutDate.Value;
+
+            if (importedAddress.Rent > 0)
+                tenancy.Rent = importedAddress.Rent;
         }
 
 
@@ -143,77 +175,135 @@ namespace EksamensProjekt.Services
             tenantRepo.Add(tenant);
         }
 
-        public List<MatchResult> CompareImportedAddressesWithDatabase(List<string> importedAddresses, List<string> databaseAddresses)
+        public List<MatchResult> CompareImportedAddressesWithDatabase(List<ModifiedExcelAddress> importedAddresses)
         {
+            // Liste til at gemme resultaterne
             List<MatchResult> matchResults = new List<MatchResult>();
+            List<Tenancy> tenancies = tenancyRepo.GetAllTenancies();
+            List<StandardAddress> databaseAddresses = standardAddressRepo.GetAllStandardAddresses();
 
-            // Loop through each imported address
+            // Trin 1: Standardiser og match adresser mod database-adresser først
             foreach (var importedAddress in importedAddresses)
             {
-                // Compare the imported address with each database address
+                string bestMatchType = "Type D"; // Default til "Type D" hvis intet match findes
+                StandardAddress bestMatch = null;
+                double bestScore = 0;
+
+                // Find det bedste match i database-adresserne
                 foreach (var dbAddress in databaseAddresses)
                 {
-                    // Calculate the match score using the Levenshtein distance algorithm
+                    // Beregn match-scoren mellem database-adressen og den importerede adresse
                     string matchType = CalculateAddressMatchScore(dbAddress, importedAddress);
+                    double score = GetMatchScoreValue(matchType);
 
-                    // Store the result with the imported address, database address, and match type
-                    matchResults.Add(new MatchResult
+                    // Opdater det bedste match, hvis scoren er højere
+                    if (score > bestScore)
                     {
-                        ImportedAddress = importedAddress,
-                        DatabaseAddress = dbAddress,
-                        MatchType = matchType
-                    });
+                        bestScore = score;
+                        bestMatchType = matchType;
+                        bestMatch = dbAddress;
+                    }
+                }
+
+                // Hvis der ikke findes nogen match i databasen, tildeles "Type D"
+                if (bestMatch == null)
+                {
+                    bestMatchType = "Type D";
+                }
+
+                // Tilføj match-resultatet til listen
+                matchResults.Add(new MatchResult
+                {
+                    ImportedAddress = importedAddress,
+                    DatabaseAddress = bestMatch,
+                    MatchType = bestMatchType
+                });
+            }
+
+            // Trin 2: Efter at have fundet de bedste matches, tjek om de allerede er oprettet som en tenancy
+            foreach (var match in matchResults)
+            {
+                if (match.MatchType == "Type A")
+                {
+                    // Find eksisterende tenancy baseret på det bedste match
+                    var existingTenancy = tenancies.FirstOrDefault(t =>
+                        CalculateAddressMatchScore(t.StandardAddress, match.ImportedAddress) == "Type A");
+
+                    if (existingTenancy != null)
+                    {
+                        // Opdater eksisterende tenancy med de nye data fra den importerede adresse
+                        existingTenancy.TenancyStatus = match.ImportedAddress.TenancyStatus ?? existingTenancy.TenancyStatus;
+                        existingTenancy.MoveInDate = match.ImportedAddress.MoveInDate ?? existingTenancy.MoveInDate;
+                        existingTenancy.MoveOutDate = match.ImportedAddress.MoveOutDate ?? existingTenancy.MoveOutDate;
+                        existingTenancy.Rent = match.ImportedAddress.Rent > 0 ? match.ImportedAddress.Rent : existingTenancy.Rent;
+                        existingTenancy.SquareMeter = match.ImportedAddress.SquareMeter ?? existingTenancy.SquareMeter;
+                        existingTenancy.Rooms = match.ImportedAddress.Rooms > 0 ? match.ImportedAddress.Rooms : existingTenancy.Rooms;
+                        existingTenancy.BathRooms = match.ImportedAddress.BathRooms > 0 ? match.ImportedAddress.BathRooms : existingTenancy.BathRooms;
+                        existingTenancy.PetsAllowed = match.ImportedAddress.PetsAllowed ?? existingTenancy.PetsAllowed;
+                        existingTenancy.Tenants = match.ImportedAddress.Tenants ?? existingTenancy.Tenants;
+                        existingTenancy.Company = match.ImportedAddress.Company ?? existingTenancy.Company;
+                    }
                 }
             }
 
-            // Sort the results by match type to rank the best matches first
-            var sortedResults = matchResults.OrderByDescending(r => GetMatchScore(r.MatchType)).ToList();
-
-            return sortedResults;
+            return matchResults;
         }
 
-        // Method to calculate the address match score based on Levenshtein distance
-        public string CalculateAddressMatchScore(string standardStreet, string importedAddress)
-        {
-            // Calculate the Levenshtein distance between the two addresses
-            int distance = LevenshteinDistance(standardStreet, importedAddress);
 
-            // Normalize the Levenshtein distance to get a match percentage
-            int maxLength = Math.Max(standardStreet.Length, importedAddress.Length);
+        public static string CalculateAddressMatchScore(Address standardAddress, Address importedAddress)
+        {
+            double streetMatchScore = CalculateLevenshteinMatchScore(standardAddress.StreetName, importedAddress.StreetName) * 0.4;
+            double zipCodeMatchScore = CalculateLevenshteinMatchScore(standardAddress.ZipCode, importedAddress.ZipCode) * 0.3;
+            double cityMatchScore = CalculateLevenshteinMatchScore(standardAddress.City, importedAddress.City) * 0.1;
+            double numberMatchScore = CalculateLevenshteinMatchScore(standardAddress.Number, importedAddress.Number) * 0.05;
+            double floorMatchScore = CalculateLevenshteinMatchScore(standardAddress.Floor, importedAddress.Floor) * 0.05;
+            double countryMatchScore = CalculateLevenshteinMatchScore(standardAddress.Country, importedAddress.Country) * 0.1;
+
+            double totalMatchScore = streetMatchScore + zipCodeMatchScore + cityMatchScore + numberMatchScore + floorMatchScore + countryMatchScore;
+
+            if (totalMatchScore >= 90) return "Type A";
+            else if (totalMatchScore >= 75) return "Type B";
+            else if (totalMatchScore >= 50) return "Type C";
+            else return "Type D";
+        }
+
+        // Method to convert match type to numerical score for sorting
+        private double GetMatchScoreValue(string matchType)//can be removed if matchType are enums
+        {
+            return matchType switch
+            {
+                "Type A" => 100,
+                "Type B" => 75,
+                "Type C" => 50,
+                "Type D" => 25,
+                _ => 0
+            };
+        }
+
+        // Helper method to calculate Levenshtein match score
+        public static double CalculateLevenshteinMatchScore(string standardValue, string importedValue)
+        {
+            if (string.IsNullOrEmpty(standardValue) || string.IsNullOrEmpty(importedValue))
+            {
+                return 0.0; // If one of the values is empty, return no match.
+            }
+
+            // Calculate the Levenshtein distance between the two values.
+            int distance = LevenshteinDistance(standardValue, importedValue);
+
+            // Normalize the Levenshtein distance to a match percentage.
+            int maxLength = Math.Max(standardValue.Length, importedValue.Length);
             double matchPercentage = (1 - (double)distance / maxLength) * 100;
 
-            // Classify the result based on the match percentage into types A, B, or C
-            string matchType;
-            if (matchPercentage >= 90)
-            {
-                matchType = "Type A";  // 90% or greater (perfect or near-perfect match)
-            }
-            else if (matchPercentage >= 75)
-            {
-                matchType = "Type B";  // 75%-89% (close match, minor differences)
-            }
-            else if (matchPercentage >= 50)
-            {
-                matchType = "Type C";  // 50%-74% (substantial differences)
-            }
-            else
-            {
-                matchType = "Type D";  // below 50% (poor match)
-            }
-
-            return matchType;
+            return matchPercentage;
         }
 
-        // Levenshtein Distance algorithm to calculate the number of edits needed to transform one string into another
+        // Levenshtein Distance algorithm
         public static int LevenshteinDistance(string source, string target)
         {
             int n = source.Length;
             int m = target.Length;
             int[,] d = new int[n + 1, m + 1];
-
-            // If one string is empty, return the length of the other string (all insertions)
-            if (n == 0) return m;
-            if (m == 0) return n;
 
             // Initialize the matrix
             for (int i = 0; i <= n; d[i, 0] = i++) ;
@@ -232,24 +322,5 @@ namespace EksamensProjekt.Services
             return d[n, m];
         }
 
-        // Helpermethod to convert match type to a numerical score (for sorting purposes)
-        private int GetMatchScore(string matchType)
-        {
-            switch (matchType)
-            {
-                case "Type A":
-                    return 5;
-                case "Type B":
-                    return 3;
-                case "Type C":
-                    return 1;
-                default:
-                    return 0;  // For "Type D" or no match
-            }
-        }
     }
-
-          
-
-    
 }

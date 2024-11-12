@@ -23,40 +23,40 @@ namespace EksamensProjekt.Services
         //this is for binding to viewModelLayer    
         public ICollectionView TenancyCollectionView => _tenancyCollectionView;
 
-        public void FilterTenancyMatchType(string matchType)
+        public void FilterTenancyMatchType(string matchType, List<MatchResult> matchResults)
         {
+            if (_tenancyCollectionView == null || matchResults == null) return;
 
-            if (_tenancyCollectionView == null) return;
-
-            // Sets a filter predicate on the collection view.
+            // Set the filter predicate based on the selected match type
             _tenancyCollectionView.Filter = tenancy =>
             {
-                // Checks if the current item in the view is of type Tenancy.
                 if (tenancy is Tenancy t)
                 {
-                    // Calculate the address match score (A, B or C)
-                    var matchScore = TenancyService.CalculateAddressMatchScore(t); 
+                    // Find the corresponding match result for this tenancy
+                    var matchResult = matchResults.FirstOrDefault(r =>
+                        r.ImportedAddress.Equals(t.ImportedAddress, StringComparison.OrdinalIgnoreCase) &&
+                        r.DatabaseAddress.Equals(t.DatabaseAddress, StringComparison.OrdinalIgnoreCase));
 
-                    // If no filter is provided (empty or null), show all items.
-                    // Otherwise, filter based on the calculated match score matching the requested matchType.
-                    if (string.IsNullOrEmpty(matchType))
+                    if (matchResult != null)
                     {
-                        // Show all items if no specific matchType is provided.
-                        return true;
-                    }
+                        // If no specific match type is selected, show all tenancies
+                        if (string.IsNullOrEmpty(matchType))
+                            return true;
 
-                    // Compare the match score with the matchType (A, B or C)
-                    return matchScore == matchType;
+                        // Check if the match type matches the filter criteria
+                        return matchResult.MatchType.Equals(matchType, StringComparison.OrdinalIgnoreCase);
+                    }
                 }
 
                 return false;
             };
 
-            // Refreshes the view to apply the newly set filter.
+            // Refresh the view to apply the filter
             _tenancyCollectionView.Refresh();
         }
+    }
 
-        public void FilterTenancyZipCode(string zipCode)
+    public void FilterTenancyZipCode(string zipCode)
         {
             if (_tenancyCollectionView == null) return;
 

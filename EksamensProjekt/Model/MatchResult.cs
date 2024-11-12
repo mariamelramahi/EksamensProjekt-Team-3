@@ -8,9 +8,10 @@ namespace EksamensProjekt.Model
 {
     public class MatchResult
     {
-        public string ImportedAddress { get; set; }
-        public string DatabaseAddress { get; set; }
-        public string MatchType { get; set; }
+        public ModifiedExcelAddress ImportedAddress { get; set; }
+        public StandardAddress DatabaseAddress { get; set; }
+        public string MatchType { get; set; } //make enum?
+        public int TenancyID { get; set; }
     }
 
 }
