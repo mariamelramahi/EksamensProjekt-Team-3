@@ -10,26 +10,33 @@ namespace EksamensProjekt.Services
     public class FilterService
     {
 
-        private readonly ICollectionView _tenancyCollectionView; // Read-only view used for filtering and sorting tenancies.
-        private readonly ObservableCollection<Tenancy> _tenancies; // Collection of tenancies managed by this service.
-'
+        private readonly ICollectionView _tenancyCollectionView;
+        private readonly ObservableCollection<Tenancy> _tenancies;
 
         public FilterService(ObservableCollection<Tenancy> tenancies)
         {
-            _tenancies = tenancies; 
-
-            //GetDefaultView provides features that allows you to filter, sort etc. on collections without modifying original data
+            _tenancies = tenancies;
             _tenancyCollectionView = CollectionViewSource.GetDefaultView(_tenancies);
         }
 
-        //this is for binding to viewModelLayer    
+        // This property is used to expose the CollectionView for binding
         public ICollectionView TenancyCollectionView => _tenancyCollectionView;
 
+        // Method to apply the filters and refresh the view
+        public void ApplyFilters(string zipCode, string street, string status)
+        {
+            // Apply the filter logic
+            ApplyTenancyFilters(_tenancyCollectionView, zipCode, street, status);
+
+            // Refresh the view to reflect the changes
+            _tenancyCollectionView.Refresh();
+        }
+
+        // Method that defines the actual filter criteria
         public void ApplyTenancyFilters(ICollectionView collectionView, string zipCode, string street, string status)
         {
             collectionView.Filter = tenancy =>
             {
-                // Ensure the tenancy is of the correct type
                 if (tenancy is not Tenancy t) return false;
 
                 // Filter by Zip Code if provided
@@ -41,43 +48,41 @@ namespace EksamensProjekt.Services
                 // Filter by Status if provided
                 bool matchesStatus = string.IsNullOrEmpty(status) || t.TenancyStatus.ToString().Equals(status, StringComparison.OrdinalIgnoreCase);
 
-                // Return true if any filter is null/empty or matches the corresponding field
                 return matchesZipCode && matchesStreet && matchesStatus;
             };
         }
 
+        //public void FilterTenancyMatchType(string matchType, List<MatchResult> matchResults)
+        //{
+        //    if (_tenancyCollectionView == null || matchResults == null) return;
 
-        public void FilterTenancyMatchType(string matchType, List<MatchResult> matchResults)
-        {
-            if (_tenancyCollectionView == null || matchResults == null) return;
+        //    // Set the filter predicate based on the selected match type
+        //    _tenancyCollectionView.Filter = tenancy =>
+        //    {
+        //        if (tenancy is Tenancy t)
+        //        {
+        //            // Find the corresponding match result for this tenancy
+        //            var matchResult = matchResults.FirstOrDefault(r =>
+        //                r.ImportedAddress.Equals(t.ImportedAddress, StringComparison.OrdinalIgnoreCase) &&
+        //                r.DatabaseAddress.Equals(t.DatabaseAddress, StringComparison.OrdinalIgnoreCase));
 
-            // Set the filter predicate based on the selected match type
-            _tenancyCollectionView.Filter = tenancy =>
-            {
-                if (tenancy is Tenancy t)
-                {
-                    // Find the corresponding match result for this tenancy
-                    var matchResult = matchResults.FirstOrDefault(r =>
-                        r.ImportedAddress.Equals(t.ImportedAddress, StringComparison.OrdinalIgnoreCase) &&
-                        r.DatabaseAddress.Equals(t.DatabaseAddress, StringComparison.OrdinalIgnoreCase));
+        //            if (matchResult != null)
+        //            {
+        //                // If no specific match type is selected, show all tenancies
+        //                if (string.IsNullOrEmpty(matchType))
+        //                    return true;
 
-                    if (matchResult != null)
-                    {
-                        // If no specific match type is selected, show all tenancies
-                        if (string.IsNullOrEmpty(matchType))
-                            return true;
+        //                // Check if the match type matches the filter criteria
+        //                return matchResult.MatchType.Equals(matchType, StringComparison.OrdinalIgnoreCase);
+        //            }
+        //        }
 
-                        // Check if the match type matches the filter criteria
-                        return matchResult.MatchType.Equals(matchType, StringComparison.OrdinalIgnoreCase);
-                    }
-                }
+        //        return false;
+        //    };
 
-                return false;
-            };
-
-            // Refresh the view to apply the filter
-            _tenancyCollectionView.Refresh();
-        }
+        //    // Refresh the view to apply the filter
+        //    _tenancyCollectionView.Refresh();
+        //}
     
     }
 }
