@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:EksamensProjekt"
         xmlns:vm="clr-namespace:EksamensProjekt.Utilities"
         mc:Ignorable="d"
-        Title="MainWindow" Height="646" Width="999"
+        Title="MainWindow" Height="1080" Width="1920"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
 
@@ -20,9 +20,9 @@
             <RowDefinition Height="289*"/>
         </Grid.RowDefinitions>
 
-        <Rectangle HorizontalAlignment="Left" Height="630" VerticalAlignment="Top" Width="170" Fill="#FF006DA0" Grid.RowSpan="2"/>
+        <Rectangle HorizontalAlignment="Left" Height="1064" VerticalAlignment="Top" Width="200" Fill="#FF006DA0" Grid.RowSpan="2"/>
         <!--Buttons-->
-        <Button Margin="928,0,6,270" BorderBrush="{x:Null}" Command="{Binding ExitCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Background="{x:Null}" >
+        <Button Margin="1834,0,6,521" BorderBrush="{x:Null}" Command="{Binding ExitCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Background="{x:Null}" >
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Images/ExitImage.png" Height="45"/>
             </StackPanel>
@@ -45,9 +45,9 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
         </Button>
         <Button Content="Historik"
     HorizontalAlignment="Left"
-    Margin="791,10,0,0"
+    Margin="1719,11,0,0"
     VerticalAlignment="Top"
-    Width="109"
+    Width="110"
     Background="White"
     Foreground="#FF006DA0"
     Height="32"
@@ -60,7 +60,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
             </Button.Resources>
         </Button>
         <!--images-->
-        <Image Margin="0,-13,909,264" Source="/Images/LogoImage.png" Stretch="Uniform" Width="90"/>
+        <Image Margin="0,-31,1822,483" Source="/Images/LogoImage.png" Stretch="Uniform"/>
 
         <!--Comboboxes-->
         <Expander HorizontalAlignment="Left"
@@ -205,12 +205,12 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
         <Label Content="Lejligheder - Oversigt" HorizontalAlignment="Left" Margin="226,36,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Tahoma" Foreground="#FF006DA0"/>
 
         <!--Searchbox-->
-        <Rectangle HorizontalAlignment="Left" Height="27" Margin="683,80,0,0" Stroke="#FFA4A4A4" VerticalAlignment="Top" Width="293">
+        <Rectangle HorizontalAlignment="Left" Height="27" Margin="1600,89,0,0" Stroke="#FFA4A4A4" VerticalAlignment="Top" Width="292">
         </Rectangle>
-        <Grid HorizontalAlignment="Left" Margin="683,80,0,0" VerticalAlignment="Top">
+        <Grid HorizontalAlignment="Left" Margin="1600,89,0,0" VerticalAlignment="Top">
 
             <!-- TextBox for user input -->
-            <TextBox x:Name="SearchBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="27" FontSize="18" FontFamily="Tahoma" BorderBrush="{x:Null}" Foreground="Black"/>
+            <TextBox x:Name="SearchBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="27" FontSize="18" FontFamily="Tahoma" BorderBrush="{x:Null}" Foreground="Black" SelectionBrush="{x:Null}"/>
 
             <!-- Placeholder TextBlock -->
             <TextBlock Text="Søg"
@@ -220,7 +220,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
                        IsHitTestVisible="False"
                        Visibility="{Binding Text.Length, ElementName=SearchBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
         </Grid>
-        <Rectangle StrokeThickness="2" Margin="938,81,0,213">
+        <Rectangle StrokeThickness="2" Margin="1862,91,10,448">
             <Rectangle.Fill>
                 <ImageBrush ImageSource="/Images/SearchIconImage.png" Stretch="Uniform"/>
             </Rectangle.Fill>
@@ -229,7 +229,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
         <ListBox x:Name="AddressListBox"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.CanContentScroll="False"
-                 Margin="226,133,48,33" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.RowSpan="2">
+                 Margin="226,133,48,33" Grid.RowSpan="2" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Expander Header="{Binding Address}" Padding="5" FontSize="16" Margin="5" ExpandDirection="Down">
@@ -319,6 +319,12 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
                                               SelectedItem="{Binding Tenant}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
+                                <!-- Owner -->
+                                <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
+                                    <TextBlock Text="Ejer: " FontWeight="Bold"/>
+                                    <TextBlock Width="150" Text="{Binding Owner}" Margin="10,0,0,0"/>
+                                </StackPanel>
+
                                 <!-- Action Buttons -->
                                 <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                                     <Button Content="Gem Ændringer" Click="SaveButton_Click" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100">
@@ -349,7 +355,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        
+
 
     </Grid>
 </Window>

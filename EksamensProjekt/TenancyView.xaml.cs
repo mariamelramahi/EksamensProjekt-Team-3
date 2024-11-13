@@ -30,7 +30,7 @@ namespace EksamensProjekt
             InitializeComponent();
             LejemålList = new ObservableCollection<Lejemål>
             {
-                new Lejemål { Address = "Skovløbervej 11, 2400 København NV", Rooms = 3, Size = 85, Tenant = "Anders Jensen", Company = "Boligselskabet hej hej" },
+                new Lejemål { Address = "Skovløbervej 11, 2400 København NV", Rooms = 3, Size = 85, Tenant = "Anders Jensen", Company = "Boligselskabet hej hej", Owner = "Maryanne" },
                 new Lejemål { Address = "Bogtrykkervej 32, 2400 København NV", Rooms = 2, Size = 65, Tenant = "Sofie Hansen" },
                 new Lejemål { Address = "Vollsmosse 13H, 5240 Odense C", Rooms = 4, Size = 100, Tenant = "Thomas Nielsen" },
                 new Lejemål { Address = "Hybovej 5A, 9440 Aabybro", Rooms = 5, Size = 120, Tenant = "Marie Petersen" }
@@ -77,6 +77,8 @@ namespace EksamensProjekt
         public string DogAllowed { get; set; } // ja, nej
         public string Company { get; set; }
         public string Tenant { get; set; }
+
+        public string Owner { get; set; }
     }
 
 
