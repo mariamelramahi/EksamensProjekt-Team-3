@@ -108,6 +108,22 @@ namespace EksamensProjekt.Services
             // Save the updated tenancy
             tenancyRepo.Update(existingTenancy);
         }
+        public void DeleteTenancy(int tenancyID)
+        {
+            // Fetch the existing tenancy from the repository using its ID
+            Tenancy? tenancyToDelete = tenancyRepo.GetById(tenancyID);
+
+            // Check if the tenancy exists
+            if (tenancyToDelete == null)
+            {
+                Console.WriteLine($"Tenancy with ID {tenancyID} not found.");
+                return;
+            }
+
+            // Delete the tenancy from the repository
+            tenancyRepo.Delete(tenancyToDelete);
+            Console.WriteLine($"Tenancy with ID {tenancyID} has been deleted.");
+        }
 
         //private void UpdateTenancyDetailsFromExcel(Tenancy tenancy, ModifiedExcelAddress importedAddress)
         //{
