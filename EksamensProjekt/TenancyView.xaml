@@ -35,7 +35,7 @@ Width="109"
 Background="White"
 Foreground="#FF006DA0"
 Height="32"
-FontFamily="Bahnschrift Light" 
+FontFamily="Tahoma" 
 Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="#FF006DA0">
             <Button.Resources>
                 <Style TargetType="Border">
@@ -53,6 +53,22 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
     Height="32"
     FontFamily="Bahnschrift Light" 
     Command="{Binding GoToHistoryCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="#FF006DA0">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Content="Slet"
+    HorizontalAlignment="Left"
+    Margin="365,80,0,0"
+    VerticalAlignment="Top"
+    Width="109"
+    Background="White"
+    Foreground="#FF006DA0"
+    Height="32"
+    FontFamily="Tahoma" 
+    Command="{Binding DeleteTenancyCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="#FF006DA0">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="5"/>
@@ -219,8 +235,9 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
         </ListBox>
         <Grid HorizontalAlignment="Left" Margin="1600,89,0,0" VerticalAlignment="Top">
 
-            <!-- TextBox for user input -->
-            <TextBox x:Name="SearchBoxx" TextWrapping="Wrap" VerticalAlignment="Top" Height="27" FontSize="18" FontFamily="Tahoma" BorderBrush="{x:Null}" Foreground="Black" SelectionBrush="{x:Null}" Margin="-1592,79,1419,0"/>
+            <!-- TextBox filter Zipcode -->
+            <TextBox x:Name="ZipFilterBox" TextWrapping="Wrap" VerticalAlignment="Top" Height="27" FontSize="18" FontFamily="Tahoma" BorderBrush="{x:Null}" Foreground="Black" SelectionBrush="{x:Null}" Margin="-1592,79,1419,0"
+                      Text="{Binding ZipCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- Placeholder TextBlock -->
             <TextBlock
@@ -230,6 +247,7 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
                 IsHitTestVisible="False"
                 Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=SearchBox}" Text="Postnummer"/>
         </Grid>
+        
 
     </Grid>
 </Window>
