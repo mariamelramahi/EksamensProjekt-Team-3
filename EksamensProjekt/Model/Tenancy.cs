@@ -14,7 +14,8 @@
         public List<Tenant> Tenants { get; set; }
         public Address StandardAddress { get; set; }
         public Company Company { get; set; }
-
+        public string ImportedAddress { get; set; }
+        public string DatabaseAddress { get; set; }
 
         public Tenancy(Status tenancyStatus, DateTime? moveInDate, DateTime? moveOutDate, string squareMeter, int rent, int rooms, int bathRooms, bool petsAllowed, List<Tenant> tenants, Address standardAddress, Company company)
         {

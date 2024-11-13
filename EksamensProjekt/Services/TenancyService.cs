@@ -1,326 +1,326 @@
-﻿using EksamensProjekt.Model;
-using System.Collections.ObjectModel;
+﻿//using EksamensProjekt.Model;
+//using System.Collections.ObjectModel;
 
-namespace EksamensProjekt.Services
-{
-    public class TenancyService
-    {
-        public IRepo<Tenancy> tenancyRepo;
-        public IRepo<Tenant> tenantRepo;
-        public IRepo<StandardAddress> standardAddressRepo;
+//namespace EksamensProjekt.Services
+//{
+//    public class TenancyService
+//    {
+//        public IRepo<Tenancy> tenancyRepo;
+//        public IRepo<Tenant> tenantRepo;
+//        public IRepo<StandardAddress> standardAddressRepo;
 
-        public void CreateNewTenancy(
-           Tenancy.Status tenancyStatus,
-           DateTime? moveInDate,
-           DateTime? moveOutDate,
-           string squareMeter,
-           int rent,
-           int rooms,
-           int bathRooms,
-           bool petsAllowed,
-           List<Tenant> tenants,
-           Address standardAddress,
-           Company company)
-        {
-            // Validate essential input fields
-            if (standardAddress == null)
-            {
-                throw new ArgumentNullException(nameof(standardAddress), "Address cannot be null.");
-            }
+//        public void CreateNewTenancy(
+//           Tenancy.Status tenancyStatus,
+//           DateTime? moveInDate,
+//           DateTime? moveOutDate,
+//           string squareMeter,
+//           int rent,
+//           int rooms,
+//           int bathRooms,
+//           bool petsAllowed,
+//           List<Tenant> tenants,
+//           Address standardAddress,
+//           Company company)
+//        {
+//            // Validate essential input fields
+//            if (standardAddress == null)
+//            {
+//                throw new ArgumentNullException(nameof(standardAddress), "Address cannot be null.");
+//            }
 
-            if (company == null)
-            {
-                throw new ArgumentNullException(nameof(company), "Company cannot be null.");
-            }
+//            if (company == null)
+//            {
+//                throw new ArgumentNullException(nameof(company), "Company cannot be null.");
+//            }
 
-            // Use the constructor to create a new Tenancy object
-            Tenancy tenancy = new Tenancy(
-                tenancyStatus,
-                moveInDate,
-                moveOutDate,
-                squareMeter,
-                rent,
-                rooms,
-                bathRooms,
-                petsAllowed,
-                tenants ?? new List<Tenant>(), //made nullable field in case of no tenants registered
-                standardAddress,
-                company);
+//            // Use the constructor to create a new Tenancy object
+//            Tenancy tenancy = new Tenancy(
+//                tenancyStatus,
+//                moveInDate,
+//                moveOutDate,
+//                squareMeter,
+//                rent,
+//                rooms,
+//                bathRooms,
+//                petsAllowed,
+//                tenants ?? new List<Tenant>(), //made nullable field in case of no tenants registered
+//                standardAddress,
+//                company);
 
-            tenancyRepo.Add(tenancy);
-        }
+//            tenancyRepo.Add(tenancy);
+//        }
 
-        public void UpdateTenancyDetails(
-            int tenancyID,
-            Tenancy.Status? tenancyStatus = null,
-            DateTime? moveInDate = null, //what if there are no tenants so tou want to set the moveIn and moveOut to null?
-            DateTime? moveOutDate = null,
-            string? squareMeter = null,
-            int? rent = null,
-            int? rooms = null,
-            int? bathRooms = null,
-            bool? petsAllowed = null,
-            List<Tenant>? tenants = null,
-            Address? standardAddress = null,
-            Company? company = null)
-        {
-            // using GetById to retrieve tenancy
-            Tenancy? tenancy = tenancyRepo.GetById(tenancyID);
+//        public void UpdateTenancyDetails(
+//            int tenancyID,
+//            Tenancy.Status? tenancyStatus = null,
+//            DateTime? moveInDate = null, //what if there are no tenants so tou want to set the moveIn and moveOut to null?
+//            DateTime? moveOutDate = null,
+//            string? squareMeter = null,
+//            int? rent = null,
+//            int? rooms = null,
+//            int? bathRooms = null,
+//            bool? petsAllowed = null,
+//            List<Tenant>? tenants = null,
+//            Address? standardAddress = null,
+//            Company? company = null)
+//        {
+//            // using GetById to retrieve tenancy
+//            Tenancy? tenancy = tenancyRepo.GetById(tenancyID);
 
-            // Check if the tenancy exists
-            if (tenancy == null)
-            {
-                Console.WriteLine($"Tenancy with ID {tenancyID} not found.");
-                return;
-            }
+//            // Check if the tenancy exists
+//            if (tenancy == null)
+//            {
+//                Console.WriteLine($"Tenancy with ID {tenancyID} not found.");
+//                return;
+//            }
 
-            // Checks each field for values
-            if (tenancyStatus.HasValue)
-                tenancy.TenancyStatus = tenancyStatus.Value;        
-            if (moveInDate.HasValue)
-                tenancy.MoveInDate = moveInDate.Value;
+//            // Checks each field for values
+//            if (tenancyStatus.HasValue)
+//                tenancy.TenancyStatus = tenancyStatus.Value;        
+//            if (moveInDate.HasValue)
+//                tenancy.MoveInDate = moveInDate.Value;
 
-            if (moveOutDate.HasValue)
-                tenancy.MoveOutDate = moveOutDate.Value;
+//            if (moveOutDate.HasValue)
+//                tenancy.MoveOutDate = moveOutDate.Value;
 
-            if (!string.IsNullOrEmpty(squareMeter))
-                tenancy.SquareMeter = squareMeter;
+//            if (!string.IsNullOrEmpty(squareMeter))
+//                tenancy.SquareMeter = squareMeter;
 
-            if (rent.HasValue)
-                tenancy.Rent = rent.Value;
+//            if (rent.HasValue)
+//                tenancy.Rent = rent.Value;
 
-            if (rooms.HasValue)
-                tenancy.Rooms = rooms.Value;
+//            if (rooms.HasValue)
+//                tenancy.Rooms = rooms.Value;
 
-            if (bathRooms.HasValue)
-                tenancy.BathRooms = bathRooms.Value;
+//            if (bathRooms.HasValue)
+//                tenancy.BathRooms = bathRooms.Value;
 
-            if (petsAllowed.HasValue)
-                tenancy.PetsAllowed = petsAllowed.Value;
+//            if (petsAllowed.HasValue)
+//                tenancy.PetsAllowed = petsAllowed.Value;
 
-            if (tenants != null)
-                tenancy.Tenants = tenants;
+//            if (tenants != null)
+//                tenancy.Tenants = tenants;
 
-            if (standardAddress != null)
-                tenancy.StandardAddress = standardAddress;
+//            if (standardAddress != null)
+//                tenancy.StandardAddress = standardAddress;
 
-            if (company != null)
-                tenancy.Company = company;
+//            if (company != null)
+//                tenancy.Company = company;
 
-            tenancyRepo.Update(tenancy);
-        }
-        //private void UpdateTenancyDetailsFromExcel(Tenancy tenancy, ModifiedExcelAddress importedAddress)
-        //{
-        //    // Update the address fields if available
-        //    if (!string.IsNullOrEmpty(importedAddress.StreetName))
-        //        tenancy.StandardAddress.StreetName = importedAddress.StreetName;
+//            tenancyRepo.Update(tenancy);
+//        }
+//        //private void UpdateTenancyDetailsFromExcel(Tenancy tenancy, ModifiedExcelAddress importedAddress)
+//        //{
+//        //    // Update the address fields if available
+//        //    if (!string.IsNullOrEmpty(importedAddress.StreetName))
+//        //        tenancy.StandardAddress.StreetName = importedAddress.StreetName;
 
-        //    if (!string.IsNullOrEmpty(importedAddress.Number))
-        //        tenancy.StandardAddress.Number = importedAddress.Number;
+//        //    if (!string.IsNullOrEmpty(importedAddress.Number))
+//        //        tenancy.StandardAddress.Number = importedAddress.Number;
 
-        //    if (!string.IsNullOrEmpty(importedAddress.Floor))
-        //        tenancy.StandardAddress.Floor = importedAddress.Floor;
+//        //    if (!string.IsNullOrEmpty(importedAddress.Floor))
+//        //        tenancy.StandardAddress.Floor = importedAddress.Floor;
 
-        //    if (!string.IsNullOrEmpty(importedAddress.ZipCode))
-        //        tenancy.StandardAddress.ZipCode = importedAddress.ZipCode;
+//        //    if (!string.IsNullOrEmpty(importedAddress.ZipCode))
+//        //        tenancy.StandardAddress.ZipCode = importedAddress.ZipCode;
 
-        //    if (!string.IsNullOrEmpty(importedAddress.City))
-        //        tenancy.StandardAddress.City = importedAddress.City;
+//        //    if (!string.IsNullOrEmpty(importedAddress.City))
+//        //        tenancy.StandardAddress.City = importedAddress.City;
 
-        //    if (!string.IsNullOrEmpty(importedAddress.Country))
-        //        tenancy.StandardAddress.Country = importedAddress.Country;
+//        //    if (!string.IsNullOrEmpty(importedAddress.Country))
+//        //        tenancy.StandardAddress.Country = importedAddress.Country;
 
-        //    // Update tenancy-specific fields if available
-        //    if (importedAddress.MoveInDate.HasValue)
-        //        tenancy.MoveInDate = importedAddress.MoveInDate.Value;
+//        //    // Update tenancy-specific fields if available
+//        //    if (importedAddress.MoveInDate.HasValue)
+//        //        tenancy.MoveInDate = importedAddress.MoveInDate.Value;
 
-        //    if (importedAddress.MoveOutDate.HasValue)
-        //        tenancy.MoveOutDate = importedAddress.MoveOutDate.Value;
+//        //    if (importedAddress.MoveOutDate.HasValue)
+//        //        tenancy.MoveOutDate = importedAddress.MoveOutDate.Value;
 
-        //    if (importedAddress.Rent > 0)
-        //        tenancy.Rent = importedAddress.Rent;
-        //}
-
-
-        public void CreateNewTenant(string firstName, string lastName, string phoneNumber, string email) 
-        {
-
-            // Validate essential input fields
-            if (firstName == null)
-            {
-                throw new ArgumentNullException(nameof(firstName), "Firstname cannot be null.");
-            }
-
-            if (lastName == null)
-            {
-                throw new ArgumentNullException(nameof(lastName), "Lastname cannot be null.");
-            }
-
-            // Validate essential input fields
-            if (phoneNumber == null)
-            {
-                throw new ArgumentNullException(nameof(phoneNumber), "Phonenumber cannot be null.");
-            }
-
-            if (email == null)
-            {
-                throw new ArgumentNullException(nameof(email), "Email cannot be null.");
-            }
-            Tenant tenant = new Tenant(
-                firstName,
-                lastName,
-                phoneNumber,
-                email
-                );
-            tenantRepo.Add(tenant);
-        }
-
-        //public List<MatchResult> CompareImportedAddressesWithDatabase(List<ModifiedExcelAddress> importedAddresses)
-        //{
-        //    // Liste til at gemme resultaterne
-        //    List<MatchResult> matchResults = new List<MatchResult>();
-        //    List<Tenancy> tenancies = tenancyRepo.GetAllTenancies();
-        //    List<StandardAddress> databaseAddresses = standardAddressRepo.GetAllStandardAddresses();
-
-        //    // Trin 1: Standardiser og match adresser mod database-adresser først
-        //    foreach (var importedAddress in importedAddresses)
-        //    {
-        //        string bestMatchType = "Type D"; // Default til "Type D" hvis intet match findes
-        //        StandardAddress bestMatch = null;
-        //        double bestScore = 0;
-
-        //        // Find det bedste match i database-adresserne
-        //        foreach (var dbAddress in databaseAddresses)
-        //        {
-        //            // Beregn match-scoren mellem database-adressen og den importerede adresse
-        //            string matchType = CalculateAddressMatchScore(dbAddress, importedAddress);
-        //            double score = GetMatchScoreValue(matchType);
-
-        //            // Opdater det bedste match, hvis scoren er højere
-        //            if (score > bestScore)
-        //            {
-        //                bestScore = score;
-        //                bestMatchType = matchType;
-        //                bestMatch = dbAddress;
-        //            }
-        //        }
-
-        //        // Hvis der ikke findes nogen match i databasen, tildeles "Type D"
-        //        if (bestMatch == null)
-        //        {
-        //            bestMatchType = "Type D";
-        //        }
-
-        //        // Tilføj match-resultatet til listen
-        //        matchResults.Add(new MatchResult
-        //        {
-        //            ImportedAddress = importedAddress,
-        //            DatabaseAddress = bestMatch,
-        //            MatchType = bestMatchType
-        //        });
-        //    }
-
-        //    // Trin 2: Efter at have fundet de bedste matches, tjek om de allerede er oprettet som en tenancy
-        //    foreach (var match in matchResults)
-        //    {
-        //        if (match.MatchType == "Type A")
-        //        {
-        //            // Find eksisterende tenancy baseret på det bedste match
-        //            var existingTenancy = tenancies.FirstOrDefault(t =>
-        //                CalculateAddressMatchScore(t.StandardAddress, match.ImportedAddress) == "Type A");
-
-        //            if (existingTenancy != null)
-        //            {
-        //                // Opdater eksisterende tenancy med de nye data fra den importerede adresse
-        //                existingTenancy.TenancyStatus = match.ImportedAddress.TenancyStatus ?? existingTenancy.TenancyStatus;
-        //                existingTenancy.MoveInDate = match.ImportedAddress.MoveInDate ?? existingTenancy.MoveInDate;
-        //                existingTenancy.MoveOutDate = match.ImportedAddress.MoveOutDate ?? existingTenancy.MoveOutDate;
-        //                existingTenancy.Rent = match.ImportedAddress.Rent > 0 ? match.ImportedAddress.Rent : existingTenancy.Rent;
-        //                existingTenancy.SquareMeter = match.ImportedAddress.SquareMeter ?? existingTenancy.SquareMeter;
-        //                existingTenancy.Rooms = match.ImportedAddress.Rooms > 0 ? match.ImportedAddress.Rooms : existingTenancy.Rooms;
-        //                existingTenancy.BathRooms = match.ImportedAddress.BathRooms > 0 ? match.ImportedAddress.BathRooms : existingTenancy.BathRooms;
-        //                existingTenancy.PetsAllowed = match.ImportedAddress.PetsAllowed ?? existingTenancy.PetsAllowed;
-        //                existingTenancy.Tenants = match.ImportedAddress.Tenants ?? existingTenancy.Tenants;
-        //                existingTenancy.Company = match.ImportedAddress.Company ?? existingTenancy.Company;
-        //            }
-        //        }
-        //    }
-
-        //    return matchResults;
-        //}
+//        //    if (importedAddress.Rent > 0)
+//        //        tenancy.Rent = importedAddress.Rent;
+//        //}
 
 
-        //public static string CalculateAddressMatchScore(Address standardAddress, Address importedAddress)
-        //{
-        //    double streetMatchScore = CalculateLevenshteinMatchScore(standardAddress.StreetName, importedAddress.StreetName) * 0.4;
-        //    double zipCodeMatchScore = CalculateLevenshteinMatchScore(standardAddress.ZipCode, importedAddress.ZipCode) * 0.3;
-        //    double cityMatchScore = CalculateLevenshteinMatchScore(standardAddress.City, importedAddress.City) * 0.1;
-        //    double numberMatchScore = CalculateLevenshteinMatchScore(standardAddress.Number, importedAddress.Number) * 0.05;
-        //    double floorMatchScore = CalculateLevenshteinMatchScore(standardAddress.Floor, importedAddress.Floor) * 0.05;
-        //    double countryMatchScore = CalculateLevenshteinMatchScore(standardAddress.Country, importedAddress.Country) * 0.1;
+//        public void CreateNewTenant(string firstName, string lastName, string phoneNumber, string email) 
+//        {
 
-        //    double totalMatchScore = streetMatchScore + zipCodeMatchScore + cityMatchScore + numberMatchScore + floorMatchScore + countryMatchScore;
+//            // Validate essential input fields
+//            if (firstName == null)
+//            {
+//                throw new ArgumentNullException(nameof(firstName), "Firstname cannot be null.");
+//            }
 
-        //    if (totalMatchScore >= 90) return "Type A";
-        //    else if (totalMatchScore >= 75) return "Type B";
-        //    else if (totalMatchScore >= 50) return "Type C";
-        //    else return "Type D";
-        //}
+//            if (lastName == null)
+//            {
+//                throw new ArgumentNullException(nameof(lastName), "Lastname cannot be null.");
+//            }
 
-        //// Method to convert match type to numerical score for sorting
-        //private double GetMatchScoreValue(string matchType)//can be removed if matchType are enums
-        //{
-        //    return matchType switch
-        //    {
-        //        "Type A" => 100,
-        //        "Type B" => 75,
-        //        "Type C" => 50,
-        //        "Type D" => 25,
-        //        _ => 0
-        //    };
-        //}
+//            // Validate essential input fields
+//            if (phoneNumber == null)
+//            {
+//                throw new ArgumentNullException(nameof(phoneNumber), "Phonenumber cannot be null.");
+//            }
 
-        //// Helper method to calculate Levenshtein match score
-        //public static double CalculateLevenshteinMatchScore(string standardValue, string importedValue)
-        //{
-        //    if (string.IsNullOrEmpty(standardValue) || string.IsNullOrEmpty(importedValue))
-        //    {
-        //        return 0.0; // If one of the values is empty, return no match.
-        //    }
+//            if (email == null)
+//            {
+//                throw new ArgumentNullException(nameof(email), "Email cannot be null.");
+//            }
+//            Tenant tenant = new Tenant(
+//                firstName,
+//                lastName,
+//                phoneNumber,
+//                email
+//                );
+//            tenantRepo.Add(tenant);
+//        }
 
-        //    // Calculate the Levenshtein distance between the two values.
-        //    int distance = LevenshteinDistance(standardValue, importedValue);
+//        //public List<MatchResult> CompareImportedAddressesWithDatabase(List<ModifiedExcelAddress> importedAddresses)
+//        //{
+//        //    // Liste til at gemme resultaterne
+//        //    List<MatchResult> matchResults = new List<MatchResult>();
+//        //    List<Tenancy> tenancies = tenancyRepo.GetAllTenancies();
+//        //    List<StandardAddress> databaseAddresses = standardAddressRepo.GetAllStandardAddresses();
 
-        //    // Normalize the Levenshtein distance to a match percentage.
-        //    int maxLength = Math.Max(standardValue.Length, importedValue.Length);
-        //    double matchPercentage = (1 - (double)distance / maxLength) * 100;
+//        //    // Trin 1: Standardiser og match adresser mod database-adresser først
+//        //    foreach (var importedAddress in importedAddresses)
+//        //    {
+//        //        string bestMatchType = "Type D"; // Default til "Type D" hvis intet match findes
+//        //        StandardAddress bestMatch = null;
+//        //        double bestScore = 0;
 
-        //    return matchPercentage;
-        //}
+//        //        // Find det bedste match i database-adresserne
+//        //        foreach (var dbAddress in databaseAddresses)
+//        //        {
+//        //            // Beregn match-scoren mellem database-adressen og den importerede adresse
+//        //            string matchType = CalculateAddressMatchScore(dbAddress, importedAddress);
+//        //            double score = GetMatchScoreValue(matchType);
 
-        //// Levenshtein Distance algorithm
-        //public static int LevenshteinDistance(string source, string target)
-        //{
-        //    int n = source.Length;
-        //    int m = target.Length;
-        //    int[,] d = new int[n + 1, m + 1];
+//        //            // Opdater det bedste match, hvis scoren er højere
+//        //            if (score > bestScore)
+//        //            {
+//        //                bestScore = score;
+//        //                bestMatchType = matchType;
+//        //                bestMatch = dbAddress;
+//        //            }
+//        //        }
 
-        //    // Initialize the matrix
-        //    for (int i = 0; i <= n; d[i, 0] = i++) ;
-        //    for (int j = 0; j <= m; d[0, j] = j++) ;
+//        //        // Hvis der ikke findes nogen match i databasen, tildeles "Type D"
+//        //        if (bestMatch == null)
+//        //        {
+//        //            bestMatchType = "Type D";
+//        //        }
 
-        //    // Fill the matrix with the minimum edit distance calculations
-        //    for (int i = 1; i <= n; i++)
-        //    {
-        //        for (int j = 1; j <= m; j++)
-        //        {
-        //            int cost = (target[j - 1] == source[i - 1]) ? 0 : 1;
-        //            d[i, j] = Math.Min(Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1), d[i - 1, j - 1] + cost);
-        //        }
-        //    }
+//        //        // Tilføj match-resultatet til listen
+//        //        matchResults.Add(new MatchResult
+//        //        {
+//        //            ImportedAddress = importedAddress,
+//        //            DatabaseAddress = bestMatch,
+//        //            MatchType = bestMatchType
+//        //        });
+//        //    }
 
-        //    return d[n, m];
-        //}
+//        //    // Trin 2: Efter at have fundet de bedste matches, tjek om de allerede er oprettet som en tenancy
+//        //    foreach (var match in matchResults)
+//        //    {
+//        //        if (match.MatchType == "Type A")
+//        //        {
+//        //            // Find eksisterende tenancy baseret på det bedste match
+//        //            var existingTenancy = tenancies.FirstOrDefault(t =>
+//        //                CalculateAddressMatchScore(t.StandardAddress, match.ImportedAddress) == "Type A");
 
-    }
-}
+//        //            if (existingTenancy != null)
+//        //            {
+//        //                // Opdater eksisterende tenancy med de nye data fra den importerede adresse
+//        //                existingTenancy.TenancyStatus = match.ImportedAddress.TenancyStatus ?? existingTenancy.TenancyStatus;
+//        //                existingTenancy.MoveInDate = match.ImportedAddress.MoveInDate ?? existingTenancy.MoveInDate;
+//        //                existingTenancy.MoveOutDate = match.ImportedAddress.MoveOutDate ?? existingTenancy.MoveOutDate;
+//        //                existingTenancy.Rent = match.ImportedAddress.Rent > 0 ? match.ImportedAddress.Rent : existingTenancy.Rent;
+//        //                existingTenancy.SquareMeter = match.ImportedAddress.SquareMeter ?? existingTenancy.SquareMeter;
+//        //                existingTenancy.Rooms = match.ImportedAddress.Rooms > 0 ? match.ImportedAddress.Rooms : existingTenancy.Rooms;
+//        //                existingTenancy.BathRooms = match.ImportedAddress.BathRooms > 0 ? match.ImportedAddress.BathRooms : existingTenancy.BathRooms;
+//        //                existingTenancy.PetsAllowed = match.ImportedAddress.PetsAllowed ?? existingTenancy.PetsAllowed;
+//        //                existingTenancy.Tenants = match.ImportedAddress.Tenants ?? existingTenancy.Tenants;
+//        //                existingTenancy.Company = match.ImportedAddress.Company ?? existingTenancy.Company;
+//        //            }
+//        //        }
+//        //    }
+
+//        //    return matchResults;
+//        //}
+
+
+//        //public static string CalculateAddressMatchScore(Address standardAddress, Address importedAddress)
+//        //{
+//        //    double streetMatchScore = CalculateLevenshteinMatchScore(standardAddress.StreetName, importedAddress.StreetName) * 0.4;
+//        //    double zipCodeMatchScore = CalculateLevenshteinMatchScore(standardAddress.ZipCode, importedAddress.ZipCode) * 0.3;
+//        //    double cityMatchScore = CalculateLevenshteinMatchScore(standardAddress.City, importedAddress.City) * 0.1;
+//        //    double numberMatchScore = CalculateLevenshteinMatchScore(standardAddress.Number, importedAddress.Number) * 0.05;
+//        //    double floorMatchScore = CalculateLevenshteinMatchScore(standardAddress.Floor, importedAddress.Floor) * 0.05;
+//        //    double countryMatchScore = CalculateLevenshteinMatchScore(standardAddress.Country, importedAddress.Country) * 0.1;
+
+//        //    double totalMatchScore = streetMatchScore + zipCodeMatchScore + cityMatchScore + numberMatchScore + floorMatchScore + countryMatchScore;
+
+//        //    if (totalMatchScore >= 90) return "Type A";
+//        //    else if (totalMatchScore >= 75) return "Type B";
+//        //    else if (totalMatchScore >= 50) return "Type C";
+//        //    else return "Type D";
+//        //}
+
+//        //// Method to convert match type to numerical score for sorting
+//        //private double GetMatchScoreValue(string matchType)//can be removed if matchType are enums
+//        //{
+//        //    return matchType switch
+//        //    {
+//        //        "Type A" => 100,
+//        //        "Type B" => 75,
+//        //        "Type C" => 50,
+//        //        "Type D" => 25,
+//        //        _ => 0
+//        //    };
+//        //}
+
+//        //// Helper method to calculate Levenshtein match score
+//        //public static double CalculateLevenshteinMatchScore(string standardValue, string importedValue)
+//        //{
+//        //    if (string.IsNullOrEmpty(standardValue) || string.IsNullOrEmpty(importedValue))
+//        //    {
+//        //        return 0.0; // If one of the values is empty, return no match.
+//        //    }
+
+//        //    // Calculate the Levenshtein distance between the two values.
+//        //    int distance = LevenshteinDistance(standardValue, importedValue);
+
+//        //    // Normalize the Levenshtein distance to a match percentage.
+//        //    int maxLength = Math.Max(standardValue.Length, importedValue.Length);
+//        //    double matchPercentage = (1 - (double)distance / maxLength) * 100;
+
+//        //    return matchPercentage;
+//        //}
+
+//        //// Levenshtein Distance algorithm
+//        //public static int LevenshteinDistance(string source, string target)
+//        //{
+//        //    int n = source.Length;
+//        //    int m = target.Length;
+//        //    int[,] d = new int[n + 1, m + 1];
+
+//        //    // Initialize the matrix
+//        //    for (int i = 0; i <= n; d[i, 0] = i++) ;
+//        //    for (int j = 0; j <= m; d[0, j] = j++) ;
+
+//        //    // Fill the matrix with the minimum edit distance calculations
+//        //    for (int i = 1; i <= n; i++)
+//        //    {
+//        //        for (int j = 1; j <= m; j++)
+//        //        {
+//        //            int cost = (target[j - 1] == source[i - 1]) ? 0 : 1;
+//        //            d[i, j] = Math.Min(Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1), d[i - 1, j - 1] + cost);
+//        //        }
+//        //    }
+
+//        //    return d[n, m];
+//        //}
+
+//    }
+//}
