@@ -1,6 +1,7 @@
 ﻿using EksamensProjekt.Model;
 using EksamensProjekt.Model.Repositories;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace EksamensProjekt.Services
 {
@@ -11,12 +12,13 @@ namespace EksamensProjekt.Services
         public IRepo<StandardAddress> standardAddressRepo;
         
         // Constructor or property injection 
-        public TenancyService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo, IRepo<StandardAddress> addressRepo)
+        public TenancyService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo, IRepo<StandardAddress> standardAddressRepo)
         {
             this.tenancyRepo = tenancyRepo;
             this.tenantRepo = tenantRepo;
-            this.standardAddressRepo = addressRepo;
+            this.standardAddressRepo = standardAddressRepo;
         }
+
 
         public void CreateNewTenancy(
            Tenancy.Status tenancyStatus,

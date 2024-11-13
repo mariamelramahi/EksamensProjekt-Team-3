@@ -10,6 +10,7 @@ namespace EksamensProjekt.Tests
         private ObservableCollection<Tenancy> _tenancies;
         private FilterService _filterService;
 
+
         [TestInitialize]
         public void SetupForTest()
         {
@@ -28,6 +29,7 @@ namespace EksamensProjekt.Tests
 
             // Initialize the FilterService with the sample data
             _filterService = new FilterService(_tenancies);
+
         }
 
         [TestMethod]

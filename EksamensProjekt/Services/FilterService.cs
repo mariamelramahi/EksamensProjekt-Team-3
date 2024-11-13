@@ -18,10 +18,8 @@ namespace EksamensProjekt.Services
             _tenancies = tenancies;
             _tenancyCollectionView = CollectionViewSource.GetDefaultView(_tenancies);
         }
-
         // This property is used to expose the CollectionView for binding
         public ICollectionView TenancyCollectionView => _tenancyCollectionView;
-
         // Method to apply the filters and refresh the view
         public void ApplyFilters(string zipCode, string street, string status)
         {
@@ -39,7 +37,9 @@ namespace EksamensProjekt.Services
             {
                 if (tenancy is not Tenancy t) return false;
 
-                // Filter by Zip Code if provided
+                // Filter by Zip Code if provided. If not provided it returns true, meaning the filter will not sort tenancies on zipcode
+                //if zipcode is provided it evaluates which of the tenancies that contains specific zipcode, returning them true.
+                //tenancies not containing zipcode will return false
                 bool matchesZipCode = string.IsNullOrEmpty(zipCode) || t.StandardAddress.ZipCode.Contains(zipCode);
 
                 // Filter by Street if provided
