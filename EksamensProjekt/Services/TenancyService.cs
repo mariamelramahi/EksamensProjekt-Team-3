@@ -42,6 +42,11 @@ namespace EksamensProjekt.Services
             return newTenancy;
         }
 
+        public List<Tenancy> GetAllTenancies()
+        {
+            // Fetch all tenancies from the repository
+            return tenancyRepo.GetAll().ToList();
+        }
 
         public void UpdateTenancyDetails(Tenancy updatedTenancy)
         {
