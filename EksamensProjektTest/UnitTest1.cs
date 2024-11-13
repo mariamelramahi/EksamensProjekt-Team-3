@@ -37,9 +37,9 @@ namespace EksamensProjekt.Tests
             _filterService.ApplyFilters("12345", null, null);
 
             // Assert: Only one tenancy should match the zip code "12345"
-            var results = _filterService.TenancyCollectionView.Cast<Tenancy>().ToList();
+            var results = _filterService.TenancyCollectionView.Cast<Tenancy>().ToList();//Cast<> used to convert the item in iCollectionView to a tenancy object
             Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("12345", results.First().StandardAddress.ZipCode);
+            Assert.AreEqual("12345", results.First().StandardAddress.ZipCode);//Since asserted one tenancy in the list, the first one should match filter
         }
 
         [TestMethod]

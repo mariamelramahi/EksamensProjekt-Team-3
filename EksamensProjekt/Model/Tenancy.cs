@@ -14,9 +14,9 @@
         public List<Tenant> Tenants { get; set; }
         public Address StandardAddress { get; set; }
         public Company Company { get; set; }
-        public string ImportedAddress { get; set; }
-        public string DatabaseAddress { get; set; }
 
+
+        //constructor with parameters for adding new tenancies with full details
         public Tenancy(Status tenancyStatus, DateTime? moveInDate, DateTime? moveOutDate, string squareMeter, int rent, int rooms, int bathRooms, bool petsAllowed, List<Tenant> tenants, Address standardAddress, Company company)
         {
             TenancyStatus = tenancyStatus;
@@ -31,6 +31,7 @@
             StandardAddress = standardAddress;
             Company = company;
         }
+        //empty constructor for UI, so that users can fill details gradually
         public Tenancy() { }
         public enum Status
         {

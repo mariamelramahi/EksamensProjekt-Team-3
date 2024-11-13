@@ -13,6 +13,8 @@ namespace EksamensProjekt.Model
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+
+        //constructor with parameters when creating tenant with full details
         public Tenant(string firstName, string lastName, string phoneNumber, string email) 
         { 
             FirstName = firstName;
@@ -20,6 +22,8 @@ namespace EksamensProjekt.Model
             PhoneNumber = phoneNumber;
             Email = email;
         }
+
+        //constructor for UI filling details gradually 
         public Tenant() { }
     }
 }
