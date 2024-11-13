@@ -15,10 +15,13 @@ namespace EksamensProjekt
     /// Interaction logic for LoginView.xaml
     /// </summary>
     public partial class LoginView : Window
+
     {
+        LoginViewModel lvm = new LoginViewModel(App.Configuration);
         public LoginView()
         {
             InitializeComponent();
+            this.DataContext = lvm;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

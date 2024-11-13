@@ -36,7 +36,7 @@ Background="White"
 Foreground="#FF006DA0"
 Height="32"
 FontFamily="Bahnschrift Light" 
-Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="#FF006DA0">
+Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="#FF006DA0">
             <Button.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="5"/>
@@ -52,7 +52,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
     Foreground="#FF006DA0"
     Height="32"
     FontFamily="Bahnschrift Light" 
-    Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="#FF006DA0">
+    Command="{Binding GoToHistoryCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="#FF006DA0">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="5"/>
@@ -63,144 +63,6 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
         <Image Margin="0,-31,1822,483" Source="/Images/LogoImage.png" Stretch="Uniform"/>
 
         <!--Comboboxes-->
-        <Expander HorizontalAlignment="Left"
-          Height="85"
-          Header="Opgaver"
-          Margin="10,125,0,0"
-          VerticalAlignment="Top"
-          Width="124"
-          FontFamily="Tahoma"
-          ScrollViewer.HorizontalScrollBarVisibility="Visible">
-            <Expander.Template>
-                <ControlTemplate TargetType="{x:Type Expander}">
-                    <Border Background="Transparent"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}">
-                        <StackPanel>
-                            <ToggleButton x:Name="HeaderSite"
-                                  Background="White"
-                                  BorderBrush="{TemplateBinding Background}"
-                                  BorderThickness="{TemplateBinding BorderThickness}"
-                                  IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                                <ContentPresenter ContentSource="Header" />
-                            </ToggleButton>
-                            <Border x:Name="ContentSiteBorder"
-                            Background="White"
-                            Visibility="{Binding IsExpanded, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                                <ContentPresenter x:Name="ContentSite"
-                                          ContentSource="Content" />
-                            </Border>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Expander.Template>
-            <StackPanel>
-                <CheckBox Content="C"
-                  IsChecked="{Binding FilterService.FilterAssignmentTypeC, Mode=TwoWay}"
-                  Command="{Binding ApplyFilterCommand}"
-                  HorizontalAlignment="Left"
-                  Margin="10,10,0,0"
-                  VerticalAlignment="Top" />
-                <CheckBox Content="D"
-                  IsChecked="{Binding FilterService.FilterAssignmentTypeD, Mode=TwoWay}"
-                  Command="{Binding ApplyFilterCommand}"
-                  HorizontalAlignment="Left"
-                  Margin="10,10,0,0"
-                  VerticalAlignment="Top" />
-            </StackPanel>
-        </Expander>
-        <Expander HorizontalAlignment="Left"
-          Height="74"
-          Header="Retur opgaver"
-          Margin="10,218,0,0"
-          VerticalAlignment="Top"
-          Width="124"
-          FontFamily="Bahnshcrift"
-          ScrollViewer.HorizontalScrollBarVisibility="Visible">
-            <Expander.Template>
-                <ControlTemplate TargetType="{x:Type Expander}">
-                    <Border Background="Transparent"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}">
-                        <StackPanel>
-                            <ToggleButton x:Name="HeaderSite"
-                                  Background="Transparent"
-                                  BorderBrush="{TemplateBinding Background}"
-                                  BorderThickness="{TemplateBinding BorderThickness}"
-                                  IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                                <ContentPresenter ContentSource="Header" />
-                            </ToggleButton>
-                            <Border x:Name="ContentSiteBorder"
-                            Background="White"
-                            Visibility="{Binding IsExpanded, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                                <ContentPresenter x:Name="ContentSite"
-                                          ContentSource="Content" />
-                            </Border>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Expander.Template>
-            <StackPanel>
-                <CheckBox Content="Samme dato"
-                  IsChecked="{Binding FilterService.FilterSameDate, Mode=TwoWay}"
-                  Command="{Binding ApplyFilterCommand}"
-                  HorizontalAlignment="Left"
-                  Margin="10,10,0,0"
-                  VerticalAlignment="Top" />
-                <CheckBox Content="På vejen hjem"
-                  IsChecked="{Binding FilterService.FilterOnTheWayHome, Mode=TwoWay}"
-                  Command="{Binding ApplyFilterCommand}"
-                  HorizontalAlignment="Left"
-                  Margin="10,10,0,0"
-                  VerticalAlignment="Top" />
-            </StackPanel>
-        </Expander>
-        <Expander HorizontalAlignment="Left"
-    Height="74"
-    Header="Retur opgaver"
-    Margin="10,341,0,0"
-    VerticalAlignment="Top"
-    Width="124"
-    FontFamily="Bahnshcrift"
-    ScrollViewer.HorizontalScrollBarVisibility="Visible" Grid.RowSpan="2">
-            <Expander.Template>
-                <ControlTemplate TargetType="{x:Type Expander}">
-                    <Border Background="Transparent"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}">
-                        <StackPanel>
-                            <ToggleButton x:Name="HeaderSite"
-                        Background="Transparent"
-                        BorderBrush="{TemplateBinding Background}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                                <ContentPresenter ContentSource="Header" />
-                            </ToggleButton>
-                            <Border x:Name="ContentSiteBorder"
-                        Background="White"
-                        Visibility="{Binding IsExpanded, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                                <ContentPresenter x:Name="ContentSite"
-                            ContentSource="Content" />
-                            </Border>
-                        </StackPanel>
-                    </Border>
-                </ControlTemplate>
-            </Expander.Template>
-            <StackPanel>
-                <CheckBox Content="Samme dato"
-            IsChecked="{Binding FilterService.FilterSameDate, Mode=TwoWay}"
-            Command="{Binding ApplyFilterCommand}"
-            HorizontalAlignment="Left"
-            Margin="10,10,0,0"
-            VerticalAlignment="Top" />
-                <CheckBox Content="På vejen hjem"
-            IsChecked="{Binding FilterService.FilterOnTheWayHome, Mode=TwoWay}"
-            Command="{Binding ApplyFilterCommand}"
-            HorizontalAlignment="Left"
-            Margin="10,10,0,0"
-            VerticalAlignment="Top" />
-            </StackPanel>
-        </Expander>
         <!--Labels-->
         <Label Content="Lejligheder - Oversigt" HorizontalAlignment="Left" Margin="226,36,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Tahoma" Foreground="#FF006DA0"/>
 
@@ -229,13 +91,13 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
         <ListBox x:Name="AddressListBox"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.CanContentScroll="False"
-                 Margin="226,133,48,33" Grid.RowSpan="2" d:ItemsSource="{d:SampleData ItemCount=5}">
+                 Margin="226,133,48,33" Grid.RowSpan="2" d:ItemsSource="{Binding FilteredTenancies}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Expander Header="{Binding Address}" Padding="5" FontSize="16" Margin="5" ExpandDirection="Down">
                         <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                             <Grid Margin="10">
-                                <!-- Define the layout of the Expander using Grid -->
+                                <!-- layout of the Expander -->
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
@@ -259,7 +121,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
                                 <!-- Tenancy Status -->
                                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Lejemåls Status: " FontWeight="Bold"/>
-                                    <ComboBox Width="150" ItemsSource="{Binding DataContext.TenancyStatusList, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    <ComboBox Width="150" ItemsSource="{Binding TenancyStatus, RelativeSource={RelativeSource AncestorType=Window}}"
                                               SelectedItem="{Binding TenancyStatus}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
@@ -278,7 +140,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
                                 <!-- Size -->
                                 <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="M²: " FontWeight="Bold"/>
-                                    <TextBox Width="50" Text="{Binding Size}" Margin="10,0,0,0"/>
+                                    <TextBox Width="50" Text="{Binding SqaureMeter}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
                                 <!-- Rent -->
@@ -302,8 +164,8 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
                                 <!-- Dog Allowed -->
                                 <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Hund tilladt: " FontWeight="Bold"/>
-                                    <ComboBox Width="100" ItemsSource="{Binding DataContext.DogAllowedList, RelativeSource={RelativeSource AncestorType=Window}}"
-                                              SelectedItem="{Binding DogAllowed}" Margin="10,0,0,0"/>
+                                    <ComboBox Width="100" ItemsSource="{Binding PetsAllowed, RelativeSource={RelativeSource AncestorType=Window}}"
+                                              SelectedItem="{Binding PetsAllowed}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
                                 <!-- Company -->
@@ -315,7 +177,7 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
                                 <!-- Tenant -->
                                 <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Lejer: " FontWeight="Bold"/>
-                                    <ComboBox Width="150" ItemsSource="{Binding DataContext.TenantList, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    <ComboBox Width="150" ItemsSource="{Binding tentants, RelativeSource={RelativeSource AncestorType=Window}}"
                                               SelectedItem="{Binding Tenant}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
@@ -327,21 +189,21 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
 
                                 <!-- Action Buttons -->
                                 <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                                    <Button Content="Gem Ændringer" Click="SaveButton_Click" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100">
+                                    <Button Content="Gem Ændringer" Command="{Binding UpdateTenancyCommand}" CommandParameter="{Binding}" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100">
                                         <Button.Resources>
                                             <Style TargetType="{x:Type Border}">
                                                 <Setter Property="CornerRadius" Value="5"/>
                                             </Style>
                                         </Button.Resources>
                                     </Button>
-                                    <Button Content="Slet Lejer" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100">
+                                    <Button Content="Slet Lejer" Command="{Binding DeleteTenantCommand}" CommandParameter="{Binding}" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100">
                                         <Button.Resources>
                                             <Style TargetType="{x:Type Border}">
                                                 <Setter Property="CornerRadius" Value="5"/>
                                             </Style>
                                         </Button.Resources>
                                     </Button>
-                                    <Button x:Name="NewTenant" Content="Tilføj Lejer" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100" Click="NewTenant_Click">
+                                    <Button x:Name="NewTenant" Content="Tilføj Lejer" Command="{Binding AddTenantCommand}" CommandParameter="{Binding}" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100" Click="NewTenant_Click">
                                         <Button.Resources>
                                             <Style TargetType="{x:Type Border}">
                                                 <Setter Property="CornerRadius" Value="5"/>
@@ -355,7 +217,19 @@ Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" Bord
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <Grid HorizontalAlignment="Left" Margin="1600,89,0,0" VerticalAlignment="Top">
 
+            <!-- TextBox for user input -->
+            <TextBox x:Name="SearchBoxx" TextWrapping="Wrap" VerticalAlignment="Top" Height="27" FontSize="18" FontFamily="Tahoma" BorderBrush="{x:Null}" Foreground="Black" SelectionBrush="{x:Null}" Margin="-1592,79,1419,0"/>
+
+            <!-- Placeholder TextBlock -->
+            <TextBlock
+                VerticalAlignment="Top"
+                Margin="-1589,85,1422,0"
+                Foreground="#FFA4A4A4"
+                IsHitTestVisible="False"
+                Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=SearchBox}" Text="Postnummer"/>
+        </Grid>
 
     </Grid>
 </Window>
