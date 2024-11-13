@@ -20,11 +20,11 @@ namespace EksamensProjekt.Services
 
         public Tenancy CreateNewTenancy()
         {
-            // Create a new tenancy with default or empty values
+            // Create a new Tenancy object with default values
             Tenancy newTenancy = new Tenancy
             {
                 TenancyStatus = Tenancy.Status.Vacant, // Default status
-                MoveInDate = null, // Default to null if not known
+                MoveInDate = null, // Defaults to null if not set
                 MoveOutDate = null,
                 SquareMeter = string.Empty,
                 Rent = 0,
@@ -36,10 +36,16 @@ namespace EksamensProjekt.Services
                 Company = new Company() // Default empty company
             };
 
-            // Add the newly created tenancy to the repository
-            tenancyRepo.Add(newTenancy);
+            return newTenancy; // Return the new object without saving yet
+        }
 
-            return newTenancy;
+        // Method to save the tenancy after it's filled out in the ViewModel
+        public void SaveTenancy(Tenancy tenancy)
+        {
+            if (tenancy != null)
+            {
+                tenancyRepo.Add(tenancy);
+            }
         }
 
         public List<Tenancy> GetAllTenancies()
@@ -113,6 +119,30 @@ namespace EksamensProjekt.Services
             tenancyRepo.Delete(tenancyToDelete);
             Console.WriteLine($"Tenancy with ID {tenancyID} has been deleted.");
         }
+        public Tenant CreateNewTenant()
+        {
+            // Create a new Tenant object with default values (not saved yet)
+            Tenant tenant = new Tenant
+            {
+                FirstName = string.Empty,
+                LastName = string.Empty,
+                PhoneNumber = string.Empty,
+                Email = string.Empty
+            };
+
+            // Return the new Tenant object without saving it yet
+            return tenant;
+        }
+
+
+        // Method to save the tenant after editing in the ViewModel
+        public void SaveTenant(Tenant tenant)
+        {
+            if (tenant != null)
+            {
+                tenantRepo.Add(tenant);
+            }
+        }
 
         //private void UpdateTenancyDetailsFromExcel(Tenancy tenancy, ModifiedExcelAddress importedAddress)
         //{
@@ -147,38 +177,7 @@ namespace EksamensProjekt.Services
         //}
 
 
-        public void CreateNewTenant(string firstName, string lastName, string phoneNumber, string email)
-        {
 
-            // Validate essential input fields
-            if (firstName == null)
-            {
-                throw new ArgumentNullException(nameof(firstName), "Firstname cannot be null.");
-            }
-
-            if (lastName == null)
-            {
-                throw new ArgumentNullException(nameof(lastName), "Lastname cannot be null.");
-            }
-
-            // Validate essential input fields
-            if (phoneNumber == null)
-            {
-                throw new ArgumentNullException(nameof(phoneNumber), "Phonenumber cannot be null.");
-            }
-
-            if (email == null)
-            {
-                throw new ArgumentNullException(nameof(email), "Email cannot be null.");
-            }
-            Tenant tenant = new Tenant(
-                firstName,
-                lastName,
-                phoneNumber,
-                email
-                );
-            tenantRepo.Add(tenant);
-        }
 
         //public List<MatchResult> CompareImportedAddressesWithDatabase(List<ModifiedExcelAddress> importedAddresses)
         //{
