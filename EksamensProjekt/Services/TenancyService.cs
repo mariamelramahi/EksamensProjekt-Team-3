@@ -18,46 +18,30 @@ namespace EksamensProjekt.Services
         }
 
 
-        public void CreateNewTenancy(
-           Tenancy.Status tenancyStatus,
-           DateTime? moveInDate,
-           DateTime? moveOutDate,
-           string squareMeter,
-           int rent,
-           int rooms,
-           int bathRooms,
-           bool petsAllowed,
-           List<Tenant> tenants,
-           Address standardAddress,
-           Company company)
+        public Tenancy CreateNewTenancy()
         {
-            // Validate essential input fields
-            if (standardAddress == null)
+            // Create a new tenancy with default or empty values
+            Tenancy newTenancy = new Tenancy
             {
-                throw new ArgumentNullException(nameof(standardAddress), "Address cannot be null.");
-            }
+                TenancyStatus = Tenancy.Status.Vacant, // Default status
+                MoveInDate = null, // Default to null if not known
+                MoveOutDate = null,
+                SquareMeter = string.Empty,
+                Rent = 0,
+                Rooms = 0,
+                BathRooms = 0,
+                PetsAllowed = false,
+                Tenants = new List<Tenant>(),
+                StandardAddress = new Address(), // Default empty address
+                Company = new Company() // Default empty company
+            };
 
-            if (company == null)
-            {
-                throw new ArgumentNullException(nameof(company), "Company cannot be null.");
-            }
+            // Add the newly created tenancy to the repository
+            tenancyRepo.Add(newTenancy);
 
-            // Use the constructor to create a new Tenancy object
-            Tenancy tenancy = new Tenancy(
-                tenancyStatus,
-                moveInDate,
-                moveOutDate,
-                squareMeter,
-                rent,
-                rooms,
-                bathRooms,  
-                petsAllowed,
-                tenants ?? new List<Tenant>(), //made nullable field in case of no tenants registered
-                standardAddress,
-                company);
-
-            tenancyRepo.Add(tenancy);
+            return newTenancy;
         }
+
 
         public void UpdateTenancyDetails(Tenancy updatedTenancy)
         {
