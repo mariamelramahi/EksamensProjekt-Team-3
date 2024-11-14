@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
 
+
 namespace EksamensProjekt.Models.Repositories;
 
 public class UserRepo : IRepo<User>
@@ -71,6 +72,11 @@ public class UserRepo : IRepo<User>
     }
 
     public void Update(User entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    void IRepo<User>.Delete(User entity)
     {
         throw new NotImplementedException();
     }

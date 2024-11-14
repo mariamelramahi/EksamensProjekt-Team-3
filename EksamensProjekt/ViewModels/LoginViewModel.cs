@@ -17,7 +17,7 @@ public class LoginViewModel : ViewModelBase
 
         // Initialize commands
         LoginCommand = new RelayCommand(ExecuteLogin, CanExecuteLogin);
-        LogoutCommand = new RelayCommand(ExecuteLogout); // OBS: MOVE THIS TO THE OTHER VIEWMODELS
+        //LogoutCommand = new RelayCommand(ExecuteLogout); // OBS: MOVE THIS TO THE OTHER VIEWMODELS
     }
 
     // Fields
@@ -93,9 +93,9 @@ public class LoginViewModel : ViewModelBase
         return !string.IsNullOrEmpty(UsernameInput) && !string.IsNullOrEmpty(PasswordInput);
     }
 
-    private void ExecuteLogout()
-    {
-        // Pass a factory method that creates a new instance of LoginView with dependencies
-        _navigationService.NavigateTo(() => new LoginView(new LoginViewModel(_authService, _navigationService)));
-    }
+    //private void ExecuteLogout()
+    //{
+    //    // Pass a factory method that creates a new instance of LoginView with dependencies
+    //    _navigationService.NavigateTo(() => new LoginView(new LoginViewModel(_authService, _navigationService)));
+    //}
 }
