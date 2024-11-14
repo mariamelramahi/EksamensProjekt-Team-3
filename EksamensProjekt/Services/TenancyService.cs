@@ -18,36 +18,46 @@ namespace EksamensProjekt.Services
         }
 
 
-        public Tenancy CreateNewTenancy()
-        {
-            // Create a new Tenancy object with default values
-            Tenancy newTenancy = new Tenancy
+        public void CreateNewTenancy(
+               Tenancy.Status tenancyStatus,
+               DateTime? moveInDate,
+               DateTime? moveOutDate,
+               string squareMeter,
+               int rent,
+               int rooms,
+               int bathRooms,
+               bool petsAllowed,
+               List<Tenant> tenants,
+               Address standardAddress,
+               Company company)
+                    {
+            // Validate essential input fields
+            if (standardAddress == null)
             {
-                TenancyStatus = Tenancy.Status.Vacant, // Default status
-                MoveInDate = null, // Defaults to null if not set
-                MoveOutDate = null,
-                SquareMeter = string.Empty,
-                Rent = 0,
-                Rooms = 0,
-                BathRooms = 0,
-                PetsAllowed = false,
-                Tenants = new List<Tenant>(),
-                StandardAddress = new Address(), // Default empty address
-                Company = new Company() // Default empty company
-            };
-
-            return newTenancy; // Return the new object without saving yet
-        }
-
-        // Method to save the tenancy after it's filled out in the ViewModel
-        public void SaveTenancy(Tenancy tenancy)
-        {
-            if (tenancy != null)
-            {
-                tenancyRepo.Add(tenancy);
+                throw new ArgumentNullException(nameof(standardAddress), "Address cannot be null.");
             }
-        }
 
+            if (company == null)
+            {
+                throw new ArgumentNullException(nameof(company), "Company cannot be null.");
+            }
+
+            // Use the constructor to create a new Tenancy object
+            Tenancy tenancy = new Tenancy(
+                tenancyStatus,
+                moveInDate,
+                moveOutDate,
+                squareMeter,
+                rent,
+                rooms,
+                bathRooms,
+                petsAllowed,
+                tenants ?? new List<Tenant>(), //made nullable field in case of no tenants registered
+                standardAddress,
+                company);
+
+            tenancyRepo.Add(tenancy);
+        }
         public List<Tenancy> GetAllTenancies()
         {
             // Fetch all tenancies from the repository
