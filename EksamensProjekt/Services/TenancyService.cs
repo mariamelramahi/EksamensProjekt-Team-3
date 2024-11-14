@@ -29,7 +29,7 @@ namespace EksamensProjekt.Services
                bool petsAllowed,
                List<Tenant> tenants,
                Address standardAddress,
-               Company company)
+               Company? company)
                     {
             // Validate essential input fields
             if (standardAddress == null)
@@ -37,10 +37,7 @@ namespace EksamensProjekt.Services
                 throw new ArgumentNullException(nameof(standardAddress), "Address cannot be null.");
             }
 
-            if (company == null)
-            {
-                throw new ArgumentNullException(nameof(company), "Company cannot be null.");
-            }
+            
 
             // Use the constructor to create a new Tenancy object
             Tenancy tenancy = new Tenancy(
