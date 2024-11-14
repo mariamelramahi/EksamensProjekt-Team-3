@@ -153,7 +153,7 @@ namespace EksamensProjekt.Services
         {
             if (tenant != null)
             {
-                tenantRepo.Add(tenant);
+                tenantRepo.Create(tenant);
             }
         }
 
