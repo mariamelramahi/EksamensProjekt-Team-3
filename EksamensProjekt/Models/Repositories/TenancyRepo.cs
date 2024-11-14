@@ -20,6 +20,11 @@ namespace EksamensProjekt.Models.Repositories
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
+        public void Delete(int entity)
+        {
+            throw new NotImplementedException();
+        }
+
         // Method to retrieve a Tenancy object by its ID using a stored procedure
         public Tenancy GetByID(int tenancyID)
         {
@@ -70,6 +75,21 @@ namespace EksamensProjekt.Models.Repositories
 
             // Returns the Tenancy object, which is either null or contains the data from the database
             return tenancy;
+        }
+
+        void IRepo<Tenancy>.Create(Tenancy entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Tenancy> IRepo<Tenancy>.ReadAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRepo<Tenancy>.Update(Tenancy entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace EksamensProjekt.Models.Repositories
 {
     public class StandardAddressRepo : IRepo<StandardAddress>
     {
-        private readonly string_ _connectionString;
+        private readonly string _connectionString;
 
         //Constructor that initialzies the connection string
         public StandardAddressRepo(string connectionString)
@@ -16,8 +16,13 @@ namespace EksamensProjekt.Models.Repositories
             _connectionString = connectionString;
         }
 
+        public void Delete(int entity)
+        {
+            throw new NotImplementedException();
+        }
+
         //Methhod to retrieve a StandardAddress object by its ID using a stored procedure
-        public StandardAddress Get(int id)
+        public StandardAddress GetByID(int id)
         {
             // Intializes a new StandardAddressContext object with the connection string
             StandardAddress address = null;
@@ -58,6 +63,26 @@ namespace EksamensProjekt.Models.Repositories
                 }
             }
             return address;
+        }
+
+        void IRepo<StandardAddress>.Create(StandardAddress entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        StandardAddress IRepo<StandardAddress>.GetByID(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<StandardAddress> IRepo<StandardAddress>.ReadAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRepo<StandardAddress>.Update(StandardAddress entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }
