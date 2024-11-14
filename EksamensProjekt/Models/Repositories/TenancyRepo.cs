@@ -60,13 +60,13 @@ namespace EksamensProjekt.Models.Repositories
                             TenancyStatus = (TenancyStatus)reader.GetInt32(reader.GetOrdinal("TenancyStatus")),
                             MoveInDate = reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
                             MoveOutDate = reader.GetDateTime(reader.GetOrdinal("MoveOutDate")),
-                            SqaureMeter = reader.GetString(reader.GetOrdinal("SqaureMeter")),
+                            SquareMeter = reader.GetString(reader.GetOrdinal("SqaureMeter")),
                             Rent = reader.GetInt32(reader.GetOrdinal("Rent")),
                             Rooms = reader.GetInt32(reader.GetOrdinal("Rooms")),
                             Bathrooms = reader.GetInt32(reader.GetOrdinal("Bathrooms")),
                             PetsAllowed = reader.GetBoolean(reader.GetOrdinal("PetsAllowed")),
-                            tentants = new List<Tentant>(),
-                            adress = new StandardAdress(),
+                            tenants = new List<Tenant>(),
+                            address = new StandardAddress(),
                             Company = new Company()
                         };
                     }

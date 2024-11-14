@@ -19,52 +19,58 @@ namespace EksamensProjekt.Services
 
 
         public void CreateNewTenancy(
-               TenancyStatus tenancyStatus,
-               DateTime? moveInDate,
-               DateTime? moveOutDate,
-               string squareMeter,
-               int rent,
-               int rooms,
-               int bathRooms,
-               bool petsAllowed,
-               List<Tenant> tenants,
-               Address standardAddress,
-               Company? company)
-                    {
+                TenancyStatus tenancyStatus,
+                DateTime? moveInDate,
+                DateTime? moveOutDate,
+                string squareMeter,
+                int rent,
+                int rooms,
+                int bathRooms,
+                bool petsAllowed,
+                List<Tenant> tenants,
+                StandardAddress standardAddress,
+                Company? company)
+        {
             // Validate essential input fields
             if (standardAddress == null)
             {
                 throw new ArgumentNullException(nameof(standardAddress), "Address cannot be null.");
             }
 
-            
+            if (company == null)
+            {
+                throw new ArgumentNullException(nameof(company), "Company cannot be null.");
+            }
 
-            // Use the constructor to create a new Tenancy object
-            Tenancy tenancy = new Tenancy(
-                tenancyStatus,
-                moveInDate,
-                moveOutDate,
-                squareMeter,
-                rent,
-                rooms,
-                bathRooms,
-                petsAllowed,
-                tenants ?? new List<Tenant>(), //made nullable field in case of no tenants registered
-                standardAddress,
-                company);
+            // Use the empty constructor to create a new Tenancy object
+            Tenancy newTenancy = new Tenancy
+            {
+                TenancyStatus = tenancyStatus,
+                MoveInDate = moveInDate ?? DateTime.Now,
+                MoveOutDate = moveOutDate ?? DateTime.Now.AddYears(1),
+                SquareMeter = squareMeter,
+                Rent = rent,
+                Rooms = rooms,
+                Bathrooms = bathRooms,
+                PetsAllowed = petsAllowed,
+                tenants = tenants ?? new List<Tenant>(),
+                address = standardAddress,
+                Company = company
+            };
 
-            tenancyRepo.Add(tenancy);
+            // Save the new tenancy using the repository
+            tenancyRepo.Create(newTenancy);
         }
         public List<Tenancy> GetAllTenancies()
         {
             // Fetch all tenancies from the repository
-            return tenancyRepo.GetAll().ToList();
+            return tenancyRepo.ReadAll().ToList();
         }
 
         public void UpdateTenancyDetails(Tenancy updatedTenancy)
         {
             // Fetch the existing tenancy from the repository using its ID
-            Tenancy? existingTenancy = tenancyRepo.GetById(updatedTenancy.TenancyID);
+            Tenancy? existingTenancy = tenancyRepo.GetByID(updatedTenancy.TenancyID);
 
             // Check if the tenancy exists
             if (existingTenancy == null)
@@ -92,17 +98,17 @@ namespace EksamensProjekt.Services
             if (updatedTenancy.Rooms.HasValue)
                 existingTenancy.Rooms = updatedTenancy.Rooms;
 
-            if (updatedTenancy.BathRooms.HasValue)
-                existingTenancy.BathRooms = updatedTenancy.BathRooms;
+            if (updatedTenancy.Bathrooms.HasValue)
+                existingTenancy.Bathrooms = updatedTenancy.Bathrooms;
 
             if (updatedTenancy.PetsAllowed.HasValue)
                 existingTenancy.PetsAllowed = updatedTenancy.PetsAllowed;
 
-            if (updatedTenancy.Tenants != null && updatedTenancy.Tenants.Count > 0)
-                existingTenancy.Tenants = updatedTenancy.Tenants;
+            if (updatedTenancy.tenants != null && updatedTenancy.tenants.Count > 0)
+                existingTenancy.tenants = updatedTenancy.tenants;
 
-            if (updatedTenancy.StandardAddress != null)
-                existingTenancy.StandardAddress = updatedTenancy.StandardAddress;
+            if (updatedTenancy.address != null)
+                existingTenancy.address = updatedTenancy.address;
 
             if (updatedTenancy.Company != null)
                 existingTenancy.Company = updatedTenancy.Company;
@@ -113,7 +119,7 @@ namespace EksamensProjekt.Services
         public void DeleteTenancy(int tenancyID)
         {
             // Fetch the existing tenancy from the repository using its ID
-            Tenancy? tenancyToDelete = tenancyRepo.GetById(tenancyID);
+            Tenancy? tenancyToDelete = tenancyRepo.GetByID(tenancyID);
 
             // Check if the tenancy exists
             if (tenancyToDelete == null)
@@ -147,7 +153,7 @@ namespace EksamensProjekt.Services
         {
             if (tenant != null)
             {
-                tenantRepo.Add(tenant);
+                tenantRepo.Create(tenant);
             }
         }
 

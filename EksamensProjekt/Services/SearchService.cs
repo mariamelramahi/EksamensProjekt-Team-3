@@ -1,39 +1,50 @@
-﻿using EksamensProjekt.Model;
-using EksamensProjekt.Models;
+﻿using EksamensProjekt.Models;
+using EksamensProjekt.Models.Repositories;
+
 namespace EksamensProjekt.Services
 {
     public class SearchService
     {
-        //public IRepo<Tenancy> tenancyRepo;
-        //public IRepo<Tenant> tenantRepo;
+        private readonly IRepo<Tenancy> _tenancyRepo;
+        private readonly IRepo<Tenant> _tenantRepo;
 
-        //public void SearchTenancy() { }
-        //public void SearchTenant() { }
+        // Constructor with repository injection
+        public SearchService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo)
+        {
+            _tenancyRepo = tenancyRepo;
+            _tenantRepo = tenantRepo;
+        }
 
+        // Search for tenancies by zip code and/or street
+        public List<Tenancy> SearchTenancies(string zipCode, string street)
+        {
+            // Fetch all tenancies from the repository
+            var allTenancies = _tenancyRepo.ReadAll().ToList();
 
-        
-        
-        
-        // OBS laves om til search
+            // Filter tenancies based on the provided zipCode and street
+            var filteredTenancies = allTenancies.Where(t =>
+                (string.IsNullOrEmpty(zipCode) || t.address?.ZipCode.Contains(zipCode) == true) &&
+                (string.IsNullOrEmpty(street) || t.address?.Street.Contains(street) == true)
+            ).ToList();
 
+            return filteredTenancies;
+        }
+        // Search for tenants by FirstName, LastName, PhoneNumber, or Email
+        public List<Tenant> SearchTenants(string firstName, string lastName, string phoneNumber, string email)
+        {
+            // Fetch all tenants from the repository
+            var allTenants = _tenantRepo.ReadAll().ToList();
 
-        //public bool ApplyTenancyFilters(Tenancy tenancy, string zipCode, string street, string status)
-        //{
-        //    if (tenancy == null) return false;
+            // Filter tenants based on the provided firstName, lastName, phoneNumber, and email. string.IsNullOrEmpty ensures that the filter will not
+            //be enabled if not applied
+            var filteredTenants = allTenants.Where(t =>
+                (string.IsNullOrEmpty(firstName) || t.FirstName.Contains(firstName, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(lastName) || t.LastName.Contains(lastName, StringComparison.OrdinalIgnoreCase)) &&
+                (string.IsNullOrEmpty(phoneNumber) || t.PhoneNumber.Contains(phoneNumber)) &&
+                (string.IsNullOrEmpty(email) || t.Email.Contains(email, StringComparison.OrdinalIgnoreCase))
+            ).ToList();
 
-        //    // Filter by Zip Code if provided
-        //    bool matchesZipCode = string.IsNullOrEmpty(zipCode) || tenancy.Address?.ZipCode?.Contains(zipCode) == true;
-
-        //    // Filter by Street if provided
-        //    bool matchesStreet = string.IsNullOrEmpty(street) || tenancy.Address?.Street?.Contains(street) == true;
-
-        //    // Filter by Status if provided
-        //    bool matchesStatus = string.IsNullOrEmpty(status) || tenancy.TenancyStatus.ToString().Equals(status, StringComparison.OrdinalIgnoreCase);
-
-        //    // Return true if all conditions match
-        //    return matchesZipCode && matchesStreet && matchesStatus;
-        //}
-
-
+            return filteredTenants;
+        }
     }
 }

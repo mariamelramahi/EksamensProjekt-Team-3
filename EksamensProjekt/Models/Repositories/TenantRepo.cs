@@ -88,5 +88,9 @@ namespace EksamensProjekt.Models.Repositories
         {
             throw new NotImplementedException();
         }
+        public void Delete(Tenant entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
