@@ -75,6 +75,11 @@ namespace EksamensProjekt.Models.Repositories
             throw new NotImplementedException();
         }
 
+        StandardAddress IRepo<StandardAddress>.GetByUsername(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
         IEnumerable<StandardAddress> IRepo<StandardAddress>.ReadAll()
         {
             throw new NotImplementedException();

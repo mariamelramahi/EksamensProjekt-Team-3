@@ -1,37 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EksamensProjekt.ViewModels;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using EksamensProjekt.Utilities;
 
-namespace EksamensProjekt
+namespace EksamensProjekt;
+
+/// <summary>
+/// Interaction logic for TenancyView.xaml
+/// </summary>
+public partial class TenancyView : Window
 {
-    /// <summary>
-    /// Interaction logic for TenancyView.xaml
-    /// </summary>
-    public partial class TenancyView : Window
+    public TenancyView(TenancyViewModel tvm)
     {
-
-        TenancyViewModel tvm = new TenancyViewModel(App.Configuration);
-        public TenancyView()
-        {
-            InitializeComponent();
-            this.DataContext = tvm;
-        }
-
-
+        InitializeComponent();
+        this.DataContext = tvm;
     }
-    
-
-
 }
+//AuthLogin authLoginService = new AuthLogin(userRepo);
+//TenancyService tenancyService = new TenancyService(tenancyRepo, tenantRepo, standardAddressRepo);
+//SearchService searchService = new SearchService();
+//FilterService filterService = new FilterService();
+//HistoryService historyService = new HistoryService();
+//INavigationService navigationService = new NavigationService();

@@ -1,4 +1,6 @@
-﻿using EksamensProjekt.Models; 
+using EksamensProjekt.Models;
+using EksamensProjekt.Models.Repositories;
+
 
 namespace EksamensProjekt.Services;
 
@@ -15,7 +17,7 @@ public class AuthLogin
 
     public bool ValidateLogin(string usernameInput, string passwordInput)
     {
-        User user = _userRepo.GetUserByUsername(usernameInput); // Get user
+        User user = _userRepo.GetByUsername(usernameInput); // Get user
         return 
             user != null && // Check if user exist
             user.PasswordHash == passwordInput; // Check password

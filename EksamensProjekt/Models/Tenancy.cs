@@ -16,6 +16,7 @@ namespace EksamensProjekt.Models
     Inactive,
     Pending
     }
+
    public class Tenancy
     {
         public int TenancyID { get; set; }

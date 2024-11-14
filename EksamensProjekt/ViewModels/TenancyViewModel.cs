@@ -35,14 +35,14 @@ namespace EksamensProjekt.ViewModels
 
             // Set up CollectionView for displaying items
             _tenancyCollectionView = CollectionViewSource.GetDefaultView(Tenancies);
-            _tenancyCollectionView.Filter = item => _filterService.ApplyTenancyFilters(item as Tenancy);
-                
+            _tenancyCollectionView.Filter = item => _filterService.ApplyTenancyFilter(item as Tenancy);
+
             // Initialize commands
-            GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);
-            CreateTenancyCommand = new RelayCommand(ExecuteCreateTenancy);
-            UpdateTenancyCommand = new RelayCommand(ExecuteUpdateTenancy, CanExecuteModifyTenancy);
-            DeleteTenancyCommand = new RelayCommand(ExecuteDeleteTenancy, CanExecuteModifyTenancy);
-            UploadFileCommand = new RelayCommand(ExecuteUploadFile);
+            //GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);
+            //CreateTenancyCommand = new RelayCommand(ExecuteCreateTenancy);
+            //UpdateTenancyCommand = new RelayCommand(ExecuteUpdateTenancy, CanExecuteModifyTenancy);
+            //DeleteTenancyCommand = new RelayCommand(ExecuteDeleteTenancy, CanExecuteModifyTenancy);
+            //UploadFileCommand = new RelayCommand(ExecuteUploadFile);
         }
 
 
@@ -136,55 +136,57 @@ namespace EksamensProjekt.ViewModels
             }
         }
 
-        private void ExecuteGoToHistory()
-        {
-            _navigationService.NavigateTo<HistoryView>();
-        }
+        //private void ExecuteGoToHistory()
+        //{
+        //    _navigationService.NavigateTo<HistoryView>();
+        //}
 
-        private void ExecuteCreateTenancy()
-        {
-            Tenancy newTenancy = _tenancyService.CreateNewTenancy();
-            if (newTenancy != null)
-            {
-                Tenancies.Add(newTenancy);
-            }
-        }
+        //private void ExecuteCreateTenancy()
+        //{
+        //    Tenancy newTenancy = _tenancyService.CreateNewTenancy();
+        //    if (newTenancy != null)
+        //    {
+        //        Tenancies.Add(newTenancy);
+        //    }
+        //}
 
-        private void ExecuteUpdateTenancy()
-        {
-            if (SelectedTenancy != null)
-            {
-                _tenancyService.UpdateTenancy(SelectedTenancy);
-                LoadTenancies(); // Refresh the list to reflect changes
-            }
-        }
+        //private void ExecuteUpdateTenancy()
+        //{
+        //    if (SelectedTenancy != null)
+        //    {
+        //        _tenancyService.UpdateTenancy(SelectedTenancy);
+        //        LoadTenancies(); // Refresh the list to reflect changes
+        //    }
+        //}
 
-        private void ExecuteDeleteTenancy()
-        {
-            if (SelectedTenancy != null)
-            {
-                _tenancyService.DeleteTenancy(SelectedTenancy);
-                Tenancies.Remove(SelectedTenancy);
-            }
-        }
+        //private void ExecuteDeleteTenancy()
+        //{
+        //    if (SelectedTenancy != null)
+        //    {
+        //        _tenancyService.DeleteTenancy(SelectedTenancy);
+        //        Tenancies.Remove(SelectedTenancy);
+        //    }
+        //}
 
         private bool CanExecuteModifyTenancy()
         {
             return SelectedTenancy != null;
         }
 
-        private void ExecuteUploadFile(object parameter)
-        {
-            if (parameter is string filePath)
-            {
-                _tenancyService.UploadFile(filePath);
-                LoadTenancies(); // Reload the tenancies after import
-            }
-        }
+        //private void ExecuteUploadFile(object parameter)
+        //{
+        //    if (parameter is string filePath)
+        //    {
+        //        _tenancyService.UploadFile(filePath);
+        //        LoadTenancies(); // Reload the tenancies after import
+        //    }
+        //}
 
         private void ExecuteApplyFilters()
         {
             _tenancyCollectionView.Refresh(); // Refresh the view to apply updated filters
-        }
+        }    
+
+
     }
 }

@@ -1,7 +1,7 @@
-﻿using EksamensProjekt.Models;
+using EksamensProjekt.Models;
 using EksamensProjekt.Models.Repositories;
 
-namespace EksamensProjekt.Services
+public class FilterService
 {
     public class FilterService
     {
