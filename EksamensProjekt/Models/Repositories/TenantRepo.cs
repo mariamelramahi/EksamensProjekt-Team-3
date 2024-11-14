@@ -17,6 +17,11 @@ namespace EksamensProjekt.Models.Repositories
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
+        public void Delete(int entity)
+        {
+            throw new NotImplementedException();
+        }
+
         // Method to retrieve a Tenant object by its ID using a stored procedure
         public Tenant GetByID(int tenantID)
         {
@@ -60,6 +65,21 @@ namespace EksamensProjekt.Models.Repositories
 
             // Returns the Tenant object
             return tenant;
+        }
+
+        void IRepo<Tenant>.Create(Tenant entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Tenant> IRepo<Tenant>.ReadAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRepo<Tenant>.Update(Tenant entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

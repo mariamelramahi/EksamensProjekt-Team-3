@@ -17,6 +17,11 @@ namespace EksamensProjekt.Models.Repositories
             _connectionString = connectionString;
         }
 
+        public void Delete(int entity)
+        {
+            throw new NotImplementedException();
+        }
+
         // Method to retrieve an Address object by its ID using a stored procedure
         public Address GetByID(int address)
         {
@@ -61,6 +66,21 @@ namespace EksamensProjekt.Models.Repositories
 
             return address;
 
+        }
+
+        void IRepo<Address>.Create(Address entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Address> IRepo<Address>.ReadAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IRepo<Address>.Update(Address entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }
