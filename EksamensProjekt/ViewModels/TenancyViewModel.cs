@@ -55,6 +55,20 @@ namespace EksamensProjekt.ViewModels
 
 
         // Properties
+        private Tenancy _selectedTenancy;
+        public Tenancy SelectedTenancy
+        {
+            get => _selectedTenancy;
+            set
+            {
+                _selectedTenancy = value;
+                OnPropertyChanged();
+                // Raise CanExecuteChanged on commands depending on SelectedTenancy
+                UpdateTenancyCommand.RaiseCanExecuteChanged();
+                DeleteTenancyCommand.RaiseCanExecuteChanged();
+            }
+        }
+
         private string _searchInput;
         public string SearchInput
         {
