@@ -116,19 +116,19 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
             </Expander.Template>
             <StackPanel Height="85">
                 <CheckBox Content="Aktiv"
-                   IsChecked="{Binding FilterService.FilterAssignmentTypeC, Mode=TwoWay}"
+                   IsChecked="{Binding IsFilterAEnabled, Mode=TwoWay}"
                    Command="{Binding ApplyFilterCommand}"
                    HorizontalAlignment="Left"
                    Margin="10,10,0,0"
                    VerticalAlignment="Top" />
                 <CheckBox Content="Inaktiv"
-                   IsChecked="{Binding FilterService.FilterAssignmentTypeD, Mode=TwoWay}"
+                   IsChecked="{Binding IsFilterBEnabled, Mode=TwoWay}"
                    Command="{Binding ApplyFilterCommand}"
                    HorizontalAlignment="Left"
                    Margin="10,10,0,0"
                    VerticalAlignment="Top" />
                 <CheckBox Content="Afventer"
-   IsChecked="{Binding FilterService.FilterAssignmentTypeD, Mode=TwoWay}"
+   IsChecked="{Binding IsFilterCEnabled, Mode=TwoWay}"
    Command="{Binding ApplyFilterCommand}"
    HorizontalAlignment="Left"
    Margin="10,10,0,0"
@@ -163,7 +163,7 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
         <ListBox x:Name="AddressListBox"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.CanContentScroll="False"
-                 Margin="226,133,48,33" Grid.RowSpan="2" d:ItemsSource="{Binding FilteredTenancies}">
+                 Margin="226,133,48,33" Grid.RowSpan="2" d:ItemsSource="{Binding FilteredTenancies}" SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Expander Header="{Binding Address}" Padding="5" FontSize="16" Margin="5" ExpandDirection="Down">
