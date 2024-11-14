@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,6 +70,11 @@ namespace EksamensProjekt.Models.Repositories
         }
 
         void IRepo<Tenant>.Create(Tenant entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        Tenant IRepo<Tenant>.GetByUsername(string userName)
         {
             throw new NotImplementedException();
         }

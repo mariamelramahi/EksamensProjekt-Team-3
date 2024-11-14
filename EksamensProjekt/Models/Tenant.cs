@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EksamensProjekt.Models
 {
-    class Tenant
+    public class Tenant
     {
         public int TenantID { get; set; }
         public string FirstName { get; set; }

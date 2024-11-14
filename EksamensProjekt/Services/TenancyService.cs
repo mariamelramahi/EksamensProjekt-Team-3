@@ -1,5 +1,5 @@
-﻿using EksamensProjekt.Model;
-using EksamensProjekt.Model.Repositories;
+﻿using EksamensProjekt.Models;
+using EksamensProjekt.Models.Repositories;
 
 namespace EksamensProjekt.Services
 {
@@ -19,7 +19,7 @@ namespace EksamensProjekt.Services
 
 
         public void CreateNewTenancy(
-               Tenancy.Status tenancyStatus,
+               TenancyStatus tenancyStatus,
                DateTime? moveInDate,
                DateTime? moveOutDate,
                string squareMeter,

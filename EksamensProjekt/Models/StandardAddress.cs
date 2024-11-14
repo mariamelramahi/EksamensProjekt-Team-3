@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EksamensProjekt.Models
 {
-    class StandardAddress
+    public class StandardAddress
     {
         public int AddressID { get; set; }
         public string Street { get; set; }

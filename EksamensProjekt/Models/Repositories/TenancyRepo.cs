@@ -82,6 +82,11 @@ namespace EksamensProjekt.Models.Repositories
             throw new NotImplementedException();
         }
 
+        Tenancy IRepo<Tenancy>.GetByUsername(string userName)
+        {
+            throw new NotImplementedException();
+        }
+
         IEnumerable<Tenancy> IRepo<Tenancy>.ReadAll()
         {
             throw new NotImplementedException();
