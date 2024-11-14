@@ -9,8 +9,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\ExitImage.png" />
+    <None Remove="Images\LogInBackgroundImage.jpg" />
+    <None Remove="Images\LoginButtonImage.png" />
+    <None Remove="Images\Logo2Image.png" />
+    <None Remove="Images\LogoImage.png" />
+    <None Remove="Images\SearchIconImage.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\ExitImage.png" />
+    <Resource Include="Images\LoginBackgroundImage.jpg" />
+    <Resource Include="Images\LoginButtonImage.png" />
+    <Resource Include="Images\Logo2Image.png" />
+    <Resource Include="Images\LogoImage.png" />
+    <Resource Include="Images\SearchIconImage.png" />
+  </ItemGroup>
+   <ItemGroup>
     <PackageReference Include="Moq" Version="4.20.72" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
-  </ItemGroup>
+    </ItemGroup>
+
+
 
 </Project>
