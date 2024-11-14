@@ -15,14 +15,4 @@ public partial class LoginView : Window
         this.DataContext = lvm;
     }
 
-
-
-
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-        TenancyView _TenancyView = new();
-        this.Close();
-        _TenancyView.Show();
-    }
-
 }
