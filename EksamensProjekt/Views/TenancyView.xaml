@@ -12,6 +12,10 @@
 
     <Window.Resources>
         <vm:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
+        
+            <!-- Define the BooleanToVisibilityConverter here -->
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        
     </Window.Resources>
 
     <Grid>
@@ -79,6 +83,58 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
         <Image Margin="0,-31,1822,483" Source="/Images/LogoImage.png" Stretch="Uniform"/>
 
         <!--Comboboxes-->
+        <Expander HorizontalAlignment="Left"
+           Height="99"
+           Header="Status"
+           Margin="38,212,0,0"
+           VerticalAlignment="Top"
+           Width="124"
+           FontFamily="Tahoma"
+           ScrollViewer.HorizontalScrollBarVisibility="Visible" Background="White">
+            <Expander.Template>
+                <ControlTemplate TargetType="{x:Type Expander}">
+                    <Border Background="Transparent"
+                     BorderBrush="{TemplateBinding BorderBrush}"
+                     BorderThickness="{TemplateBinding BorderThickness}">
+                        <StackPanel>
+                            <ToggleButton x:Name="HeaderSite"
+                                   Background="White"
+                                   BorderBrush="{TemplateBinding Background}"
+                                   BorderThickness="{TemplateBinding BorderThickness}"
+                                   IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                <ContentPresenter ContentSource="Header" />
+                            </ToggleButton>
+                            <Border x:Name="ContentSiteBorder"
+                             Background="White"
+                             Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                <ContentPresenter x:Name="ContentSite"
+                                           ContentSource="Content" />
+                            </Border>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Expander.Template>
+            <StackPanel Height="85">
+                <CheckBox Content="Aktiv"
+                   IsChecked="{Binding FilterService.FilterAssignmentTypeC, Mode=TwoWay}"
+                   Command="{Binding ApplyFilterCommand}"
+                   HorizontalAlignment="Left"
+                   Margin="10,10,0,0"
+                   VerticalAlignment="Top" />
+                <CheckBox Content="Inaktiv"
+                   IsChecked="{Binding FilterService.FilterAssignmentTypeD, Mode=TwoWay}"
+                   Command="{Binding ApplyFilterCommand}"
+                   HorizontalAlignment="Left"
+                   Margin="10,10,0,0"
+                   VerticalAlignment="Top" />
+                <CheckBox Content="Afventer"
+   IsChecked="{Binding FilterService.FilterAssignmentTypeD, Mode=TwoWay}"
+   Command="{Binding ApplyFilterCommand}"
+   HorizontalAlignment="Left"
+   Margin="10,10,0,0"
+   VerticalAlignment="Top" />
+            </StackPanel>
+        </Expander>
         <!--Labels-->
         <Label Content="Lejligheder - Oversigt" HorizontalAlignment="Left" Margin="226,36,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Tahoma" Foreground="#FF006DA0"/>
 
@@ -247,7 +303,7 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
                 IsHitTestVisible="False"
                 Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=SearchBox}" Text="Postnummer"/>
         </Grid>
-        
+
 
     </Grid>
 </Window>
