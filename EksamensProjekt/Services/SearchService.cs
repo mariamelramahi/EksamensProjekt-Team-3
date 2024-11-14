@@ -1,4 +1,4 @@
-﻿using EksamensProjekt.Model;
+﻿using EksamensProjekt.Models;
 namespace EksamensProjekt.Services
 {
     public class SearchService

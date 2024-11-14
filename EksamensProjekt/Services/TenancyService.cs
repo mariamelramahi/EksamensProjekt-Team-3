@@ -1,5 +1,5 @@
-﻿using EksamensProjekt.Model;
-using EksamensProjekt.Model.Repositories;
+﻿using EksamensProjekt.Models;
+using EksamensProjekt.Models.Repositories;
 
 namespace EksamensProjekt.Services
 {
@@ -19,7 +19,7 @@ namespace EksamensProjekt.Services
 
 
         public void CreateNewTenancy(
-               Tenancy.Status tenancyStatus,
+               TenancyStatus tenancyStatus,
                DateTime? moveInDate,
                DateTime? moveOutDate,
                string squareMeter,
@@ -37,21 +37,23 @@ namespace EksamensProjekt.Services
                 throw new ArgumentNullException(nameof(standardAddress), "Address cannot be null.");
             }
 
-            
 
-            // Use the constructor to create a new Tenancy object
-            Tenancy tenancy = new Tenancy(
-                tenancyStatus,
-                moveInDate,
-                moveOutDate,
-                squareMeter,
-                rent,
-                rooms,
-                bathRooms,
-                petsAllowed,
-                tenants ?? new List<Tenant>(), //made nullable field in case of no tenants registered
-                standardAddress,
-                company);
+
+            // Use the empty constructor to create a new Tenancy object
+            Tenancy newTenancy = new Tenancy();
+
+            // Set properties individually
+            newTenancy.TenancyStatus = tenancyStatus;
+            newTenancy.MoveInDate = moveInDate;
+            newTenancy.MoveOutDate = moveOutDate;
+            newTenancy.SquareMeter = squareMeter;
+            newTenancy.Rent = rent;
+            newTenancy.Rooms = rooms;
+            newTenancy.BathRooms = bathRooms;
+            newTenancy.PetsAllowed = petsAllowed;
+            newTenancy.Tenants = tenants ?? new List<Tenant>();
+            newTenancy.StandardAddress = standardAddress;
+            newTenancy.Company = company;
 
             tenancyRepo.Add(tenancy);
         }

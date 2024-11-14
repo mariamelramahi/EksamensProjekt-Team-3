@@ -1,4 +1,4 @@
-﻿using EksamensProjekt.Model;
+﻿using EksamensProjekt.Models;
 
 using System.Collections.ObjectModel; // Provides ObservableCollection for data binding.
 using System.ComponentModel; // Provides ICollectionView and filtering capabilities.
@@ -40,10 +40,10 @@ namespace EksamensProjekt.Services
                 // Filter by Zip Code if provided. If not provided it returns true, meaning the filter will not sort tenancies on zipcode
                 //if zipcode is provided it evaluates which of the tenancies that contains specific zipcode, returning them true.
                 //tenancies not containing zipcode will return false
-                bool matchesZipCode = string.IsNullOrEmpty(zipCode) || t.StandardAddress.ZipCode.Contains(zipCode);
+                bool matchesZipCode = string.IsNullOrEmpty(zipCode) || t.address.ZipCode.Contains(zipCode);
 
                 // Filter by Street if provided
-                bool matchesStreet = string.IsNullOrEmpty(street) || t.StandardAddress.StreetName.Contains(street);
+                bool matchesStreet = string.IsNullOrEmpty(street) || t.address.Street.Contains(street);
 
                 // Filter by Status if provided
                 bool matchesStatus = string.IsNullOrEmpty(status) || t.TenancyStatus.ToString().Equals(status, StringComparison.OrdinalIgnoreCase);
