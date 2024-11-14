@@ -275,7 +275,7 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
                                             </Style>
                                         </Button.Resources>
                                     </Button>
-                                    <Button x:Name="NewTenant" Content="Tilføj Lejer" Command="{Binding AddTenantCommand}" CommandParameter="{Binding}" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100" Click="NewTenant_Click">
+                                    <Button x:Name="NewTenant" Content="Tilføj Lejer" Command="{Binding AddTenantCommand}" CommandParameter="{Binding}" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100">
                                         <Button.Resources>
                                             <Style TargetType="{x:Type Border}">
                                                 <Setter Property="CornerRadius" Value="5"/>

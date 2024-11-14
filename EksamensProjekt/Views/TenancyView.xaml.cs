@@ -14,9 +14,3 @@ public partial class TenancyView : Window
         this.DataContext = tvm;
     }
 }
-//AuthLogin authLoginService = new AuthLogin(userRepo);
-//TenancyService tenancyService = new TenancyService(tenancyRepo, tenantRepo, standardAddressRepo);
-//SearchService searchService = new SearchService();
-//FilterService filterService = new FilterService();
-//HistoryService historyService = new HistoryService();
-//INavigationService navigationService = new NavigationService();
