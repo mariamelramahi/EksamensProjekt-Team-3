@@ -84,5 +84,9 @@ namespace EksamensProjekt.Models.Repositories
         {
             throw new NotImplementedException();
         }
+        public void Delete(StandardAddress entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
