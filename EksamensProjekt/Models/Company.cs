@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EksamensProjekt.Models
 {
-    class Company
+    public class Company
     {
         public int CompanyID { get; set; }
         public string Name { get; set; }

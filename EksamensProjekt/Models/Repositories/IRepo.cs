@@ -12,6 +12,6 @@ namespace EksamensProjekt.Models.Repositories
         void Create(T entity);
         IEnumerable<T> ReadAll();
         void Update(T entity);
-        void Delete(int entity);
+        void Delete(T entity);
     }
 }
