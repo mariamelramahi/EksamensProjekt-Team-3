@@ -53,7 +53,7 @@
             Foreground="White"
             Height="32"
             FontFamily="Bahnschrift Light" 
-            Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="{x:Null}" Click="Button_Click">
+            Command="{Binding LoginCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="{x:Null}">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="CornerRadius" Value="5"/>
