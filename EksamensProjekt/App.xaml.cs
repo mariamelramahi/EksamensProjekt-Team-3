@@ -44,6 +44,8 @@ public partial class App : Application
         HistoryService historyService = new HistoryService();
         INavigationService navigationService = new NavigationService();
 
+        //if (authLoginService == null || navigationService == null) { MessageBox.Show("Error: One or more services failed to initialize."); return; }
+
         // Create ViewModels
         LoginViewModel loginViewModel = new LoginViewModel(authLoginService, navigationService);
         TenancyViewModel tenancyViewModel = new TenancyViewModel(navigationService, tenancyService, filterService, searchService);
