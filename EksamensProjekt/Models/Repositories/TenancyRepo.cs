@@ -1,9 +1,7 @@
-﻿//using Microsoft.Data.SqlClient;
-//using System.Data;
-//using System.Text;
-
 using Microsoft.Data.SqlClient;
+﻿using Microsoft.Extensions.Configuration; // Til indlæsning af konfigurationsindstillinger fra appsettings.json
 using System.Data;
+using System.Data.SqlClient; // Til at arbejde med SQL Server via ADO.NET
 
 
 namespace EksamensProjekt.Models.Repositories;
