@@ -57,8 +57,10 @@ public partial class App : Application
         //navigationService.RegisterFactory( () => new HistoryView(historyViewModel));
 
         // Set up the initial window
-        LoginView loginView = new LoginView(loginViewModel);
-        loginView.Show();
+        //LoginView loginView = new LoginView(loginViewModel);
+        //loginView.Show();
+        TenancyView tenancyView = new TenancyView(tenancyViewModel);
+        tenancyView.Show();
 
         //TenancyView tenancyView = new TenancyView(tenancyViewModel);
 

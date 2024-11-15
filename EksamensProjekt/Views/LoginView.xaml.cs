@@ -21,4 +21,8 @@ public partial class LoginView : Window
         this.DataContext = lvm;
     }
 
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }
