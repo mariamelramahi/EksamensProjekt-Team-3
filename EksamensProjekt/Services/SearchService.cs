@@ -23,8 +23,8 @@ namespace EksamensProjekt.Services
 
             // Filter tenancies based on the provided zipCode and street
             var filteredTenancies = allTenancies.Where(t =>
-                (string.IsNullOrEmpty(zipCode) || t.address?.ZipCode.Contains(zipCode) == true) &&
-                (string.IsNullOrEmpty(street) || t.address?.Street.Contains(street) == true)
+                (string.IsNullOrEmpty(zipCode) || t.Address?.Zipcode.Contains(zipCode) == true) &&
+                (string.IsNullOrEmpty(street) || t.Address?.Street.Contains(street) == true)
             ).ToList();
 
             return filteredTenancies;
@@ -40,7 +40,7 @@ namespace EksamensProjekt.Services
             var filteredTenants = allTenants.Where(t =>
                 (string.IsNullOrEmpty(firstName) || t.FirstName.Contains(firstName, StringComparison.OrdinalIgnoreCase)) &&
                 (string.IsNullOrEmpty(lastName) || t.LastName.Contains(lastName, StringComparison.OrdinalIgnoreCase)) &&
-                (string.IsNullOrEmpty(phoneNumber) || t.PhoneNumber.Contains(phoneNumber)) &&
+                (string.IsNullOrEmpty(phoneNumber) || t.PhoneNum.Contains(phoneNumber)) &&
                 (string.IsNullOrEmpty(email) || t.Email.Contains(email, StringComparison.OrdinalIgnoreCase))
             ).ToList();
 

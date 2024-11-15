@@ -22,7 +22,7 @@ namespace EksamensProjekt.Services
                 TenancyStatus tenancyStatus,
                 DateTime? moveInDate,
                 DateTime? moveOutDate,
-                string squareMeter,
+                int squareMeter,
                 int rent,
                 int rooms,
                 int bathRooms,
@@ -53,8 +53,8 @@ namespace EksamensProjekt.Services
                 Rooms = rooms,
                 Bathrooms = bathRooms,
                 PetsAllowed = petsAllowed,
-                tenants = tenants ?? new List<Tenant>(),
-                address = standardAddress,
+                Tenants = tenants ?? new List<Tenant>(),
+                Address = standardAddress,
                 Company = company
             };
 
@@ -89,8 +89,10 @@ namespace EksamensProjekt.Services
             if (updatedTenancy.MoveOutDate.HasValue)
                 existingTenancy.MoveOutDate = updatedTenancy.MoveOutDate;
 
-            if (!string.IsNullOrEmpty(updatedTenancy.SquareMeter))
+            if (updatedTenancy.SquareMeter != 0)
+            {
                 existingTenancy.SquareMeter = updatedTenancy.SquareMeter;
+            }
 
             if (updatedTenancy.Rent.HasValue)
                 existingTenancy.Rent = updatedTenancy.Rent;
@@ -104,11 +106,11 @@ namespace EksamensProjekt.Services
             if (updatedTenancy.PetsAllowed.HasValue)
                 existingTenancy.PetsAllowed = updatedTenancy.PetsAllowed;
 
-            if (updatedTenancy.tenants != null && updatedTenancy.tenants.Count > 0)
-                existingTenancy.tenants = updatedTenancy.tenants;
+            if (updatedTenancy.Tenants != null && updatedTenancy.Tenants.Count > 0)
+                existingTenancy.Tenants = updatedTenancy.Tenants;
 
-            if (updatedTenancy.address != null)
-                existingTenancy.address = updatedTenancy.address;
+            if (updatedTenancy.Address != null)
+                existingTenancy.Address = updatedTenancy.Address;
 
             if (updatedTenancy.Company != null)
                 existingTenancy.Company = updatedTenancy.Company;
@@ -139,7 +141,7 @@ namespace EksamensProjekt.Services
             {
                 FirstName = string.Empty,
                 LastName = string.Empty,
-                PhoneNumber = string.Empty,
+                PhoneNum = string.Empty,
                 Email = string.Empty
             };
 

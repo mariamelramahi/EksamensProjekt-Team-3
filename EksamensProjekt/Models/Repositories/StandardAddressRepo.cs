@@ -49,11 +49,11 @@ public class StandardAddressRepo : IRepo<StandardAddress>
                     // Initializes a new StandardAddress object with the data from the reader
                     address = new StandardAddress
                     {
-                        AddressID = reader.GetInt32(reader.GetOrdinal("AddressID")),
+                        StandardAddressID = reader.GetInt32(reader.GetOrdinal("AddressID")),
                         Street = reader.GetString(reader.GetOrdinal("Street")),
                         Number = reader.GetString(reader.GetOrdinal("Number")),
-                        Floor = reader.GetString(reader.GetOrdinal("Floor")),
-                        ZipCode = reader.GetString(reader.GetOrdinal("ZipCode")),
+                        FloorNumber = reader.GetString(reader.GetOrdinal("Floor")),
+                        Zipcode = reader.GetString(reader.GetOrdinal("ZipCode")),
                         Country = reader.GetString(reader.GetOrdinal("Country"))
                     };
                 }

@@ -1,4 +1,8 @@
-﻿using Microsoft.Data.SqlClient;
+﻿//using Microsoft.Data.SqlClient;
+//using System.Data;
+//using System.Text;
+
+using Microsoft.Data.SqlClient;
 using System.Data;
 
 
@@ -55,13 +59,13 @@ public class TenancyRepo : IRepo<Tenancy>
                         TenancyStatus = (TenancyStatus)reader.GetInt32(reader.GetOrdinal("TenancyStatus")),
                         MoveInDate = reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
                         MoveOutDate = reader.GetDateTime(reader.GetOrdinal("MoveOutDate")),
-                        SquareMeter = reader.GetString(reader.GetOrdinal("SqaureMeter")),
+                        SquareMeter = reader.GetInt32(reader.GetOrdinal("SqaureMeter")),
                         Rent = reader.GetInt32(reader.GetOrdinal("Rent")),
                         Rooms = reader.GetInt32(reader.GetOrdinal("Rooms")),
                         Bathrooms = reader.GetInt32(reader.GetOrdinal("Bathrooms")),
                         PetsAllowed = reader.GetBoolean(reader.GetOrdinal("PetsAllowed")),
-                        tenants = new List<Tenant>(),
-                        address = new StandardAddress(),
+                        Tenants = new List<Tenant>(),
+                        Address = new StandardAddress(),
                         Company = new Company()
                     };
                 }
@@ -86,11 +90,191 @@ public class TenancyRepo : IRepo<Tenancy>
     {
         throw new NotImplementedException();
     }
-
-    IEnumerable<Tenancy> IRepo<Tenancy>.ReadAll()
+    public IEnumerable<Tenancy> ReadAll()
     {
-        throw new NotImplementedException();
+        var tenancies = new List<Tenancy>();
+
+        using (var conn = new SqlConnection(_connectionString))
+        {
+            // SQL query to select all tenancy information
+            string query =
+                "SELECT TenancyID, TenancyStatus, MoveInDate, MoveOutDate, SquareMeter, Rent, Rooms, BathRooms, PetsAllowed, StandardAddressID, OrganizationID, CompanyID " +
+                "FROM Tenancy";
+
+            var cmd = new SqlCommand(query, conn);
+            try
+            {
+                conn.Open(); // Open the connection to the database
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // Create a Tenancy object from the SQL data reader
+                        var tenancy = new Tenancy()
+                        {
+                            TenancyID = reader.GetInt32(0),
+                            TenancyStatus = (TenancyStatus)Enum.Parse(typeof(TenancyStatus), reader.GetString(1)),
+                            MoveInDate = reader.IsDBNull(2) ? (DateTime?)null : reader.GetDateTime(2), // Nullable datetime
+                            MoveOutDate = reader.IsDBNull(3) ? (DateTime?)null : reader.GetDateTime(3), // Nullable datetime
+                            SquareMeter = reader.GetInt32(4),
+                            Rent = (int?)reader.GetDecimal(5),
+                            Rooms = reader.GetInt32(6),
+                            Bathrooms = reader.GetInt32(7),
+                            PetsAllowed = reader.GetBoolean(8),
+                            OrganizationID = reader.GetInt32(10),
+                            Company = reader.IsDBNull(11) ? null : GetCompanyById(reader.GetInt32(11))
+                        };
+
+                        // Fetch the related address for the tenancy
+                        int standardAddressID = reader.GetInt32(9);
+                        tenancy.Address = GetStandardAddressById(standardAddressID);
+                        // Ensure StandardAddress is not null
+                        if (tenancy.Address == null)
+                        {
+                            Console.WriteLine($"No address found for TenancyID {tenancy.TenancyID} with StandardAddressID {standardAddressID}");
+                        }
+
+                        // Fetch the related tenants for the tenancy
+                        tenancy.Tenants = GetTenantsByTenancyId(tenancy.TenancyID) ?? new List<Tenant>();
+
+                        tenancies.Add(tenancy);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while reading all Tenancy entries: " + ex.Message);
+            }
+        }
+
+        return tenancies;
     }
+
+    // Helper method to get a StandardAddress by its ID
+    private StandardAddress GetStandardAddressById(int standardAddressID)
+    {
+        StandardAddress address = null;
+
+        using (var conn = new SqlConnection(_connectionString))
+        {
+            string addressQuery = "SELECT StandardAddressID, Street, Number, FloorNumber, Zipcode, Country FROM StandardAddress WHERE StandardAddressID = @StandardAddressID";
+            var cmd = new SqlCommand(addressQuery, conn);
+            cmd.Parameters.AddWithValue("@StandardAddressID", standardAddressID);
+
+            try
+            {
+                conn.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        address = new StandardAddress()
+                        {
+                            StandardAddressID = reader.GetInt32(0),
+                            Street = reader.GetString(1),
+                            Number = reader.GetString(2),
+                            FloorNumber = reader.IsDBNull(3) ? null : reader.GetString(3),
+                            Zipcode = reader.GetString(4),
+                            Country = reader.GetString(5)
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while reading the address: " + ex.Message);
+            }
+        }
+
+        return address;
+    }
+
+    // Helper method to get tenants by TenancyID
+    private List<Tenant> GetTenantsByTenancyId(int tenancyId)
+    {
+        var tenants = new List<Tenant>();
+
+        using (var conn = new SqlConnection(_connectionString))
+        {
+            string tenantQuery = "SELECT t.TenantID, t.FirstName, t.LastName, t.PhoneNum, t.Email, t.PartyRole " +
+                                "FROM TenancyTenant tt " +
+                                "JOIN Tenant t ON tt.TenantID = t.TenantID " +
+                                "WHERE tt.TenancyID = @TenancyID";
+            var cmd = new SqlCommand(tenantQuery, conn);
+            cmd.Parameters.AddWithValue("@TenancyID", tenancyId);
+
+            try
+            {
+                conn.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var tenant = new Tenant()
+                        {
+                            TenantID = reader.GetInt32(0),
+                            FirstName = reader.GetString(1),
+                            LastName = reader.GetString(2),
+                            PhoneNum = reader.GetString(3),
+                            Email = reader.GetString(4),
+                            PartyRole = reader.GetString(5)
+                        };
+
+                        tenants.Add(tenant);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while reading tenants: " + ex.Message);
+            }
+        }
+
+        return tenants;
+    }
+    private Company GetCompanyById(int companyId)
+    {
+        Company company = null;
+
+        using (var conn = new SqlConnection(_connectionString))
+        {
+            string companyQuery = "SELECT CompanyID, CompanyName, PartyID FROM Company WHERE CompanyID = @CompanyID";
+            var cmd = new SqlCommand(companyQuery, conn);
+            cmd.Parameters.AddWithValue("@CompanyID", companyId);
+
+            try
+            {
+                conn.Open();
+
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        company = new Company()
+                        {
+                            CompanyID = reader.GetInt32(0),
+                            CompanyName = reader.GetString(1),
+                            PartyID = reader.GetInt32(2)
+                        };
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while reading the company: " + ex.Message);
+            }
+        }
+
+        return company;
+    }
+
+    //IEnumerable<Tenancy> IRepo<Tenancy>.ReadAll()
+    //{
+    //    throw new NotImplementedException();
+    //}
 
     void IRepo<Tenancy>.Update(Tenancy entity)
     {
