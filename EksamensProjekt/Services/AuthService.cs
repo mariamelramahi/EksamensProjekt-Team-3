@@ -20,7 +20,7 @@ public class AuthLogin
         User user = _userRepo.GetByUsername(usernameInput); // Get user
         return 
             user != null && // Check if user exist
-            user.PasswordHash == passwordInput; // Check password
+            user.UserPasswordHash == passwordInput; // Check password
     }
 
 

@@ -58,7 +58,7 @@ public class UserRepo : IRepo<User>
                     {
                         UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
                         Username = reader.GetString(reader.GetOrdinal("Username")),
-                        PasswordHash = reader.GetString(reader.GetOrdinal("PasswordHash")),
+                        UserPasswordHash = reader.GetString(reader.GetOrdinal("UserPasswordHash")),
                         // Populate other properties if needed
                     };
                 }

@@ -1,8 +1,7 @@
 ﻿<Application x:Class="EksamensProjekt.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:EksamensProjekt"
-             StartupUri="Views/LoginView.xaml">
+             xmlns:local="clr-namespace:EksamensProjekt">
     <Application.Resources>
          
     </Application.Resources>
