@@ -54,7 +54,7 @@ namespace EksamensProjekt.Models.Repositories
                             TenantID = reader.GetInt32(reader.GetOrdinal("TenantID")),
                             FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
                             LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                            PhoneNumber = reader.GetString(reader.GetOrdinal("PhoneNumber")),
+                            PhoneNum = reader.GetString(reader.GetOrdinal("PhoneNumber")),
                             Email = reader.GetString(reader.GetOrdinal("Email"))
                         };
                     }

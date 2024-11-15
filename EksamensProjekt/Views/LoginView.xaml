@@ -40,12 +40,12 @@
                 </Style>
             </Button.Resources>
         </Button>
-        <Button Margin="928,0,6,559" BorderBrush="{x:Null}" Command="{Binding ExitCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Background="{x:Null}" >
+        <Button Margin="928,0,6,559" BorderBrush="{x:Null}"  Background="{x:Null}" >
             <StackPanel Orientation="Horizontal">
                 <Image Source="/Images/ExitImage.png" Height="45"/>
             </StackPanel>
         </Button>
-        <TextBox HorizontalAlignment="Left" Margin="387,337,0,0" TextWrapping="Wrap" Text="{Binding UsernameInput, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="222" FontSize="20" Height="33"/>
+        
 
 
     </Grid>
