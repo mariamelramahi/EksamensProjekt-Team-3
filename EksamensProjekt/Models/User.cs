@@ -10,6 +10,6 @@ namespace EksamensProjekt.Models
     {
         public int UserID { get; set; }
         public string Username { get; set; }
-        public string PasswordHash { get; set; }
+        public string UserPasswordHash { get; set; }
     }
 }
