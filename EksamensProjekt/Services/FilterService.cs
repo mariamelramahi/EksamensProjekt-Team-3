@@ -1,4 +1,5 @@
 using EksamensProjekt.Models;
+using System.Windows.Navigation;
 
 public class FilterService
 {
@@ -9,36 +10,42 @@ public class FilterService
 
 
     // Apply the filter and set the IsFilterAEnabled property directly within this method
-    public bool ApplyTenancyFilter(Tenancy tenancy, string status)
+    public bool ApplyTenancyFilter(Tenancy tenancy)
     {
-        if (tenancy == null)
-        {
-            IsFilterAEnabled = false; // If tenancy is null, filter is disabled
-            return IsFilterAEnabled;
-        }
+        //    if (tenancy == null)
+        //    {
+        //        IsFilterAEnabled = false; // If tenancy is null, filter is disabled
+        //        return IsFilterAEnabled;
+        //    }
 
-        // If status is null or empty, consider all tenancies as matching (no filter applied)
-        if (string.IsNullOrEmpty(status))
-        {
-            IsFilterAEnabled = true; // No filter applied, all tenancies are considered matching
-            return IsFilterAEnabled;
-        }
+        //    // If status is null or empty, consider all tenancies as matching (no filter applied)
+        //    if (string.IsNullOrEmpty(status))
+        //    {
+        //        IsFilterAEnabled = true; // No filter applied, all tenancies are considered matching
+        //        return IsFilterAEnabled;
+        //    }
 
-        // Try to parse the status string into a TenancyStatus enum
-        if (Enum.TryParse<TenancyStatus>(status, true, out TenancyStatus parsedStatus))
-        {
-            // Check if the parsed status matches the tenancy's status
-            IsFilterAEnabled = tenancy.TenancyStatus == parsedStatus;
-        }
-        else
-        {
-            // If the status is invalid (couldn't be parsed), disable the filter
-            IsFilterAEnabled = false;
-        }
-
+        //    // Try to parse the status string into a TenancyStatus enum
+        //    if (Enum.TryParse<TenancyStatus>(status, true, out TenancyStatus parsedStatus))
+        //    {
+        //        // Check if the parsed status matches the tenancy's status
+        //        IsFilterAEnabled = tenancy.TenancyStatus == parsedStatus;
+        //    }
+        //    else
+        //    {
+        //        // If the status is invalid (couldn't be parsed), disable the filter
+        //        IsFilterAEnabled = false;
+        return true;
+    }
+    
         // Return the result of IsFilterAEnabled
-        return IsFilterAEnabled;
-    }// Method that defines the actual filter criteria
+        //return IsFilterAEnabled;
+}
+
+
+
+
+// Method that defines the actual filter criteria
      //public void ApplyTenancyFilters(ICollectionView collectionView, string zipCode, string street, string status)
      //{
      //    collectionView.Filter = tenancy =>
@@ -92,6 +99,6 @@ public class FilterService
     //    _tenancyCollectionView.Refresh();
     //}
 
-}
+//}
 
 

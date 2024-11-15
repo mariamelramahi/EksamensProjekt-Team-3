@@ -35,7 +35,7 @@ namespace EksamensProjekt.ViewModels
 
             // Set up CollectionView for displaying items
             _tenancyCollectionView = CollectionViewSource.GetDefaultView(Tenancies);
-            _tenancyCollectionView.Filter = item => _filterService.ApplyTenancyFilter(item as Tenancy, SearchInput);
+            _tenancyCollectionView.Filter = item => _filterService.ApplyTenancyFilter(item as Tenancy);
 
             // Initialize commands
             //GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);

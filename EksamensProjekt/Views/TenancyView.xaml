@@ -163,7 +163,7 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
         <ListBox x:Name="AddressListBox"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.CanContentScroll="False"
-                 Margin="226,133,48,33" Grid.RowSpan="2" d:ItemsSource="{Binding FilteredTenancies}" SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}">
+                 Margin="226,133,48,10" Grid.RowSpan="2" d:ItemsSource="{Binding FilteredTenancies}" SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Expander Header="{Binding Address}" Padding="5" FontSize="16" Margin="5" ExpandDirection="Down">
@@ -304,6 +304,14 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
                 Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=SearchBox}" Text="Postnummer"/>
         </Grid>
 
+        <DataGrid ItemsSource="{Binding FilteredTenancies}"
+                  AutoGenerateColumns="true"
+                  Margin="345,61,186,61"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  IsReadOnly="True"
+                  Grid.Row="1">
+        </DataGrid>
 
     </Grid>
 </Window>
