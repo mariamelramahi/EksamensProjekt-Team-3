@@ -35,7 +35,9 @@ namespace EksamensProjekt.ViewModels
 
             // Set up CollectionView for displaying items
             _tenancyCollectionView = CollectionViewSource.GetDefaultView(Tenancies);
-            _tenancyCollectionView.Filter = item => _filterService.ApplyTenancyFilter(item as Tenancy, SearchInput);
+
+            _tenancyCollectionView.Filter = item => ApplyCombinedFilter(item as Tenancy);
+
 
             // Initialize commands
             //GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);
@@ -77,7 +79,7 @@ namespace EksamensProjekt.ViewModels
             {
                 _searchInput = value;
                 OnPropertyChanged();
-                ExecuteApplyFilters(); // Automatically apply filters when search input changes
+                RefreshFilteredView(); // Automatically apply filters when search input changes
             }
         }
 
@@ -90,7 +92,7 @@ namespace EksamensProjekt.ViewModels
             {
                 _filterService.IsFilterAEnabled = value;
                 OnPropertyChanged();
-                ExecuteApplyFilters(); // Apply filters whenever value changes
+                RefreshFilteredView(); // Apply filters whenever value changes
             }
         }
 
@@ -101,7 +103,7 @@ namespace EksamensProjekt.ViewModels
             {
                 _filterService.IsFilterBEnabled = value;
                 OnPropertyChanged();
-                ExecuteApplyFilters();
+                RefreshFilteredView();
             }
         }
 
@@ -112,7 +114,7 @@ namespace EksamensProjekt.ViewModels
             {
                 _filterService.IsFilterCEnabled = value;
                 OnPropertyChanged();
-                ExecuteApplyFilters();
+                RefreshFilteredView();
             }
         }
 
@@ -182,11 +184,17 @@ namespace EksamensProjekt.ViewModels
         //    }
         //}
 
-        private void ExecuteApplyFilters()
+        private void RefreshFilteredView()
         {
             _tenancyCollectionView.Refresh(); // Refresh the view to apply updated filters
-        }    
+        }
 
+
+        private bool ApplyCombinedFilter(Tenancy tenancy)
+        {
+            return _filterService.ApplyCheckboxFilter(tenancy) &&
+                   _searchService.ApplySearchFilter(tenancy, SearchInput);
+        }
 
     }
 }
