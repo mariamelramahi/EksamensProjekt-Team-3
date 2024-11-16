@@ -1,4 +1,5 @@
 using EksamensProjekt.Models;
+using EksamensProjekt.Services;
 using System.Windows.Navigation;
 
 public class FilterService
@@ -9,9 +10,41 @@ public class FilterService
     public bool IsFilterCEnabled { get; set; }
 
 
-    // Apply the filter and set the IsFilterAEnabled property directly within this method
-    public bool ApplyTenancyFilter(Tenancy tenancy)
+    public bool ApplyCheckboxFilter(Tenancy tenancy)
     {
+        if (tenancy == null)
+            return false;
+
+        bool passesFilter = true;
+
+        if (IsFilterAEnabled)
+        {
+            // Filter A: Only include tenancies that are "Occupied"
+            passesFilter &= tenancy.TenancyStatus == TenancyStatus.Occupied; // shorthand for passesFilter = passesFilter && condition
+        }
+
+        if (IsFilterBEnabled)
+        {
+            // Filter B: Only include tenancies that allow pets
+            passesFilter &= tenancy.PetsAllowed == true;
+        }
+
+        if (IsFilterCEnabled)
+        {
+            // Filter C: Only include tenancies with rent below 5000 (example threshold)
+            passesFilter &= tenancy.Rent.HasValue && tenancy.Rent < 10000;
+        }
+
+        return passesFilter;
+    }
+}
+
+
+
+
+    // Apply the filter and set the IsFilterAEnabled property directly within this method
+    //public bool ApplyTenancyFilter(Tenancy tenancy)
+    //{
         //    if (tenancy == null)
         //    {
         //        IsFilterAEnabled = false; // If tenancy is null, filter is disabled
@@ -35,12 +68,12 @@ public class FilterService
         //    {
         //        // If the status is invalid (couldn't be parsed), disable the filter
         //        IsFilterAEnabled = false;
-        return true;
-    }
+    //    return true;
+    //}
     
         // Return the result of IsFilterAEnabled
         //return IsFilterAEnabled;
-}
+//}
 
 
 

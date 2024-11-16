@@ -6,109 +6,136 @@
         xmlns:local="clr-namespace:EksamensProjekt"
         xmlns:vm="clr-namespace:EksamensProjekt.Utilities"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1080" Width="1920"
+        Title="MainWindow"
+        Height="1080"
+        Width="1920"
         ResizeMode="NoResize"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <vm:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
-        
-            <!-- Define the BooleanToVisibilityConverter here -->
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        
+        <vm:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
+
+        <!-- Define the BooleanToVisibilityConverter here -->
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
     </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="341*"/>
-            <RowDefinition Height="289*"/>
+            <RowDefinition Height="341*" />
+            <RowDefinition Height="289*" />
         </Grid.RowDefinitions>
 
-        <Rectangle HorizontalAlignment="Left" Height="1064" VerticalAlignment="Top" Width="200" Fill="#FF006DA0" Grid.RowSpan="2"/>
+        <Rectangle HorizontalAlignment="Left"
+                   Height="1064"
+                   VerticalAlignment="Top"
+                   Width="200"
+                   Fill="#FF006DA0"
+                   Grid.RowSpan="2" />
         <!--Buttons-->
-        <Button Margin="1834,0,6,521" BorderBrush="{x:Null}" Command="{Binding ExitCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}" Background="{x:Null}" >
+        <Button Margin="1834,0,6,521"
+                BorderBrush="{x:Null}"
+                Command="{Binding ExitCommand}"
+                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                Background="{x:Null}">
             <StackPanel Orientation="Horizontal">
-                <Image Source="/Images/ExitImage.png" Height="45"/>
+                <Image Source="/Images/ExitImage.png"
+                       Height="45" />
             </StackPanel>
         </Button>
         <Button Content="Tilføj nyt"
-HorizontalAlignment="Left"
-Margin="236,80,0,0"
-VerticalAlignment="Top"
-Width="109"
-Background="White"
-Foreground="#FF006DA0"
-Height="32"
-FontFamily="Tahoma" 
-Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="#FF006DA0">
+                HorizontalAlignment="Left"
+                Margin="236,80,0,0"
+                VerticalAlignment="Top"
+                Width="109"
+                Background="White"
+                Foreground="#FF006DA0"
+                Height="32"
+                FontFamily="Tahoma"
+                Command="{Binding CreateTenancyCommand}"
+                CommandParameter="{Binding}"
+                FontSize="16"
+                BorderBrush="#FF006DA0">
             <Button.Resources>
                 <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="5"/>
+                    <Setter Property="CornerRadius"
+                            Value="5" />
                 </Style>
             </Button.Resources>
         </Button>
         <Button Content="Historik"
-    HorizontalAlignment="Left"
-    Margin="1719,11,0,0"
-    VerticalAlignment="Top"
-    Width="110"
-    Background="White"
-    Foreground="#FF006DA0"
-    Height="32"
-    FontFamily="Bahnschrift Light" 
-    Command="{Binding GoToHistoryCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="#FF006DA0">
+                HorizontalAlignment="Left"
+                Margin="1719,11,0,0"
+                VerticalAlignment="Top"
+                Width="110"
+                Background="White"
+                Foreground="#FF006DA0"
+                Height="32"
+                FontFamily="Bahnschrift Light"
+                Command="{Binding GoToHistoryCommand}"
+                CommandParameter="{Binding}"
+                FontSize="16"
+                BorderBrush="#FF006DA0">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5"/>
+                    <Setter Property="CornerRadius"
+                            Value="5" />
                 </Style>
             </Button.Resources>
         </Button>
         <Button Content="Slet"
-    HorizontalAlignment="Left"
-    Margin="365,80,0,0"
-    VerticalAlignment="Top"
-    Width="109"
-    Background="White"
-    Foreground="#FF006DA0"
-    Height="32"
-    FontFamily="Tahoma" 
-    Command="{Binding DeleteTenancyCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="#FF006DA0">
+                HorizontalAlignment="Left"
+                Margin="365,80,0,0"
+                VerticalAlignment="Top"
+                Width="109"
+                Background="White"
+                Foreground="#FF006DA0"
+                Height="32"
+                FontFamily="Tahoma"
+                Command="{Binding DeleteTenancyCommand}"
+                CommandParameter="{Binding}"
+                FontSize="16"
+                BorderBrush="#FF006DA0">
             <Button.Resources>
                 <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="5"/>
+                    <Setter Property="CornerRadius"
+                            Value="5" />
                 </Style>
             </Button.Resources>
         </Button>
         <!--images-->
-        <Image Margin="0,-31,1822,483" Source="/Images/LogoImage.png" Stretch="Uniform"/>
+        <Image Margin="0,-31,1822,483"
+               Source="/Images/LogoImage.png"
+               Stretch="Uniform" />
 
         <!--Comboboxes-->
         <Expander HorizontalAlignment="Left"
-           Height="99"
-           Header="Status"
-           Margin="38,212,0,0"
-           VerticalAlignment="Top"
-           Width="124"
-           FontFamily="Tahoma"
-           ScrollViewer.HorizontalScrollBarVisibility="Visible" Background="White">
+                  Height="99"
+                  Header="Status"
+                  Margin="38,212,0,0"
+                  VerticalAlignment="Top"
+                  Width="124"
+                  FontFamily="Tahoma"
+                  ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                  Background="White">
             <Expander.Template>
                 <ControlTemplate TargetType="{x:Type Expander}">
                     <Border Background="Transparent"
-                     BorderBrush="{TemplateBinding BorderBrush}"
-                     BorderThickness="{TemplateBinding BorderThickness}">
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
                         <StackPanel>
                             <ToggleButton x:Name="HeaderSite"
-                                   Background="White"
-                                   BorderBrush="{TemplateBinding Background}"
-                                   BorderThickness="{TemplateBinding BorderThickness}"
-                                   IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                          Background="White"
+                                          BorderBrush="{TemplateBinding Background}"
+                                          BorderThickness="{TemplateBinding BorderThickness}"
+                                          IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                 <ContentPresenter ContentSource="Header" />
                             </ToggleButton>
                             <Border x:Name="ContentSiteBorder"
-                             Background="White"
-                             Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    Background="White"
+                                    Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                 <ContentPresenter x:Name="ContentSite"
-                                           ContentSource="Content" />
+                                                  ContentSource="Content" />
                             </Border>
                         </StackPanel>
                     </Border>
@@ -116,35 +143,58 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
             </Expander.Template>
             <StackPanel Height="85">
                 <CheckBox Content="Aktiv"
-                   IsChecked="{Binding IsFilterAEnabled, Mode=TwoWay}"
-                   Command="{Binding ApplyFilterCommand}"
-                   HorizontalAlignment="Left"
-                   Margin="10,10,0,0"
-                   VerticalAlignment="Top" />
+                          IsChecked="{Binding IsFilterAEnabled, Mode=TwoWay}"
+                          Command="{Binding ApplyFilterCommand}"
+                          HorizontalAlignment="Left"
+                          Margin="10,10,0,0"
+                          VerticalAlignment="Top" />
                 <CheckBox Content="Inaktiv"
-                   IsChecked="{Binding IsFilterBEnabled, Mode=TwoWay}"
-                   Command="{Binding ApplyFilterCommand}"
-                   HorizontalAlignment="Left"
-                   Margin="10,10,0,0"
-                   VerticalAlignment="Top" />
+                          IsChecked="{Binding IsFilterBEnabled, Mode=TwoWay}"
+                          Command="{Binding ApplyFilterCommand}"
+                          HorizontalAlignment="Left"
+                          Margin="10,10,0,0"
+                          VerticalAlignment="Top" />
                 <CheckBox Content="Afventer"
-   IsChecked="{Binding IsFilterCEnabled, Mode=TwoWay}"
-   Command="{Binding ApplyFilterCommand}"
-   HorizontalAlignment="Left"
-   Margin="10,10,0,0"
-   VerticalAlignment="Top" />
+                          IsChecked="{Binding IsFilterCEnabled, Mode=TwoWay}"
+                          Command="{Binding ApplyFilterCommand}"
+                          HorizontalAlignment="Left"
+                          Margin="10,10,0,0"
+                          VerticalAlignment="Top" />
             </StackPanel>
         </Expander>
         <!--Labels-->
-        <Label Content="Lejligheder - Oversigt" HorizontalAlignment="Left" Margin="226,36,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Tahoma" Foreground="#FF006DA0"/>
+        <Label Content="Lejligheder - Oversigt"
+               HorizontalAlignment="Left"
+               Margin="226,36,0,0"
+               VerticalAlignment="Top"
+               FontSize="24"
+               FontFamily="Tahoma"
+               Foreground="#FF006DA0" />
 
         <!--Searchbox-->
-        <Rectangle HorizontalAlignment="Left" Height="27" Margin="1600,89,0,0" Stroke="#FFA4A4A4" VerticalAlignment="Top" Width="292">
+        <Rectangle HorizontalAlignment="Left"
+                   Height="27"
+                   Margin="1600,89,0,0"
+                   Stroke="#FFA4A4A4"
+                   VerticalAlignment="Top"
+                   Width="292">
         </Rectangle>
-        <Grid HorizontalAlignment="Left" Margin="1600,89,0,0" VerticalAlignment="Top">
+        <Grid HorizontalAlignment="Left"
+              Margin="1600,89,0,0"
+              VerticalAlignment="Top">
 
             <!-- TextBox for user input -->
-            <TextBox x:Name="SearchBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="268" Height="27" FontSize="18" FontFamily="Tahoma" BorderBrush="{x:Null}" Foreground="Black" SelectionBrush="{x:Null}"/>
+            <TextBox x:Name="SearchBox"
+                     Text="{Binding SearchInput, UpdateSourceTrigger=PropertyChanged}"
+                     TextWrapping="Wrap"
+                     VerticalAlignment="Top"
+                     Width="268"
+                     Height="27"
+                     FontSize="18"
+                     FontFamily="Tahoma"
+                     BorderBrush="{x:Null}"
+                     Foreground="Black"
+                     SelectionBrush="{x:Null}" />
 
             <!-- Placeholder TextBlock -->
             <TextBlock Text="Søg"
@@ -152,133 +202,240 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
                        Margin="5,0,0,0"
                        Foreground="#FFA4A4A4"
                        IsHitTestVisible="False"
-                       Visibility="{Binding Text.Length, ElementName=SearchBox, Converter={StaticResource EmptyStringToVisibilityConverter}}"/>
+                       Visibility="{Binding Text.Length, ElementName=SearchBox, Converter={StaticResource EmptyStringToVisibilityConverter}}" />
         </Grid>
-        <Rectangle StrokeThickness="2" Margin="1862,91,10,448">
+        <Rectangle StrokeThickness="2"
+                   Margin="1862,91,10,448">
             <Rectangle.Fill>
-                <ImageBrush ImageSource="/Images/SearchIconImage.png" Stretch="Uniform"/>
+                <ImageBrush ImageSource="/Images/SearchIconImage.png"
+                            Stretch="Uniform" />
             </Rectangle.Fill>
         </Rectangle>
         <!--Listbox-->
         <ListBox x:Name="AddressListBox"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.CanContentScroll="False"
-                 Margin="226,133,48,10" Grid.RowSpan="2" d:ItemsSource="{Binding FilteredTenancies}" SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}">
+                 Margin="226,133,48,488"
+                 Grid.RowSpan="2"
+                 d:ItemsSource="{Binding FilteredTenancies}"
+                 SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Expander Header="{Binding Address}" Padding="5" FontSize="16" Margin="5" ExpandDirection="Down">
-                        <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
+                    <Expander Header="{Binding Address}"
+                              Padding="5"
+                              FontSize="16"
+                              Margin="5"
+                              ExpandDirection="Down">
+                        <Border BorderBrush="Gray"
+                                BorderThickness="1"
+                                Margin="5">
                             <Grid Margin="10">
                                 <!-- layout of the Expander -->
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
 
                                 <!-- Tenancy ID -->
-                                <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,5,10,5">
-                                    <TextBlock Text="Lejemåls ID: " FontWeight="Bold"/>
-                                    <TextBlock Width="100" Text="{Binding TenancyID}" Margin="10,0,0,0"/>
+                                <StackPanel Grid.Row="0"
+                                            Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            Margin="0,5,10,5">
+                                    <TextBlock Text="Lejemåls ID: "
+                                               FontWeight="Bold" />
+                                    <TextBlock Width="100"
+                                               Text="{Binding TenancyID}"
+                                               Margin="10,0,0,0" />
                                 </StackPanel>
 
                                 <!-- Tenancy Status -->
-                                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
-                                    <TextBlock Text="Lejemåls Status: " FontWeight="Bold"/>
-                                    <ComboBox Width="150" ItemsSource="{Binding TenancyStatus, RelativeSource={RelativeSource AncestorType=Window}}"
-                                              SelectedItem="{Binding TenancyStatus}" Margin="10,0,0,0"/>
+                                <StackPanel Grid.Row="0"
+                                            Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Margin="0,5,10,5">
+                                    <TextBlock Text="Lejemåls Status: "
+                                               FontWeight="Bold" />
+                                    <ComboBox Width="150"
+                                              ItemsSource="{Binding TenancyStatus, RelativeSource={RelativeSource AncestorType=Window}}"
+                                              SelectedItem="{Binding TenancyStatus}"
+                                              Margin="10,0,0,0" />
                                 </StackPanel>
 
                                 <!-- Move In Date -->
-                                <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,5,10,5">
-                                    <TextBlock Text="Indflytningsdato: " FontWeight="Bold"/>
-                                    <DatePicker SelectedDate="{Binding MoveInDate}" Margin="10,0,0,0"/>
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            Margin="0,5,10,5">
+                                    <TextBlock Text="Indflytningsdato: "
+                                               FontWeight="Bold" />
+                                    <DatePicker SelectedDate="{Binding MoveInDate}"
+                                                Margin="10,0,0,0" />
                                 </StackPanel>
 
                                 <!-- Move Out Date -->
-                                <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
-                                    <TextBlock Text="Fraflytningsdato: " FontWeight="Bold"/>
-                                    <DatePicker SelectedDate="{Binding MoveOutDate}" Margin="10,0,0,0"/>
+                                <StackPanel Grid.Row="1"
+                                            Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Margin="0,5,10,5">
+                                    <TextBlock Text="Fraflytningsdato: "
+                                               FontWeight="Bold" />
+                                    <DatePicker SelectedDate="{Binding MoveOutDate}"
+                                                Margin="10,0,0,0" />
                                 </StackPanel>
 
                                 <!-- Size -->
-                                <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="0,5,10,5">
-                                    <TextBlock Text="M²: " FontWeight="Bold"/>
-                                    <TextBox Width="50" Text="{Binding SqaureMeter}" Margin="10,0,0,0"/>
+                                <StackPanel Grid.Row="2"
+                                            Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            Margin="0,5,10,5">
+                                    <TextBlock Text="M²: "
+                                               FontWeight="Bold" />
+                                    <TextBox Width="50"
+                                             Text="{Binding SqaureMeter}"
+                                             Margin="10,0,0,0" />
                                 </StackPanel>
 
                                 <!-- Rent -->
-                                <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
-                                    <TextBlock Text="Husleje i kr.: " FontWeight="Bold"/>
-                                    <TextBox Width="100" Text="{Binding Rent}" Margin="10,0,0,0"/>
+                                <StackPanel Grid.Row="2"
+                                            Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Margin="0,5,10,5">
+                                    <TextBlock Text="Husleje i kr.: "
+                                               FontWeight="Bold" />
+                                    <TextBox Width="100"
+                                             Text="{Binding Rent}"
+                                             Margin="10,0,0,0" />
                                 </StackPanel>
 
                                 <!-- Rooms -->
-                                <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Margin="0,5,10,5">
-                                    <TextBlock Text="Værelser: " FontWeight="Bold"/>
-                                    <TextBox Width="50" Text="{Binding Rooms}" Margin="10,0,0,0"/>
+                                <StackPanel Grid.Row="3"
+                                            Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            Margin="0,5,10,5">
+                                    <TextBlock Text="Værelser: "
+                                               FontWeight="Bold" />
+                                    <TextBox Width="50"
+                                             Text="{Binding Rooms}"
+                                             Margin="10,0,0,0" />
                                 </StackPanel>
 
                                 <!-- Bathrooms -->
-                                <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
-                                    <TextBlock Text="Badeværelser: " FontWeight="Bold"/>
-                                    <TextBox Width="50" Text="{Binding Bathrooms}" Margin="10,0,0,0"/>
+                                <StackPanel Grid.Row="3"
+                                            Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Margin="0,5,10,5">
+                                    <TextBlock Text="Badeværelser: "
+                                               FontWeight="Bold" />
+                                    <TextBox Width="50"
+                                             Text="{Binding Bathrooms}"
+                                             Margin="10,0,0,0" />
                                 </StackPanel>
 
                                 <!-- Dog Allowed -->
-                                <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Margin="0,5,10,5">
-                                    <TextBlock Text="Hund tilladt: " FontWeight="Bold"/>
-                                    <ComboBox Width="100" ItemsSource="{Binding PetsAllowed, RelativeSource={RelativeSource AncestorType=Window}}"
-                                              SelectedItem="{Binding PetsAllowed}" Margin="10,0,0,0"/>
+                                <StackPanel Grid.Row="4"
+                                            Grid.Column="0"
+                                            Orientation="Horizontal"
+                                            Margin="0,5,10,5">
+                                    <TextBlock Text="Hund tilladt: "
+                                               FontWeight="Bold" />
+                                    <ComboBox Width="100"
+                                              ItemsSource="{Binding PetsAllowed, RelativeSource={RelativeSource AncestorType=Window}}"
+                                              SelectedItem="{Binding PetsAllowed}"
+                                              Margin="10,0,0,0" />
                                 </StackPanel>
 
                                 <!-- Company -->
-                                <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
-                                    <TextBlock Text="Boligselskab: " FontWeight="Bold"/>
-                                    <TextBlock Width="150" Text="{Binding Company}" Margin="10,0,0,0"/>
+                                <StackPanel Grid.Row="4"
+                                            Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Margin="0,5,10,5">
+                                    <TextBlock Text="Boligselskab: "
+                                               FontWeight="Bold" />
+                                    <TextBlock Width="150"
+                                               Text="{Binding Company}"
+                                               Margin="10,0,0,0" />
                                 </StackPanel>
 
                                 <!-- Tenant -->
-                                <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,5,10,5">
-                                    <TextBlock Text="Lejer: " FontWeight="Bold"/>
-                                    <ComboBox Width="150" ItemsSource="{Binding tentants, RelativeSource={RelativeSource AncestorType=Window}}"
-                                              SelectedItem="{Binding Tenant}" Margin="10,0,0,0"/>
+                                <StackPanel Grid.Row="5"
+                                            Grid.ColumnSpan="2"
+                                            Orientation="Horizontal"
+                                            Margin="0,5,10,5">
+                                    <TextBlock Text="Lejer: "
+                                               FontWeight="Bold" />
+                                    <ComboBox Width="150"
+                                              ItemsSource="{Binding tentants, RelativeSource={RelativeSource AncestorType=Window}}"
+                                              SelectedItem="{Binding Tenant}"
+                                              Margin="10,0,0,0" />
                                 </StackPanel>
 
                                 <!-- Owner -->
-                                <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
-                                    <TextBlock Text="Ejer: " FontWeight="Bold"/>
-                                    <TextBlock Width="150" Text="{Binding Owner}" Margin="10,0,0,0"/>
+                                <StackPanel Grid.Row="5"
+                                            Grid.Column="1"
+                                            Orientation="Horizontal"
+                                            Margin="0,5,10,5">
+                                    <TextBlock Text="Ejer: "
+                                               FontWeight="Bold" />
+                                    <TextBlock Width="150"
+                                               Text="{Binding Owner}"
+                                               Margin="10,0,0,0" />
                                 </StackPanel>
 
                                 <!-- Action Buttons -->
-                                <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
-                                    <Button Content="Gem Ændringer" Command="{Binding UpdateTenancyCommand}" CommandParameter="{Binding}" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100">
+                                <StackPanel Grid.Row="6"
+                                            Grid.ColumnSpan="2"
+                                            Orientation="Horizontal"
+                                            HorizontalAlignment="Right"
+                                            Margin="0,10,0,0">
+                                    <Button Content="Gem Ændringer"
+                                            Command="{Binding UpdateTenancyCommand}"
+                                            CommandParameter="{Binding}"
+                                            Background="#FF006DA0"
+                                            Foreground="White"
+                                            Margin="5,0,0,0"
+                                            Width="100">
                                         <Button.Resources>
                                             <Style TargetType="{x:Type Border}">
-                                                <Setter Property="CornerRadius" Value="5"/>
+                                                <Setter Property="CornerRadius"
+                                                        Value="5" />
                                             </Style>
                                         </Button.Resources>
                                     </Button>
-                                    <Button Content="Slet Lejer" Command="{Binding DeleteTenantCommand}" CommandParameter="{Binding}" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100">
+                                    <Button Content="Slet Lejer"
+                                            Command="{Binding DeleteTenantCommand}"
+                                            CommandParameter="{Binding}"
+                                            Background="#FF006DA0"
+                                            Foreground="White"
+                                            Margin="5,0,0,0"
+                                            Width="100">
                                         <Button.Resources>
                                             <Style TargetType="{x:Type Border}">
-                                                <Setter Property="CornerRadius" Value="5"/>
+                                                <Setter Property="CornerRadius"
+                                                        Value="5" />
                                             </Style>
                                         </Button.Resources>
                                     </Button>
-                                    <Button x:Name="NewTenant" Content="Tilføj Lejer" Command="{Binding AddTenantCommand}" CommandParameter="{Binding}" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100">
+                                    <Button x:Name="NewTenant"
+                                            Content="Tilføj Lejer"
+                                            Command="{Binding AddTenantCommand}"
+                                            CommandParameter="{Binding}"
+                                            Background="#FF006DA0"
+                                            Foreground="White"
+                                            Margin="5,0,0,0"
+                                            Width="100">
                                         <Button.Resources>
                                             <Style TargetType="{x:Type Border}">
-                                                <Setter Property="CornerRadius" Value="5"/>
+                                                <Setter Property="CornerRadius"
+                                                        Value="5" />
                                             </Style>
                                         </Button.Resources>
                                     </Button>
@@ -289,19 +446,30 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Grid HorizontalAlignment="Left" Margin="1600,89,0,0" VerticalAlignment="Top">
+        <Grid HorizontalAlignment="Left"
+              Margin="1600,89,0,0"
+              VerticalAlignment="Top">
 
             <!-- TextBox filter Zipcode -->
-            <TextBox x:Name="ZipFilterBox" TextWrapping="Wrap" VerticalAlignment="Top" Height="27" FontSize="18" FontFamily="Tahoma" BorderBrush="{x:Null}" Foreground="Black" SelectionBrush="{x:Null}" Margin="-1592,79,1419,0"
-                      Text="{Binding ZipCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox x:Name="ZipFilterBox"
+                     TextWrapping="Wrap"
+                     VerticalAlignment="Top"
+                     Height="27"
+                     FontSize="18"
+                     FontFamily="Tahoma"
+                     BorderBrush="{x:Null}"
+                     Foreground="Black"
+                     SelectionBrush="{x:Null}"
+                     Margin="-1592,79,1419,0"
+                     Text="{Binding ZipCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <!-- Placeholder TextBlock -->
-            <TextBlock
-                VerticalAlignment="Top"
-                Margin="-1589,85,1422,0"
-                Foreground="#FFA4A4A4"
-                IsHitTestVisible="False"
-                Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=SearchBox}" Text="Postnummer"/>
+            <TextBlock VerticalAlignment="Top"
+                       Margin="-1589,85,1422,0"
+                       Foreground="#FFA4A4A4"
+                       IsHitTestVisible="False"
+                       Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=SearchBox}"
+                       Text="Postnummer" />
         </Grid>
 
         <DataGrid ItemsSource="{Binding FilteredTenancies}"
