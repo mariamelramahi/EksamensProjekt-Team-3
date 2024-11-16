@@ -360,23 +360,6 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
                 IsHitTestVisible="False"
                 Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=SearchBox}" Text="Postnummer"/>
         </Grid>
-        <ListBox HorizontalAlignment="Left"
-          Height="204"
-          Margin="-12,274,0,0"
-          VerticalAlignment="Top"
-          Width="224"
-          ItemsSource="{Binding FilteredTenancies}" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.Row="1">
-
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding SquareMeter, UpdateSourceTrigger=PropertyChanged}"
-                            Width="200" />
-
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
+        
     </Grid>
 </Window>
