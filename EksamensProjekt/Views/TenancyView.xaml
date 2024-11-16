@@ -1,16 +1,16 @@
 ﻿<Window x:Class="EksamensProjekt.TenancyView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EksamensProjekt"
-        xmlns:vm="clr-namespace:EksamensProjekt.Utilities"
-        mc:Ignorable="d"
-        Title="MainWindow"
-        Height="1080"
-        Width="1920"
-        ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen">
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+         xmlns:local="clr-namespace:EksamensProjekt"
+         xmlns:vm="clr-namespace:EksamensProjekt.Utilities"
+         mc:Ignorable="d"
+         Title="MainWindow"
+         Height="1080"
+         Width="1920"
+         ResizeMode="NoResize"
+         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <vm:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
@@ -215,14 +215,10 @@
         <ListBox x:Name="AddressListBox"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.CanContentScroll="False"
-
                  Margin="226,133,48,488"
                  Grid.RowSpan="2"
                  d:ItemsSource="{Binding FilteredTenancies}"
                  SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}">
-
-      
-
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Expander Header="{Binding Address}"
@@ -476,6 +472,14 @@
                        Text="Postnummer" />
         </Grid>
 
+        <DataGrid ItemsSource="{Binding FilteredTenancies}"
+                  AutoGenerateColumns="true"
+                  Margin="345,61,186,61"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  IsReadOnly="True"
+                  Grid.Row="1">
+        </DataGrid>
 
     </Grid>
 </Window>

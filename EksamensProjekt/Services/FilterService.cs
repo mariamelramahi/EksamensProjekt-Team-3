@@ -80,7 +80,7 @@ public class FilterService
 
 
 
-    }// Method that defines the actual filter criteria
+    //}// Method that defines the actual filter criteria
      //public void ApplyTenancyFilters(ICollectionView collectionView, string zipCode, string street, string status)
      //{
      //    collectionView.Filter = tenancy =>
@@ -134,6 +134,6 @@ public class FilterService
     //    _tenancyCollectionView.Refresh();
     //}
 
-}
+//}
 
 
