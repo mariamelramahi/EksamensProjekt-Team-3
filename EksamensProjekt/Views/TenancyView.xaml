@@ -300,7 +300,7 @@
                                     <TextBlock Text="M²: "
                                                FontWeight="Bold" />
                                     <TextBox Width="50"
-                                             Text="{Binding SqaureMeter}"
+                                             Text="{Binding SquareMeter}"
                                              Margin="10,0,0,0" />
                                 </StackPanel>
 

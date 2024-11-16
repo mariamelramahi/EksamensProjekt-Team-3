@@ -14,5 +14,10 @@ namespace EksamensProjekt.Models
         public string FloorNumber { get; set; }
         public string Zipcode { get; set; }
         public string Country { get; set; }
+
+        public override string ToString()
+        {
+            return Street + " " + Number + ", " + FloorNumber + ", " + Zipcode + ", " + Country;
+        }
     }
 }
