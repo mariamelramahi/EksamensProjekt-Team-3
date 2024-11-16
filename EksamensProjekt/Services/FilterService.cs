@@ -2,12 +2,15 @@ using EksamensProjekt.Models;
 using EksamensProjekt.Services;
 using System.Windows.Navigation;
 
+
+
 public class FilterService
 {
     // Auto-implemented property to store whether the filter is enabled or not
     public bool IsFilterAEnabled { get; set; }
     public bool IsFilterBEnabled { get; set; }
     public bool IsFilterCEnabled { get; set; }
+
 
 
     public bool ApplyCheckboxFilter(Tenancy tenancy)
@@ -77,8 +80,7 @@ public class FilterService
 
 
 
-
-// Method that defines the actual filter criteria
+    }// Method that defines the actual filter criteria
      //public void ApplyTenancyFilters(ICollectionView collectionView, string zipCode, string street, string status)
      //{
      //    collectionView.Filter = tenancy =>
@@ -132,6 +134,6 @@ public class FilterService
     //    _tenancyCollectionView.Refresh();
     //}
 
-//}
+}
 
 
