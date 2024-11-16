@@ -217,7 +217,7 @@
                  ScrollViewer.CanContentScroll="False"
                  Margin="226,133,48,488"
                  Grid.RowSpan="2"
-                 d:ItemsSource="{Binding FilteredTenancies}"
+                 ItemsSource="{Binding FilteredTenancies}"
                  SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
@@ -300,7 +300,7 @@
                                     <TextBlock Text="M²: "
                                                FontWeight="Bold" />
                                     <TextBox Width="50"
-                                             Text="{Binding SqaureMeter}"
+                                             Text="{Binding SquareMeter}"
                                              Margin="10,0,0,0" />
                                 </StackPanel>
 

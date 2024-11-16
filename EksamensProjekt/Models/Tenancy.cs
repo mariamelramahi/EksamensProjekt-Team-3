@@ -33,6 +33,7 @@ namespace EksamensProjekt.Models
         public Company? Company { get; set; }
         public int? OrganizationID { get; set; }
 
+
     }
 }
 
