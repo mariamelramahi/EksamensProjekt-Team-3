@@ -29,6 +29,7 @@ public partial class App : Application
 
         // Initialize dependencies
         string connectionString = AppConfig.GetConnectionString("DefaultConnection");
+        //string connectionString = AppConfig.GetConnectionString("LocalConnection");
 
         // Repositories
         IRepo<User> userRepo = new UserRepo(connectionString);

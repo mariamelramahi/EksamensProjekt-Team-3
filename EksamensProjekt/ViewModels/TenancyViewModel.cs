@@ -66,8 +66,8 @@ namespace EksamensProjekt.ViewModels
                 _selectedTenancy = value;
                 OnPropertyChanged();
                 // Raise CanExecuteChanged on commands depending on SelectedTenancy
-                UpdateTenancyCommand.RaiseCanExecuteChanged();
-                DeleteTenancyCommand.RaiseCanExecuteChanged();
+                UpdateTenancyCommand?.RaiseCanExecuteChanged();
+                DeleteTenancyCommand?.RaiseCanExecuteChanged();
             }
         }
 
@@ -79,7 +79,7 @@ namespace EksamensProjekt.ViewModels
             {
                 _searchInput = value;
                 OnPropertyChanged();
-                RefreshFilteredView(); // Automatically apply filters when search input changes
+                OnFilterChanged(); // Automatically apply filters when search input changes
             }
         }
 
@@ -92,7 +92,7 @@ namespace EksamensProjekt.ViewModels
             {
                 _filterService.IsFilterAEnabled = value;
                 OnPropertyChanged();
-                RefreshFilteredView(); // Apply filters whenever value changes
+                OnFilterChanged(); // Apply filters whenever value changes
             }
         }
 
@@ -103,7 +103,7 @@ namespace EksamensProjekt.ViewModels
             {
                 _filterService.IsFilterBEnabled = value;
                 OnPropertyChanged();
-                RefreshFilteredView();
+                OnFilterChanged();
             }
         }
 
@@ -114,7 +114,7 @@ namespace EksamensProjekt.ViewModels
             {
                 _filterService.IsFilterCEnabled = value;
                 OnPropertyChanged();
-                RefreshFilteredView();
+                OnFilterChanged();
             }
         }
 
@@ -184,17 +184,33 @@ namespace EksamensProjekt.ViewModels
         //    }
         //}
 
-        private void RefreshFilteredView()
-        {
-            _tenancyCollectionView.Refresh(); // Refresh the view to apply updated filters
-        }
-
-
         private bool ApplyCombinedFilter(Tenancy tenancy)
         {
             return _filterService.ApplyCheckboxFilter(tenancy) &&
                    _searchService.ApplySearchFilter(tenancy, SearchInput);
         }
+        
+        
+        // Refresh new way: Threads (quicker / snappy UI)
+        private async void OnFilterChanged()
+        {
+            await Task.Run(() =>
+            {
+                // Perform filtering on a background thread
+                App.Current.Dispatcher.Invoke(() =>
+                {
+                    // Refresh the ICollectionView on the UI thread
+                    _tenancyCollectionView.Refresh();
+                });
+            });
+        }
+
+        // Refresh old way
+        //private void RefreshFilteredView()
+        //{
+        //    _tenancyCollectionView.Refresh(); // Refresh the view to apply updated filters
+        //}
+
 
     }
 }
