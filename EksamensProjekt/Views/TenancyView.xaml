@@ -12,10 +12,10 @@
 
     <Window.Resources>
         <vm:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
-
-        <!-- Define the BooleanToVisibilityConverter here -->
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-
+        
+            <!-- Define the BooleanToVisibilityConverter here -->
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        
     </Window.Resources>
 
     <Grid>
@@ -159,22 +159,17 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
                 <ImageBrush ImageSource="/Images/SearchIconImage.png" Stretch="Uniform"/>
             </Rectangle.Fill>
         </Rectangle>
-
-
         <!--Listbox-->
-
         <ListBox x:Name="AddressListBox"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.CanContentScroll="False"
-                 Margin="226,133,303,10" Grid.RowSpan="2" ItemsSource="{Binding FilteredTenancies}" SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}">
+                 Margin="226,133,48,33" Grid.RowSpan="2" d:ItemsSource="{Binding FilteredTenancies}" SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Expander Header="{Binding Address}" Padding="5" FontSize="16" Margin="5" ExpandDirection="Down">
                         <Border BorderBrush="Gray" BorderThickness="1" Margin="5">
                             <Grid Margin="10">
-
-                                <!--layout of the Expander-->
-
+                                <!-- layout of the Expander -->
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="*"/>
@@ -189,134 +184,82 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                
-         
-                                <!--Tenancy ID-->
-                                 
-        
+                                <!-- Tenancy ID -->
                                 <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Lejemåls ID: " FontWeight="Bold"/>
                                     <TextBlock Width="100" Text="{Binding TenancyID}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
-                                
-         
-                                <!--Tenancy Status-->
-                                 
-        
+                                <!-- Tenancy Status -->
                                 <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Lejemåls Status: " FontWeight="Bold"/>
                                     <ComboBox Width="150" ItemsSource="{Binding TenancyStatus, RelativeSource={RelativeSource AncestorType=Window}}"
                                               SelectedItem="{Binding TenancyStatus}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
-                                
-         
-                                <!--Move In Date-->
-                                 
-        
+                                <!-- Move In Date -->
                                 <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Indflytningsdato: " FontWeight="Bold"/>
                                     <DatePicker SelectedDate="{Binding MoveInDate}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
-                                
-         
-                                <!--Move Out Date-->
-                                 
-        
+                                <!-- Move Out Date -->
                                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Fraflytningsdato: " FontWeight="Bold"/>
                                     <DatePicker SelectedDate="{Binding MoveOutDate}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
-                                
-         
-                                <!--Size-->
-                                 
-        
+                                <!-- Size -->
                                 <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="M²: " FontWeight="Bold"/>
-                                    <TextBox Width="50" Text="{Binding SquareMeter}" Margin="10,0,0,0"/>
+                                    <TextBox Width="50" Text="{Binding SqaureMeter}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
-                                
-         
-                                <!--Rent-->
-                                 
-        
+                                <!-- Rent -->
                                 <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Husleje i kr.: " FontWeight="Bold"/>
                                     <TextBox Width="100" Text="{Binding Rent}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
-                                
-         
-                                <!--Rooms-->
-                                 
-        
+                                <!-- Rooms -->
                                 <StackPanel Grid.Row="3" Grid.Column="0" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Værelser: " FontWeight="Bold"/>
                                     <TextBox Width="50" Text="{Binding Rooms}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
-                                
-         
-                                <!--Bathrooms-->
-                                 
-        
+                                <!-- Bathrooms -->
                                 <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Badeværelser: " FontWeight="Bold"/>
                                     <TextBox Width="50" Text="{Binding Bathrooms}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
-                                
-         
-                                <!--Dog Allowed-->
-                                 
-        
+                                <!-- Dog Allowed -->
                                 <StackPanel Grid.Row="4" Grid.Column="0" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Hund tilladt: " FontWeight="Bold"/>
                                     <ComboBox Width="100" ItemsSource="{Binding PetsAllowed, RelativeSource={RelativeSource AncestorType=Window}}"
                                               SelectedItem="{Binding PetsAllowed}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
-                                
-         
-                                <!--Company-->
-                                 
-        
+                                <!-- Company -->
                                 <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Boligselskab: " FontWeight="Bold"/>
                                     <TextBlock Width="150" Text="{Binding Company}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
-                                
-         
-                                <!--Tenant-->
-                                 
-        
+                                <!-- Tenant -->
                                 <StackPanel Grid.Row="5" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Lejer: " FontWeight="Bold"/>
-                                    <ComboBox Width="150" ItemsSource="{Binding Tenants, RelativeSource={RelativeSource AncestorType=Window}}"
-                                              SelectedItem="{Binding SelectedTenant}" Margin="10,0,0,0"/>
+                                    <ComboBox Width="150" ItemsSource="{Binding tentants, RelativeSource={RelativeSource AncestorType=Window}}"
+                                              SelectedItem="{Binding Tenant}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
-                                
-         
-                                <!--Owner-->
-                                 
-        
+                                <!-- Owner -->
                                 <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Horizontal" Margin="0,5,10,5">
                                     <TextBlock Text="Ejer: " FontWeight="Bold"/>
                                     <TextBlock Width="150" Text="{Binding Owner}" Margin="10,0,0,0"/>
                                 </StackPanel>
 
-                                
-         
-                                <!--Action Buttons-->
-                                 
-        
+                                <!-- Action Buttons -->
                                 <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
                                     <Button Content="Gem Ændringer" Command="{Binding UpdateTenancyCommand}" CommandParameter="{Binding}" Background="#FF006DA0" Foreground="White" Margin="5,0,0,0" Width="100">
                                         <Button.Resources>
@@ -350,7 +293,7 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
 
             <!-- TextBox filter Zipcode -->
             <TextBox x:Name="ZipFilterBox" TextWrapping="Wrap" VerticalAlignment="Top" Height="27" FontSize="18" FontFamily="Tahoma" BorderBrush="{x:Null}" Foreground="Black" SelectionBrush="{x:Null}" Margin="-1592,79,1419,0"
-                      Text="{Binding Zipcode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                      Text="{Binding ZipCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
             <!-- Placeholder TextBlock -->
             <TextBlock
@@ -360,6 +303,7 @@ Command="{Binding CreateTenancyCommand}" CommandParameter="{Binding}" FontSize="
                 IsHitTestVisible="False"
                 Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=SearchBox}" Text="Postnummer"/>
         </Grid>
-        
+
+
     </Grid>
 </Window>
