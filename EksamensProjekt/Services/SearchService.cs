@@ -12,8 +12,15 @@ namespace EksamensProjekt.Services
         {
             if (string.IsNullOrEmpty(searchInput))
                 return true; // No search input means all tenancies match
+            var searchTerms = searchInput.Split(',').Select(term => term.Trim()).Where(term => !string.IsNullOrEmpty(term)).ToList();
 
-            return tenancy.Address?.ToString().Contains(searchInput, StringComparison.OrdinalIgnoreCase) == true;
+            // Check if all of the search terms match either the tenancy address or tenant name
+            bool allTermsMatch = searchTerms.All(term =>
+                (tenancy.Address?.ToString().Contains(term, StringComparison.OrdinalIgnoreCase) == true) ||
+                (tenancy.Tenants?.Any(tenant => tenant.ToString().Contains(term, StringComparison.OrdinalIgnoreCase)) == true));
+
+            // Return true if all search terms match either address or tenant
+            return allTermsMatch;
         }
     }
 
