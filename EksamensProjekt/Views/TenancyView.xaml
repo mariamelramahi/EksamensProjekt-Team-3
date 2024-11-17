@@ -20,7 +20,7 @@
 
         <!-- Define the BooleanToVisibilityConverter here -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <!-- Her defineres StatusValues, som henter alle enum-værdierne fra Status enum'en -->
+        <!-- Defines TenacyStatusValues, gets enum-values from TenacyStatus enum -->
         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="TenancyStatusValues">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="local:TenancyStatus"/>
