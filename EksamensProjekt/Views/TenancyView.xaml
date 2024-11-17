@@ -3,8 +3,10 @@
          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-         xmlns:local="clr-namespace:EksamensProjekt"
+         xmlns:local="clr-namespace:EksamensProjekt.Models"
          xmlns:vm="clr-namespace:EksamensProjekt.Utilities"
+         xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        
          mc:Ignorable="d"
          Title="MainWindow"
          Height="1080"
@@ -17,6 +19,12 @@
 
         <!-- Define the BooleanToVisibilityConverter here -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <!-- Her defineres StatusValues, som henter alle enum-værdierne fra Status enum'en -->
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="TenancyStatusValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:TenancyStatus"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
 
     </Window.Resources>
 
@@ -264,9 +272,7 @@
                                             Margin="0,5,10,5">
                                     <TextBlock Text="Lejemåls Status: "
                                                FontWeight="Bold" />
-                                    <ComboBox Width="150"
-                                              ItemsSource="{Binding TenancyStatus, RelativeSource={RelativeSource AncestorType=Window}}"
-                                              SelectedItem="{Binding TenancyStatus}"
+                                    <ComboBox ItemsSource="{Binding Source={StaticResource TenancyStatusValues}}" SelectedItem="{Binding TenancyStatus}"
                                               Margin="10,0,0,0" />
                                 </StackPanel>
 
@@ -468,7 +474,7 @@
                        Margin="-1589,85,1422,0"
                        Foreground="#FFA4A4A4"
                        IsHitTestVisible="False"
-                       Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=SearchBox}"
+                       Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=ZipFilterBox}"
                        Text="Postnummer" />
         </Grid>
 
