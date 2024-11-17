@@ -16,6 +16,7 @@
 
     <Window.Resources>
         <util:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
+        
 
         <!-- Define the BooleanToVisibilityConverter here -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -25,6 +26,8 @@
                 <x:Type TypeName="local:TenancyStatus"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
+   
+        
 
     </Window.Resources>
 
@@ -353,10 +356,13 @@
                                             Margin="0,5,10,5">
                                     <TextBlock Text="Hund tilladt: "
                                                FontWeight="Bold" />
-                                    <ComboBox Width="100"
-                                              ItemsSource="{Binding PetsAllowed, RelativeSource={RelativeSource AncestorType=Window}}"
-                                              SelectedItem="{Binding PetsAllowed}"
-                                              Margin="10,0,0,0" />
+                                    <ComboBox SelectedValue="{Binding PetsAllowed, Mode=TwoWay}" 
+                                                SelectedValuePath="Tag" 
+                                                Margin="10,0,0,0">
+                                        <ComboBoxItem Content="Ja" Tag="True" />
+                                        <ComboBoxItem Content="Nej" Tag="False" />
+                                    </ComboBox>
+
                                 </StackPanel>
 
                                 <!-- Company -->
@@ -379,8 +385,7 @@
                                     <TextBlock Text="Lejer: "
                                                FontWeight="Bold" />
                                     <ComboBox Width="150"
-                                              ItemsSource="{Binding tentants, RelativeSource={RelativeSource AncestorType=Window}}"
-                                              SelectedItem="{Binding Tenant}"
+                                              ItemsSource="{Binding SelectedTenancy.Tenants}"
                                               Margin="10,0,0,0" />
                                 </StackPanel>
 
