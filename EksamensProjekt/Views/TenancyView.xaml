@@ -4,7 +4,7 @@
          xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
          xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
          xmlns:local="clr-namespace:EksamensProjekt.Models"
-         xmlns:vm="clr-namespace:EksamensProjekt.Utilities"
+         xmlns:util="clr-namespace:EksamensProjekt.Utilities"
          xmlns:sys="clr-namespace:System;assembly=mscorlib"
         
          mc:Ignorable="d"
@@ -15,7 +15,7 @@
          WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <vm:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
+        <util:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
 
         <!-- Define the BooleanToVisibilityConverter here -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
