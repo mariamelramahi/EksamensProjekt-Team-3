@@ -385,7 +385,8 @@
                                     <TextBlock Text="Lejer: "
                                                FontWeight="Bold" />
                                     <ComboBox Width="150"
-                                              ItemsSource="{Binding SelectedTenancy.Tenants}"
+                                              ItemsSource="{Binding Tenants}"
+                                              SelectedItem="{Binding SelectedTenant}"
                                               Margin="10,0,0,0" />
                                 </StackPanel>
 
