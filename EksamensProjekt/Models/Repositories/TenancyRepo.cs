@@ -148,67 +148,6 @@ public class TenancyRepo : IRepo<Tenancy>
         return tenancies;
     }
 
-    //public IEnumerable<Tenancy> ReadAll()
-    //{
-    //    var tenancies = new List<Tenancy>();
-
-    //    using (var conn = new SqlConnection(_connectionString))
-    //    {
-    //        // SQL query to select all tenancy information
-    //        string query =
-    //            "SELECT TenancyID, TenancyStatus, MoveInDate, MoveOutDate, SquareMeter, Rent, Rooms, BathRooms, PetsAllowed, StandardAddressID, OrganizationID, CompanyID " +
-    //            "FROM Tenancy";
-
-    //        var cmd = new SqlCommand(query, conn);
-    //        try
-    //        {
-    //            conn.Open(); // Open the connection to the database
-
-    //            using (SqlDataReader reader = cmd.ExecuteReader())
-    //            {
-    //                while (reader.Read())
-    //                {
-    //                    // Create a Tenancy object from the SQL data reader
-    //                    var tenancy = new Tenancy()
-    //                    {
-    //                        TenancyID = reader.GetInt32(0),
-    //                        TenancyStatus = (TenancyStatus)Enum.Parse(typeof(TenancyStatus), reader.GetString(1)),
-    //                        MoveInDate = reader.IsDBNull(2) ? (DateTime?)null : reader.GetDateTime(2), // Nullable datetime
-    //                        MoveOutDate = reader.IsDBNull(3) ? (DateTime?)null : reader.GetDateTime(3), // Nullable datetime
-    //                        SquareMeter = reader.GetInt32(4),
-    //                        Rent = (int?)reader.GetDecimal(5),
-    //                        Rooms = reader.GetInt32(6),
-    //                        Bathrooms = reader.GetInt32(7),
-    //                        PetsAllowed = reader.GetBoolean(8),
-    //                        OrganizationID = reader.GetInt32(10),
-    //                        Company = reader.IsDBNull(11) ? null : GetCompanyById(reader.GetInt32(11))
-    //                    };
-
-    //                    // Fetch the related address for the tenancy
-    //                    int standardAddressID = reader.GetInt32(9);
-    //                    tenancy.Address = GetStandardAddressById(standardAddressID);
-    //                    // Ensure StandardAddress is not null
-    //                    if (tenancy.Address == null)
-    //                    {
-    //                        Console.WriteLine($"No address found for TenancyID {tenancy.TenancyID} with StandardAddressID {standardAddressID}");
-    //                    }
-
-    //                    // Fetch the related tenants for the tenancy
-    //                    tenancy.Tenants = GetTenantsByTenancyId(tenancy.TenancyID) ?? new List<Tenant>();
-
-    //                    tenancies.Add(tenancy);
-    //                }
-    //            }
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            Console.WriteLine("An error occurred while reading all Tenancy entries: " + ex.Message);
-    //        }
-    //    }
-
-    //    return tenancies;
-    //}
-
     // Helper method to get a StandardAddress by its ID
     private StandardAddress GetStandardAddressById(int standardAddressID)
     {
