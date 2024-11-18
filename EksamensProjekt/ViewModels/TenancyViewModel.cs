@@ -71,6 +71,17 @@ namespace EksamensProjekt.ViewModels
             }
         }
 
+        private Tenant _selectedTenant;
+        public Tenant SelectedTenant
+        {
+            get => _selectedTenant;
+            set
+            {
+                _selectedTenant = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _searchInput;
         public string SearchInput
         {

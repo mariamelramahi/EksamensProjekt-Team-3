@@ -196,10 +196,11 @@ public class TenancyRepo : IRepo<Tenancy>
 
         using (var conn = new SqlConnection(_connectionString))
         {
-            string tenantQuery = "SELECT t.TenantID, t.FirstName, t.LastName, t.PhoneNum, t.Email, t.PartyRole " +
-                                "FROM TenancyTenant tt " +
-                                "JOIN Tenant t ON tt.TenantID = t.TenantID " +
-                                "WHERE tt.TenancyID = @TenancyID";
+            string tenantQuery = "SELECT p.PartyID, p.FirstName, p.LastName, p.PhoneNum, p.Email, p.PartyRole " +
+                                 "FROM TenancyTenant tt " +
+                                 "JOIN Tenant t ON tt.TenantID = t.TenantID " +
+                                 "JOIN Party p ON t.PartyID = p.PartyID " +
+                                 "WHERE tt.TenancyID = @TenancyID";
             var cmd = new SqlCommand(tenantQuery, conn);
             cmd.Parameters.AddWithValue("@TenancyID", tenancyId);
 
