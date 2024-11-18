@@ -81,6 +81,50 @@ namespace EksamensProjekt.Models.Repositories
             throw new NotImplementedException();
         }
 
+        public IEnumerable<Tenant> ReadAll()
+        {
+            var tenants = new List<Tenant>();
+
+            using (var conn = new SqlConnection(_connectionString))
+            {
+                // Use the stored procedure instead of a raw SQL query
+                var cmd = new SqlCommand("sp_ReadAllTenants", conn)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                try
+                {
+                    conn.Open();
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            // Create a Tenant object from the SQL data reader
+                            var tenant = new Tenant()
+                            {
+                                TenantID = reader.GetInt32(0),
+                                PartyID = reader.GetInt32(1),
+                                FirstName = reader.GetString(2),
+                                LastName = reader.GetString(3),
+                                PhoneNum = reader.GetString(4),
+                                Email = reader.GetString(5),
+                                PartyRole = reader.GetString(6)
+                            };
+                            tenants.Add(tenant);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("An error occurred while reading all Tenant entries: " + ex.Message);
+                }
+            }
+
+            return tenants;
+        }
+
         void IRepo<Tenant>.Update(Tenant entity)
         {
             throw new NotImplementedException();
