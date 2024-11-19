@@ -35,7 +35,7 @@ public class TenancyRepo : IRepo<Tenancy>
             connection.Open();
 
             // Creates a new SQL command object with the stored procedure name and the connection
-            var command = new SqlCommand("GetTenancyByID", connection)
+            var command = new SqlCommand("sp_GetTenancyByID", connection)
             {
                 // Specifies that the command is a stored procedure
                 CommandType = CommandType.StoredProcedure
@@ -54,11 +54,11 @@ public class TenancyRepo : IRepo<Tenancy>
                     tenancy = new Tenancy
                     {
                         TenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID")),
-                        TenancyStatus = (TenancyStatus)reader.GetInt32(reader.GetOrdinal("TenancyStatus")),
+                        TenancyStatus = Enum.TryParse<TenancyStatus>(reader.GetString(reader.GetOrdinal("TenancyStatus")), out var status) ? status: TenancyStatus.Vacant, // Provide a default value for invalid statuses.
                         MoveInDate = reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
                         MoveOutDate = reader.GetDateTime(reader.GetOrdinal("MoveOutDate")),
-                        SquareMeter = reader.GetInt32(reader.GetOrdinal("SqaureMeter")),
-                        Rent = reader.GetInt32(reader.GetOrdinal("Rent")),
+                        SquareMeter = reader.GetInt32(reader.GetOrdinal("SquareMeter")),
+                        Rent = reader.IsDBNull(reader.GetOrdinal("Rent")) ? null : (int?)reader.GetDecimal(reader.GetOrdinal("Rent")),
                         Rooms = reader.GetInt32(reader.GetOrdinal("Rooms")),
                         Bathrooms = reader.GetInt32(reader.GetOrdinal("Bathrooms")),
                         PetsAllowed = reader.GetBoolean(reader.GetOrdinal("PetsAllowed")),
@@ -94,15 +94,15 @@ public class TenancyRepo : IRepo<Tenancy>
 
         using (var conn = new SqlConnection(_connectionString))
         {
-            // SQL query to select all tenancy information
-            string query =
-                "SELECT TenancyID, TenancyStatus, MoveInDate, MoveOutDate, SquareMeter, Rent, Rooms, BathRooms, PetsAllowed, StandardAddressID, OrganizationID, CompanyID " +
-                "FROM Tenancy";
+            // calling stored procedure in sql
+            var cmd = new SqlCommand("sp_ReadAllTenancies", conn)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
 
-            var cmd = new SqlCommand(query, conn);
             try
             {
-                conn.Open(); // Open the connection to the database
+                conn.Open();
 
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
@@ -113,8 +113,8 @@ public class TenancyRepo : IRepo<Tenancy>
                         {
                             TenancyID = reader.GetInt32(0),
                             TenancyStatus = (TenancyStatus)Enum.Parse(typeof(TenancyStatus), reader.GetString(1)),
-                            MoveInDate = reader.IsDBNull(2) ? (DateTime?)null : reader.GetDateTime(2), // Nullable datetime
-                            MoveOutDate = reader.IsDBNull(3) ? (DateTime?)null : reader.GetDateTime(3), // Nullable datetime
+                            MoveInDate = reader.IsDBNull(2) ? (DateTime?)null : reader.GetDateTime(2),
+                            MoveOutDate = reader.IsDBNull(3) ? (DateTime?)null : reader.GetDateTime(3),
                             SquareMeter = reader.GetInt32(4),
                             Rent = (int?)reader.GetDecimal(5),
                             Rooms = reader.GetInt32(6),
@@ -127,7 +127,6 @@ public class TenancyRepo : IRepo<Tenancy>
                         // Fetch the related address for the tenancy
                         int standardAddressID = reader.GetInt32(9);
                         tenancy.Address = GetStandardAddressById(standardAddressID);
-                        // Ensure StandardAddress is not null
                         if (tenancy.Address == null)
                         {
                             Console.WriteLine($"No address found for TenancyID {tenancy.TenancyID} with StandardAddressID {standardAddressID}");
@@ -277,7 +276,60 @@ public class TenancyRepo : IRepo<Tenancy>
 
     void IRepo<Tenancy>.Update(Tenancy entity)
     {
-        throw new NotImplementedException();
+        // Validate the entity (check for null)
+        if (entity == null)
+        {
+            throw new ArgumentNullException(nameof(entity), "The tenancy entity cannot be null.");
+        }
+
+        // Use the GetByID method to retrieve the existing tenancy from the database
+        Tenancy existingTenancy = GetByID(entity.TenancyID);
+
+        if (existingTenancy == null)
+        {
+            throw new InvalidOperationException($"Tenancy with ID {entity.TenancyID} not found.");
+        }
+
+        // Call the stored procedure to update the tenancy in the database
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            string procedureName = "sp_UpdateTenancy"; // Name of the stored procedure
+
+            var command = new SqlCommand(procedureName, connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            // Add parameters to the SqlCommand based on whether they are provided in the entity
+            command.Parameters.AddWithValue("@TenancyID", entity.TenancyID);
+
+            // Only add parameters if the corresponding field is provided
+            command.Parameters.AddWithValue("@TenancyStatus", entity.TenancyStatus.HasValue ? (object)entity.TenancyStatus.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@MoveInDate", entity.MoveInDate.HasValue ? (object)entity.MoveInDate.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@MoveOutDate", entity.MoveOutDate.HasValue ? (object)entity.MoveOutDate.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@SquareMeter", entity.SquareMeter > 0 ? (object)entity.SquareMeter : DBNull.Value);
+            command.Parameters.AddWithValue("@Rent", entity.Rent.HasValue ? (object)entity.Rent.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@Rooms", entity.Rooms.HasValue ? (object)entity.Rooms.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@Bathrooms", entity.Bathrooms.HasValue ? (object)entity.Bathrooms.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@PetsAllowed", entity.PetsAllowed.HasValue ? (object)entity.PetsAllowed.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@CompanyID", entity.Company != null && entity.Company.CompanyID != 0 ? (object)entity.Company.CompanyID : DBNull.Value);
+
+            try
+            {
+                connection.Open();
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected == 0)
+                {
+                    throw new InvalidOperationException($"No rows were updated for TenancyID {entity.TenancyID}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while updating the Tenancy: " + ex.Message);
+                throw;
+            }
+        }
     }
 }
 

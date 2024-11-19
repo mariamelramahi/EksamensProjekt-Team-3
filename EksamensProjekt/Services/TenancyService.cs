@@ -67,53 +67,53 @@ namespace EksamensProjekt.Services
             return tenancyRepo.ReadAll().ToList();
         }
 
-        public void UpdateTenancyDetails(Tenancy updatedTenancy)
+        public void UpdateTenancy(Tenancy selectedTenancy)
         {
             // Fetch the existing tenancy from the repository using its ID
-            Tenancy? existingTenancy = tenancyRepo.GetByID(updatedTenancy.TenancyID);
+            Tenancy? existingTenancy = tenancyRepo.GetByID(selectedTenancy.TenancyID);
 
             // Check if the tenancy exists
             if (existingTenancy == null)
             {
-                Console.WriteLine($"Tenancy with ID {updatedTenancy.TenancyID} not found.");
+                Console.WriteLine($"Tenancy with ID {selectedTenancy.TenancyID} not found.");
                 return;
             }
 
             // Update only non-null properties
-            if (updatedTenancy.TenancyStatus.HasValue)
-                existingTenancy.TenancyStatus = updatedTenancy.TenancyStatus;
+            if (selectedTenancy.TenancyStatus.HasValue)
+                existingTenancy.TenancyStatus = selectedTenancy.TenancyStatus;
 
-            if (updatedTenancy.MoveInDate.HasValue)
-                existingTenancy.MoveInDate = updatedTenancy.MoveInDate;
+            if (selectedTenancy.MoveInDate.HasValue)
+                existingTenancy.MoveInDate = selectedTenancy.MoveInDate;
 
-            if (updatedTenancy.MoveOutDate.HasValue)
-                existingTenancy.MoveOutDate = updatedTenancy.MoveOutDate;
+            if (selectedTenancy.MoveOutDate.HasValue)
+                existingTenancy.MoveOutDate = selectedTenancy.MoveOutDate;
 
-            if (updatedTenancy.SquareMeter != 0)
+            if (selectedTenancy.SquareMeter != 0)
             {
-                existingTenancy.SquareMeter = updatedTenancy.SquareMeter;
+                existingTenancy.SquareMeter = selectedTenancy.SquareMeter;
             }
 
-            if (updatedTenancy.Rent.HasValue)
-                existingTenancy.Rent = updatedTenancy.Rent;
+            if (selectedTenancy.Rent.HasValue)
+                existingTenancy.Rent = selectedTenancy.Rent;
 
-            if (updatedTenancy.Rooms.HasValue)
-                existingTenancy.Rooms = updatedTenancy.Rooms;
+            if (selectedTenancy.Rooms.HasValue)
+                existingTenancy.Rooms = selectedTenancy.Rooms;
 
-            if (updatedTenancy.Bathrooms.HasValue)
-                existingTenancy.Bathrooms = updatedTenancy.Bathrooms;
+            if (selectedTenancy.Bathrooms.HasValue)
+                existingTenancy.Bathrooms = selectedTenancy.Bathrooms;
 
-            if (updatedTenancy.PetsAllowed.HasValue)
-                existingTenancy.PetsAllowed = updatedTenancy.PetsAllowed;
+            if (selectedTenancy.PetsAllowed.HasValue)
+                existingTenancy.PetsAllowed = selectedTenancy.PetsAllowed;
 
-            if (updatedTenancy.Tenants != null && updatedTenancy.Tenants.Count > 0)
-                existingTenancy.Tenants = updatedTenancy.Tenants;
+            if (selectedTenancy.Tenants != null && selectedTenancy.Tenants.Count > 0)
+                existingTenancy.Tenants = selectedTenancy.Tenants;
 
-            if (updatedTenancy.Address != null)
-                existingTenancy.Address = updatedTenancy.Address;
+            if (selectedTenancy.Address != null)
+                existingTenancy.Address = selectedTenancy.Address;
 
-            if (updatedTenancy.Company != null)
-                existingTenancy.Company = updatedTenancy.Company;
+            if (selectedTenancy.Company != null)
+                existingTenancy.Company = selectedTenancy.Company;
 
             // Save the updated tenancy
             tenancyRepo.Update(existingTenancy);
