@@ -1,5 +1,6 @@
 ﻿using EksamensProjekt.Models;
 using EksamensProjekt.Models.Repositories;
+using System.Windows;
 
 namespace EksamensProjekt.Services
 {
@@ -126,13 +127,13 @@ namespace EksamensProjekt.Services
             // Check if the tenancy exists
             if (tenancyToDelete == null)
             {
-                Console.WriteLine($"Tenancy with ID {selectedTenancy.TenancyID} not found.");
+                MessageBox.Show($"Tenancy with ID {selectedTenancy.TenancyID} not found.");
                 return;
             }
 
             // Delete the tenancy from the repository
             tenancyRepo.Delete(tenancyToDelete);
-            Console.WriteLine($"Tenancy with ID {selectedTenancy.TenancyID} has been deleted.");
+            MessageBox.Show($"Tenancy with ID {selectedTenancy.TenancyID} has been deleted.");
         }
         public Tenant CreateNewTenant()
         {
