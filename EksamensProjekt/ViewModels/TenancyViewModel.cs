@@ -43,7 +43,7 @@ namespace EksamensProjekt.ViewModels
             //GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);
             //CreateTenancyCommand = new RelayCommand(ExecuteCreateTenancy);
             UpdateTenancyCommand = new RelayCommand(ExecuteUpdateTenancy, CanExecuteModifyTenancy);
-            //DeleteTenancyCommand = new RelayCommand(ExecuteDeleteTenancy, CanExecuteModifyTenancy);
+            DeleteTenancyCommand = new RelayCommand(ExecuteDeleteTenancy, CanExecuteModifyTenancy);
             //UploadFileCommand = new RelayCommand(ExecuteUploadFile);
         }
 
@@ -172,14 +172,14 @@ namespace EksamensProjekt.ViewModels
             }
         }
 
-        //private void ExecuteDeleteTenancy()
-        //{
-        //    if (SelectedTenancy != null)
-        //    {
-        //        _tenancyService.DeleteTenancy(SelectedTenancy);
-        //        Tenancies.Remove(SelectedTenancy);
-        //    }
-        //}
+        private void ExecuteDeleteTenancy()
+        {
+            if (SelectedTenancy != null)
+            {
+                _tenancyService.DeleteTenancy(SelectedTenancy);
+                Tenancies.Remove(SelectedTenancy);
+            }
+        }
 
         private bool CanExecuteModifyTenancy()
         {
