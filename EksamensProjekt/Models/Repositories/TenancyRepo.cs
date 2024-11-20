@@ -3,6 +3,7 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Data.SqlClient; // Til at arbejde med SQL Server via ADO.NET
 using Microsoft.Data.SqlClient;
+using System.Windows;
 
 namespace EksamensProjekt.Models.Repositories;
 
@@ -55,8 +56,8 @@ public class TenancyRepo : IRepo<Tenancy>
                     {
                         TenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID")),
                         TenancyStatus = Enum.TryParse<TenancyStatus>(reader.GetString(reader.GetOrdinal("TenancyStatus")), out var status) ? status: TenancyStatus.Vacant, // Provide a default value for invalid statuses.
-                        MoveInDate = reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
-                        MoveOutDate = reader.GetDateTime(reader.GetOrdinal("MoveOutDate")),
+                        MoveInDate = reader.IsDBNull(reader.GetOrdinal("MoveInDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
+                        MoveOutDate = reader.IsDBNull(reader.GetOrdinal("MoveOutDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("MoveOutDate")),
                         SquareMeter = reader.GetInt32(reader.GetOrdinal("SquareMeter")),
                         Rent = reader.IsDBNull(reader.GetOrdinal("Rent")) ? null : (int?)reader.GetDecimal(reader.GetOrdinal("Rent")),
                         Rooms = reader.GetInt32(reader.GetOrdinal("Rooms")),
@@ -81,7 +82,49 @@ public class TenancyRepo : IRepo<Tenancy>
 
     void IRepo<Tenancy>.Delete(Tenancy entity)
     {
-        throw new NotImplementedException();
+        // Validate the entity (check for null)
+        if (entity == null)
+        {
+            throw new ArgumentNullException(nameof(entity), "The tenancy entity cannot be null.");
+        }
+
+        // Use the GetByID method to retrieve the existing tenancy from the database
+        Tenancy existingTenancy = GetByID(entity.TenancyID);
+
+        if (existingTenancy == null)
+        {
+            throw new InvalidOperationException($"Tenancy with ID {entity.TenancyID} not found.");
+        }
+
+        // Call the stored procedure to update the tenancy in the database
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            string procedureName = "sp_DeleteTenancy"; // Name of the stored procedure
+
+            var command = new SqlCommand(procedureName, connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            // Add parameters to the SqlCommand based on whether they are provided in the entity
+            command.Parameters.AddWithValue("@TenancyID", entity.TenancyID);
+
+            try
+            {
+                connection.Open();
+                int rowsAffected = command.ExecuteNonQuery();
+
+                if (rowsAffected == 0)
+                {
+                    throw new InvalidOperationException($"TenancyID {entity.TenancyID} not deleted");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while deleting the Tenancy: " + ex.Message);
+                throw;
+            }
+        }
     }
 
     Tenancy IRepo<Tenancy>.GetByUsername(string userName)
