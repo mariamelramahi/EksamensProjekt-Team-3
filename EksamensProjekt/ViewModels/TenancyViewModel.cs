@@ -43,7 +43,7 @@ namespace EksamensProjekt.ViewModels
             //GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);
             //CreateTenancyCommand = new RelayCommand(ExecuteCreateTenancy);
             UpdateTenancyCommand = new RelayCommand(ExecuteUpdateTenancy, CanExecuteModifyTenancy);
-            DeleteTenancyCommand = new RelayCommand(ExecuteDeleteTenancy, CanExecuteModifyTenancy);
+            SoftDeleteTenancyCommand = new RelayCommand(ExecuteSoftDeleteTenancy, CanExecuteModifyTenancy);
             //UploadFileCommand = new RelayCommand(ExecuteUploadFile);
         }
 
@@ -67,7 +67,7 @@ namespace EksamensProjekt.ViewModels
                 OnPropertyChanged();
                 // Raise CanExecuteChanged on commands depending on SelectedTenancy
                 UpdateTenancyCommand?.RaiseCanExecuteChanged();
-                DeleteTenancyCommand?.RaiseCanExecuteChanged();
+                SoftDeleteTenancyCommand?.RaiseCanExecuteChanged();
             }
         }
 
@@ -129,12 +129,22 @@ namespace EksamensProjekt.ViewModels
             }
         }
 
+        //public bool IsFilterDEnabled where it is only set to false
+        public bool IsFilterDEnabled
+        {
+            get => _filterService.IsFilterDEnabled;
+            set
+            {
+                _filterService.IsFilterDEnabled = false;
+            }
+        }
+
 
         // Commands
         public RelayCommand GoToHistoryCommand { get; }
         public RelayCommand CreateTenancyCommand { get; }
         public RelayCommand UpdateTenancyCommand { get; }
-        public RelayCommand DeleteTenancyCommand { get; }
+        public RelayCommand SoftDeleteTenancyCommand { get; }
         public RelayCommand UploadFileCommand { get; }
 
 
@@ -172,11 +182,11 @@ namespace EksamensProjekt.ViewModels
             }
         }
 
-        private void ExecuteDeleteTenancy()
+        private void ExecuteSoftDeleteTenancy()
         {
             if (SelectedTenancy != null)
             {
-                _tenancyService.DeleteTenancy(SelectedTenancy);
+                _tenancyService.SoftDeleteTenancy(SelectedTenancy);
                 Tenancies.Remove(SelectedTenancy);
             }
         }

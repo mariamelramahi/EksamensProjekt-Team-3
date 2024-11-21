@@ -10,6 +10,7 @@ public class FilterService
     public bool IsFilterAEnabled { get; set; }
     public bool IsFilterBEnabled { get; set; }
     public bool IsFilterCEnabled { get; set; }
+    public bool IsFilterDEnabled = true;
 
 
 
@@ -36,6 +37,12 @@ public class FilterService
         {
             // Filter C: Only include tenancies with rent below 5000 (example threshold)
             passesFilter &= tenancy.Rent.HasValue && tenancy.Rent < 10000;
+        }
+
+        if (IsFilterDEnabled)
+        {
+            // Filter D: Only include tenancies with IsDeleted set to false
+            passesFilter &= tenancy.IsDeleted == false;
         }
 
         return passesFilter;

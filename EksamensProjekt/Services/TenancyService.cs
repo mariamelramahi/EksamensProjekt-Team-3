@@ -136,6 +136,26 @@ namespace EksamensProjekt.Services
             tenancyRepo.Delete(tenancyToDelete);
             MessageBox.Show($"Tenancy with ID {selectedTenancy.TenancyID} has been deleted.");
         }
+
+        public void SoftDeleteTenancy(Tenancy selectedTenancy)
+        {
+            // Fetch the existing tenancy from the repository using its ID
+            Tenancy? tenancyToDelete = tenancyRepo.GetByID(selectedTenancy.TenancyID);
+
+            // Check if the tenancy exists
+            if (tenancyToDelete == null)
+            {
+                MessageBox.Show($"Tenancy with ID {selectedTenancy.TenancyID} not found.");
+                return;
+            }
+
+            // Soft delete the tenancy by setting the IsDeleted flag to true
+            tenancyToDelete.IsDeleted = true;
+
+            // Save the updated tenancy
+            tenancyRepo.Update(tenancyToDelete);
+            MessageBox.Show($"Tenancy with ID {selectedTenancy.TenancyID} has been deleted.");
+        }
         public Tenant CreateNewTenant()
         {
             // Create a new Tenant object with default values (not saved yet)
