@@ -76,7 +76,7 @@ namespace EksamensProjekt.Services
             // Check if the tenancy exists
             if (existingTenancy == null)
             {
-                Console.WriteLine($"Tenancy with ID {selectedTenancy.TenancyID} not found.");
+                MessageBox.Show($"Tenancy with ID {selectedTenancy.TenancyID} not found.");
                 return;
             }
 
@@ -118,6 +118,7 @@ namespace EksamensProjekt.Services
 
             // Save the updated tenancy
             tenancyRepo.Update(existingTenancy);
+            MessageBox.Show($"Tenancy with ID {selectedTenancy.TenancyID} has been updated.");
         }
         public void DeleteTenancy(Tenancy selectedTenancy)
         {
