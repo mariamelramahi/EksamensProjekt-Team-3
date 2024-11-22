@@ -129,14 +129,10 @@ namespace EksamensProjekt.ViewModels
             }
         }
 
-        //public bool IsFilterDEnabled where it is only set to false
+        //IsFilterDEnabled always true. ICollectionView returns it false when deciding if it should show in the View
         public bool IsFilterDEnabled
         {
             get => _filterService.IsFilterDEnabled;
-            set
-            {
-                _filterService.IsFilterDEnabled = false;
-            }
         }
 
 
