@@ -36,7 +36,7 @@ public class TenancyRepo : IRepo<Tenancy>
             connection.Open();
 
             // Creates a new SQL command object with the stored procedure name and the connection
-            var command = new SqlCommand("sp_GetTenancyByID", connection)
+            var command = new SqlCommand("usp_GetTenancyByID", connection)
             {
                 // Specifies that the command is a stored procedure
                 CommandType = CommandType.StoredProcedure
@@ -100,7 +100,7 @@ public class TenancyRepo : IRepo<Tenancy>
         // Call the stored procedure to update the tenancy in the database
         using (var connection = new SqlConnection(_connectionString))
         {
-            string procedureName = "sp_DeleteTenancy"; // Name of the stored procedure
+            string procedureName = "usp_DeleteTenancy"; // Name of the stored procedure
 
             var command = new SqlCommand(procedureName, connection)
             {
@@ -338,7 +338,7 @@ public class TenancyRepo : IRepo<Tenancy>
         // Call the stored procedure to update the tenancy in the database
         using (var connection = new SqlConnection(_connectionString))
         {
-            string procedureName = "sp_UpdateTenancy"; // Name of the stored procedure
+            string procedureName = "usp_UpdateTenancy"; // Name of the stored procedure
 
             var command = new SqlCommand(procedureName, connection)
             {

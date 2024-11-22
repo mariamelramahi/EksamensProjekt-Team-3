@@ -34,7 +34,7 @@ namespace EksamensProjekt.Models.Repositories
                 connection.Open();
 
                 // Creates a new SQL command object with the stored procedure name and the connection
-                var command = new SqlCommand("GetTenantByID", connection)
+                var command = new SqlCommand("usp_GetTenantByID", connection)
                 {
                     // Specifies that the command is a stored procedure
                     CommandType = CommandType.StoredProcedure
@@ -88,7 +88,7 @@ namespace EksamensProjekt.Models.Repositories
             using (var conn = new SqlConnection(_connectionString))
             {
                 // Use the stored procedure instead of a raw SQL query
-                var cmd = new SqlCommand("sp_ReadAllTenants", conn)
+                var cmd = new SqlCommand("usp_ReadAllTenants", conn)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
