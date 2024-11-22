@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient; // Til at arbejde med SQL Server via ADO.NET
 using Microsoft.Data.SqlClient;
 using System.Windows;
+using System.Runtime.ConstrainedExecution;
 
 namespace EksamensProjekt.Models.Repositories;
 
@@ -122,7 +123,7 @@ public class TenancyRepo : IRepo<Tenancy>
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred while deleting the Tenancy: " + ex.Message);
+                MessageBox.Show("Der opstod en fejl under sletning af lejemålet: " + ex.Message);
                 throw;
             }
         }
@@ -174,7 +175,7 @@ public class TenancyRepo : IRepo<Tenancy>
                         tenancy.Address = GetStandardAddressById(standardAddressID);
                         if (tenancy.Address == null)
                         {
-                            MessageBox.Show($"No address found for TenancyID {tenancy.TenancyID} with StandardAddressID {standardAddressID}");
+                            MessageBox.Show($"Ingen adresse blev fundet for lejemålet med ID {tenancy.TenancyID} og standardadresseID {standardAddressID}.");
                         }
 
                         // Fetch the related tenants for the tenancy
@@ -186,7 +187,7 @@ public class TenancyRepo : IRepo<Tenancy>
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred while reading all Tenancy entries: " + ex.Message);
+                MessageBox.Show("Der opstod en fejl under indlæsningen af alle lejemål: " + ex.Message);
             }
         }
 
@@ -226,7 +227,7 @@ public class TenancyRepo : IRepo<Tenancy>
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred while reading the address: " + ex.Message);
+                Console.WriteLine("Der opstod en fejl under læsning af adressen: " + ex.Message);
             }
         }
 
@@ -272,7 +273,7 @@ public class TenancyRepo : IRepo<Tenancy>
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred while reading tenants: " + ex.Message);
+                Console.WriteLine("Der opstod en fejl under læsning af lejere: " + ex.Message);
             }
         }
 
@@ -307,7 +308,7 @@ public class TenancyRepo : IRepo<Tenancy>
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred while reading the company: " + ex.Message);
+                Console.WriteLine("Der opstod en fejl under læsning af firma: " + ex.Message);
             }
         }
 
@@ -372,7 +373,7 @@ public class TenancyRepo : IRepo<Tenancy>
             }
             catch (Exception ex)
             {
-                MessageBox.Show("An error occurred while updating the Tenancy: " + ex.Message);
+                MessageBox.Show("Der opstod en fejl under opdatering af lejemålet: " + ex.Message);
                 throw;
             }
         }
