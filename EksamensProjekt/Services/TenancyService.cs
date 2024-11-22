@@ -8,14 +8,14 @@ namespace EksamensProjekt.Services
     {
         public IRepo<Tenancy> tenancyRepo;
         public IRepo<Tenant> tenantRepo;
-        public IRepo<Address> standardAddressRepo;
+        public IRepo<Address> AddressRepo;
         
         // Constructor or property injection 
         public TenancyService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo, IRepo<Address> standardAddressRepo)
         {
             this.tenancyRepo = tenancyRepo;
             this.tenantRepo = tenantRepo;
-            this.standardAddressRepo = standardAddressRepo;
+            this.AddressRepo = standardAddressRepo;
         }
 
 
@@ -29,13 +29,13 @@ namespace EksamensProjekt.Services
                 int bathRooms,
                 bool petsAllowed,
                 List<Tenant> tenants,
-                Address standardAddress,
+                Address Address,
                 Company? company)
         {
             // Validate essential input fields
-            if (standardAddress == null)
+            if (Address == null)
             {
-                throw new ArgumentNullException(nameof(standardAddress), "Address cannot be null.");
+                throw new ArgumentNullException(nameof(Address), "Address cannot be null.");
             }
 
             if (company == null)
@@ -55,7 +55,7 @@ namespace EksamensProjekt.Services
                 Bathrooms = bathRooms,
                 PetsAllowed = petsAllowed,
                 Tenants = tenants ?? new List<Tenant>(),
-                Address = standardAddress,
+                Address = Address,
                 Company = company
             };
 
