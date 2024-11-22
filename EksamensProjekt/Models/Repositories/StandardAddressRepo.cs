@@ -33,7 +33,7 @@ public class StandardAddressRepo : IRepo<StandardAddress>
             connection.Open();
 
             // Creates a new SQL command object with the stored procedure name and the connection
-            var command = new SqlCommand("GetStandardAddressByID", connection)
+            var command = new SqlCommand("usp_GetStandardAddressByID", connection)//USP not created in database
             {
                 // Specifies that the command is a stored procedure
                 CommandType = CommandType.StoredProcedure

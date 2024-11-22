@@ -76,7 +76,7 @@ namespace EksamensProjekt.Services
             // Check if the tenancy exists
             if (existingTenancy == null)
             {
-                MessageBox.Show($"Tenancy with ID {selectedTenancy.TenancyID} not found.");
+                MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} finnes ikke.");
                 return;
             }
 
@@ -118,7 +118,7 @@ namespace EksamensProjekt.Services
 
             // Save the updated tenancy
             tenancyRepo.Update(existingTenancy);
-            MessageBox.Show($"Tenancy with ID {selectedTenancy.TenancyID} has been updated.");
+            MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} er blevet opdateret.");
         }
         public void DeleteTenancy(Tenancy selectedTenancy)
         {
@@ -128,13 +128,13 @@ namespace EksamensProjekt.Services
             // Check if the tenancy exists
             if (tenancyToDelete == null)
             {
-                MessageBox.Show($"Tenancy with ID {selectedTenancy.TenancyID} not found.");
+                MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} blev ikke fundet.");
                 return;
             }
 
             // Delete the tenancy from the repository
             tenancyRepo.Delete(tenancyToDelete);
-            MessageBox.Show($"Tenancy with ID {selectedTenancy.TenancyID} has been deleted.");
+            MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} er blevet slettet.");
         }
 
         public void SoftDeleteTenancy(Tenancy selectedTenancy)
@@ -145,7 +145,7 @@ namespace EksamensProjekt.Services
             // Check if the tenancy exists
             if (tenancyToDelete == null)
             {
-                MessageBox.Show($"Tenancy with ID {selectedTenancy.TenancyID} not found.");
+                MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} blev ikke fundet.");
                 return;
             }
 
@@ -154,7 +154,7 @@ namespace EksamensProjekt.Services
 
             // Save the updated tenancy
             tenancyRepo.Update(tenancyToDelete);
-            MessageBox.Show($"Tenancy with ID {selectedTenancy.TenancyID} has been deleted.");
+            MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} er blevet slettet.");
         }
         public Tenant CreateNewTenant()
         {
