@@ -32,6 +32,7 @@ namespace EksamensProjekt.Models
         public StandardAddress? Address { get; set; }
         public Company? Company { get; set; }
         public int? OrganizationID { get; set; }
+        public bool IsDeleted { get; set; }
 
 
     }

@@ -63,6 +63,7 @@ public class TenancyRepo : IRepo<Tenancy>
                         Rooms = reader.GetInt32(reader.GetOrdinal("Rooms")),
                         Bathrooms = reader.GetInt32(reader.GetOrdinal("Bathrooms")),
                         PetsAllowed = reader.GetBoolean(reader.GetOrdinal("PetsAllowed")),
+                        IsDeleted = reader.GetBoolean(reader.GetOrdinal("IsDeleted")),
                         Tenants = new List<Tenant>(),
                         Address = new StandardAddress(),
                         Company = new Company()
@@ -138,7 +139,7 @@ public class TenancyRepo : IRepo<Tenancy>
         using (var conn = new SqlConnection(_connectionString))
         {
             // calling stored procedure in sql
-            var cmd = new SqlCommand("sp_ReadAllTenancies", conn)
+            var cmd = new SqlCommand("usp_ReadAllTenancies", conn)
             {
                 CommandType = CommandType.StoredProcedure
             };
@@ -164,7 +165,8 @@ public class TenancyRepo : IRepo<Tenancy>
                             Bathrooms = reader.GetInt32(7),
                             PetsAllowed = reader.GetBoolean(8),
                             OrganizationID = reader.GetInt32(10),
-                            Company = reader.IsDBNull(11) ? null : GetCompanyById(reader.GetInt32(11))
+                            Company = reader.IsDBNull(11) ? null : GetCompanyById(reader.GetInt32(11)),
+                            IsDeleted = reader.GetBoolean(12)
                         };
 
                         // Fetch the related address for the tenancy
@@ -172,7 +174,7 @@ public class TenancyRepo : IRepo<Tenancy>
                         tenancy.Address = GetStandardAddressById(standardAddressID);
                         if (tenancy.Address == null)
                         {
-                            Console.WriteLine($"No address found for TenancyID {tenancy.TenancyID} with StandardAddressID {standardAddressID}");
+                            MessageBox.Show($"No address found for TenancyID {tenancy.TenancyID} with StandardAddressID {standardAddressID}");
                         }
 
                         // Fetch the related tenants for the tenancy
@@ -184,7 +186,7 @@ public class TenancyRepo : IRepo<Tenancy>
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred while reading all Tenancy entries: " + ex.Message);
+                MessageBox.Show("An error occurred while reading all Tenancy entries: " + ex.Message);
             }
         }
 
@@ -347,7 +349,7 @@ public class TenancyRepo : IRepo<Tenancy>
             command.Parameters.AddWithValue("@TenancyID", entity.TenancyID);
 
             // Only add parameters if the corresponding field is provided
-            command.Parameters.AddWithValue("@TenancyStatus", entity.TenancyStatus.HasValue ? (object)entity.TenancyStatus.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@TenancyStatus", entity.TenancyStatus.HasValue ? (object)entity.TenancyStatus.Value.ToString() : DBNull.Value);
             command.Parameters.AddWithValue("@MoveInDate", entity.MoveInDate.HasValue ? (object)entity.MoveInDate.Value : DBNull.Value);
             command.Parameters.AddWithValue("@MoveOutDate", entity.MoveOutDate.HasValue ? (object)entity.MoveOutDate.Value : DBNull.Value);
             command.Parameters.AddWithValue("@SquareMeter", entity.SquareMeter > 0 ? (object)entity.SquareMeter : DBNull.Value);
@@ -356,6 +358,7 @@ public class TenancyRepo : IRepo<Tenancy>
             command.Parameters.AddWithValue("@Bathrooms", entity.Bathrooms.HasValue ? (object)entity.Bathrooms.Value : DBNull.Value);
             command.Parameters.AddWithValue("@PetsAllowed", entity.PetsAllowed.HasValue ? (object)entity.PetsAllowed.Value : DBNull.Value);
             command.Parameters.AddWithValue("@CompanyID", entity.Company != null && entity.Company.CompanyID != 0 ? (object)entity.Company.CompanyID : DBNull.Value);
+            command.Parameters.AddWithValue("@IsDeleted", entity.IsDeleted ? (object)entity.IsDeleted : DBNull.Value);
 
             try
             {
@@ -369,7 +372,7 @@ public class TenancyRepo : IRepo<Tenancy>
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An error occurred while updating the Tenancy: " + ex.Message);
+                MessageBox.Show("An error occurred while updating the Tenancy: " + ex.Message);
                 throw;
             }
         }
