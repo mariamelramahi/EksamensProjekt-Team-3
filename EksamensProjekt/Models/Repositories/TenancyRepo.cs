@@ -65,7 +65,7 @@ public class TenancyRepo : IRepo<Tenancy>
                         PetsAllowed = reader.GetBoolean(reader.GetOrdinal("PetsAllowed")),
                         IsDeleted = reader.GetBoolean(reader.GetOrdinal("IsDeleted")),
                         Tenants = new List<Tenant>(),
-                        Address = new StandardAddress(),
+                        Address = new Address(),
                         Company = new Company()
                     };
                 }
@@ -170,11 +170,11 @@ public class TenancyRepo : IRepo<Tenancy>
                         };
 
                         // Fetch the related address for the tenancy
-                        int standardAddressID = reader.GetInt32(9);
-                        tenancy.Address = GetStandardAddressById(standardAddressID);
+                        int AddressID = reader.GetInt32(9);
+                        tenancy.Address = GetAddressById(AddressID);
                         if (tenancy.Address == null)
                         {
-                            MessageBox.Show($"No address found for TenancyID {tenancy.TenancyID} with StandardAddressID {standardAddressID}");
+                            MessageBox.Show($"No address found for TenancyID {tenancy.TenancyID} with StandardAddressID {AddressID}");
                         }
 
                         // Fetch the related tenants for the tenancy
@@ -194,9 +194,9 @@ public class TenancyRepo : IRepo<Tenancy>
     }
 
     // Helper method to get a StandardAddress by its ID
-    private StandardAddress GetStandardAddressById(int standardAddressID)
+    private Address GetAddressById(int standardAddressID)
     {
-        StandardAddress address = null;
+        Address address = null;
 
         using (var conn = new SqlConnection(_connectionString))
         {
@@ -212,9 +212,9 @@ public class TenancyRepo : IRepo<Tenancy>
                 {
                     if (reader.Read())
                     {
-                        address = new StandardAddress()
+                        address = new Address()
                         {
-                            StandardAddressID = reader.GetInt32(0),
+                            AddressID = reader.GetInt32(0),
                             Street = reader.GetString(1),
                             Number = reader.GetString(2),
                             FloorNumber = reader.IsDBNull(3) ? null : reader.GetString(3),

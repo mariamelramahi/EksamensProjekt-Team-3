@@ -19,7 +19,6 @@ public class ExcelImportService
         {
             using (var reader = ExcelReaderFactory.CreateReader(stream))
             {
-                // Skip the header row if present
                 while (reader.Read())
                 {
                     // Columns: Street, Number, FloorNumber, Zipcode, Country
@@ -30,7 +29,8 @@ public class ExcelImportService
                         Number = reader.GetValue(2)?.ToString() ?? string.Empty,
                         FloorNumber = reader.GetValue(3)?.ToString() ?? string.Empty,
                         Zipcode = reader.GetValue(4)?.ToString() ?? string.Empty,
-                        Country = reader.GetValue(5)?.ToString() ?? string.Empty
+                        Country = reader.GetValue(5)?.ToString() ?? string.Empty,
+                        IsStandardized = false
                     };
 
                     addresses.Add(address);
