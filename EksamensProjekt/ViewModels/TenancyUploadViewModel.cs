@@ -7,7 +7,7 @@ using System.ComponentModel;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace EksamensProjekt
+namespace EksamensProjekt.ViewModels
 {
     public class TenancyUploadViewModel : ViewModelBase
     {
@@ -29,13 +29,36 @@ namespace EksamensProjekt
             // Initialize ObservableCollection
             ImportedAddresses = new ObservableCollection<Address>();
 
+            //LoadTestData
+            //LoadImportedAddresses();
+
+
             // Set up CollectionView for displaying items
             _importedAddressesCollectionView = CollectionViewSource.GetDefaultView(ImportedAddresses);
 
-            _importedAddressesCollectionView.Filter = item => ApplyCombinedFilter(item as Tenancy);
+            //_importedAddressesCollectionView.Filter = item => ApplyCombinedFilter(item as Tenancy);
+            _importedAddressesCollectionView.Filter = item =>
+            {
+                if (item is Address address)
+                {
+                    // Convert the Address object to a mock Tenancy object for filtering
+                    var mockTenancy = new Tenancy
+                    {
+                        Address = new StandardAddress
+                        {
+                            Street = address.Street,
+                            Number = address.Number,
+                            FloorNumber = address.FloorNumber,
+                            Zipcode = address.Zipcode,
+                            Country = address.Country
+                        }
+                    };
 
-            //LoadTestData
-            LoadImportedAddresses();
+                    return ApplyCombinedFilter(mockTenancy);
+                }
+                return false;
+            };
+
 
             // Initialize commands
             //GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);
@@ -51,8 +74,8 @@ namespace EksamensProjekt
         public ICollectionView FilteredImportedAddresses => _importedAddressesCollectionView;
 
         // Properties
-        private Tenancy _selectedAddress;
-        public Tenancy SelectedAddress
+        private Address _selectedAddress;
+        public Address SelectedAddress
         {
             get => _selectedAddress;
             set
@@ -85,8 +108,9 @@ namespace EksamensProjekt
             get => _filepath;
             set
             {
-                _filepath = "C:\\Users\\marle\\Desktop\\mock_addresses.xlsx";
+                _filepath = value;
                 OnPropertyChanged();
+                LoadImportedAddresses();
             }
         }
 
@@ -142,26 +166,12 @@ namespace EksamensProjekt
         // Methods
         private void LoadImportedAddresses()
         {
-            if (string.IsNullOrEmpty(_filepath))
-            {
-                return; 
-            }
-
             ImportedAddresses.Clear();
 
-            try
+            var importedAddresses = _excelImportService.ImportAddresses(Filepath);
+            foreach (var address in importedAddresses)
             {
-
-                var importedAddresses = _excelImportService.ImportAddresses(Filepath);
-                foreach (var address in importedAddresses)
-                {
-                    ImportedAddresses.Add(address);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error loading addresses: {ex.Message}");
+                ImportedAddresses.Add(address);
             }
         }
 

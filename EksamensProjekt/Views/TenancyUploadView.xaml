@@ -62,7 +62,7 @@
             Foreground="#FF006DA0"
             Height="48"
             FontFamily="Tahoma"
-            Command="{Binding CreateTenancyCommand}"
+            Command="{Binding SaveAddress}"
             CommandParameter="{Binding}"
             FontSize="25"
             BorderBrush="#FF006DA0" Grid.Row="1">
@@ -172,14 +172,29 @@
                       VerticalAlignment="Top" />
                 </StackPanel>
             </Expander>
+            
             <!--Labels-->
             <Label Content="Overblik"
            HorizontalAlignment="Left"
-           Margin="960,27,0,0"
+           Margin="960,22,0,0"
            VerticalAlignment="Top"
-           FontSize="54"
+           FontSize="64"
            FontFamily="Tahoma"
            Foreground="#FF006DA0" />
+            <Label Content="Lejemålsaddresser"
+            HorizontalAlignment="Left"
+            Margin="531,194,0,0"
+            VerticalAlignment="Top"
+            FontSize="44"
+            FontFamily="Tahoma"
+            Foreground="#FF006DA0" />
+            <Label Content="Matchende addresser"
+            HorizontalAlignment="Left"
+            Margin="1247,193,0,0"
+            VerticalAlignment="Top"
+            FontSize="44"
+            FontFamily="Tahoma"
+            Foreground="#FF006DA0" />   
 
             <!--Searchbox-->
             <Rectangle HorizontalAlignment="Left"
@@ -221,96 +236,57 @@
                         Stretch="Uniform" />
                 </Rectangle.Fill>
             </Rectangle>
-            <!--Listbox-->
+            
+            <!--ListBoxes-->
             <ListBox x:Name="AddressListBox"
-             ScrollViewer.VerticalScrollBarVisibility="Auto"
-             ScrollViewer.CanContentScroll="False"
-             Margin="256,262,876,165"
-             Grid.RowSpan="2"
-             ItemsSource="{Binding FilteredImportedAddresses}"
-             SelectedItem="{Binding SelectedAddress, Mode=TwoWay}">
+         ScrollViewer.VerticalScrollBarVisibility="Auto"
+         ScrollViewer.CanContentScroll="True"
+         Margin="256,262,876,165"
+         ItemsSource="{Binding FilteredImportedAddresses}"
+         SelectedItem="{Binding SelectedAddress, Mode=TwoWay}"
+         Grid.RowSpan="2">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Expander Header="{Binding Address}"
-                          Padding="5"
-                          FontSize="16"
-                          Margin="5"
-                          ExpandDirection="Down">
-                            <Border BorderBrush="Gray"
-                            BorderThickness="1"
-                            Margin="5">
-                                <Grid Margin="10">
-                                    <!-- layout of the Expander -->
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-
-                                    <!-- Action Buttons -->
-                                    <StackPanel Grid.Row="6"
-                                        Grid.ColumnSpan="2"
-                                        Orientation="Horizontal"
-                                        HorizontalAlignment="Right"
-                                        Margin="0,10,0,0">
-                                        <Button Content="Gem Ændringer"
-                                        Command="{Binding DataContext.UpdateTenancyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                        CommandParameter="{Binding}"
-                                        Background="#FF006DA0"
-                                        Foreground="White"
-                                        Margin="5,0,0,0"
-                                        Width="100">
-                                            <Button.Resources>
-                                                <Style TargetType="{x:Type Border}">
-                                                    <Setter Property="CornerRadius"
-                                                    Value="5" />
-                                                </Style>
-                                            </Button.Resources>
-                                        </Button>
-                                        <Button Content="Slet Lejer"
-                                        Command="{Binding DeleteTenantCommand}"
-                                        CommandParameter="{Binding}"
-                                        Background="#FF006DA0"
-                                        Foreground="White"
-                                        Margin="5,0,0,0"
-                                        Width="100">
-                                            <Button.Resources>
-                                                <Style TargetType="{x:Type Border}">
-                                                    <Setter Property="CornerRadius"
-                                                    Value="5" />
-                                                </Style>
-                                            </Button.Resources>
-                                        </Button>
-                                        <Button x:Name="NewTenant"
-                                        Content="Tilføj Lejer"
-                                        Command="{Binding AddTenantCommand}"
-                                        CommandParameter="{Binding}"
-                                        Background="#FF006DA0"
-                                        Foreground="White"
-                                        Margin="5,0,0,0"
-                                        Width="100">
-                                            <Button.Resources>
-                                                <Style TargetType="{x:Type Border}">
-                                                    <Setter Property="CornerRadius"
-                                                    Value="5" />
-                                                </Style>
-                                            </Button.Resources>
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </Expander>
+                        <!-- Just a TextBlock to display the combined address -->
+                        <TextBlock FontSize="16" Padding="5">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}">
+                                    <Binding Path="Street"/>
+                                    <Binding Path="Number"/>
+                                    <Binding Path="Zipcode"/>
+                                    <Binding Path="Country"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+
+            <ListBox x:Name="StandarisedAddressListBox"
+                    ScrollViewer.VerticalScrollBarVisibility="Auto"
+                    ScrollViewer.CanContentScroll="True"
+                    Margin="1104,262,28,165"
+                    ItemsSource="{Binding FilteredMatchedAddresses}"
+                    SelectedItem="{Binding SelectedAddress, Mode=TwoWay}"
+                    Grid.RowSpan="2">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <!-- Just a TextBlock to display the combined address -->
+                        <TextBlock FontSize="16" Padding="5">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}">
+                                    <Binding Path="Street"/>
+                                    <Binding Path="Number"/>
+                                    <Binding Path="Zipcode"/>
+                                    <Binding Path="Country"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+
             <Grid HorizontalAlignment="Left"
           Margin="1600,89,0,0"
           VerticalAlignment="Top">
@@ -336,257 +312,11 @@
                    Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=ZipFilterBox}"
                    Text="Postnummer" />
             </Grid>
-            <ListBox x:Name="AddressListBox_Copy"
-                ScrollViewer.VerticalScrollBarVisibility="Auto"
-                ScrollViewer.CanContentScroll="False"
-                Margin="1080,261,52,165"
-                Grid.RowSpan="2"
-                ItemsSource="{Binding FilteredTenancies}"
-                SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Expander Header="{Binding Address}"
-                            Padding="5"
-                            FontSize="16"
-                            Margin="5"
-                            ExpandDirection="Down">
-                            <Border BorderBrush="Gray"
-                                BorderThickness="1"
-                                Margin="5">
-                                <Grid Margin="10">
-                                    <!-- layout of the Expander -->
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-
-                                    <!-- Tenancy ID -->
-                                    <StackPanel Grid.Row="0"
-                                        Grid.Column="0"
-                                        Orientation="Horizontal"
-                                        Margin="0,5,10,5">
-                                        <TextBlock Text="Lejemåls ID: "
-                                            FontWeight="Bold" />
-                                        <TextBlock Width="100"
-                                            Text="{Binding TenancyID}"
-                                            Margin="10,0,0,0" />
-                                    </StackPanel>
-
-                                    <!-- Tenancy Status -->
-                                    <StackPanel Grid.Row="0"
-                                        Grid.Column="1"
-                                        Orientation="Horizontal"
-                                        Margin="0,5,10,5">
-                                        <TextBlock Text="Lejemåls Status: "
-                                            FontWeight="Bold" />
-                                        <ComboBox ItemsSource="{Binding Source={StaticResource TenancyStatusValues}}" SelectedItem="{Binding TenancyStatus}"
-                                            Margin="10,0,0,0" />
-                                    </StackPanel>
-
-                                    <!-- Move In Date -->
-                                    <StackPanel Grid.Row="1"
-                                        Grid.Column="0"
-                                        Orientation="Horizontal"
-                                        Margin="0,5,10,5">
-                                        <TextBlock Text="Indflytningsdato: "
-                                            FontWeight="Bold" />
-                                        <DatePicker SelectedDate="{Binding MoveInDate}"
-                                            Margin="10,0,0,0" />
-                                    </StackPanel>
-
-                                    <!-- Move Out Date -->
-                                    <StackPanel Grid.Row="1"
-                                        Grid.Column="1"
-                                        Orientation="Horizontal"
-                                        Margin="0,5,10,5">
-                                        <TextBlock Text="Fraflytningsdato: "
-                                            FontWeight="Bold" />
-                                        <DatePicker SelectedDate="{Binding MoveOutDate}"
-                                            Margin="10,0,0,0" />
-                                    </StackPanel>
-
-                                    <!-- Size -->
-                                    <StackPanel Grid.Row="2"
-                                        Grid.Column="0"
-                                        Orientation="Horizontal"
-                                        Margin="0,5,10,5">
-                                        <TextBlock Text="M²: "
-                                            FontWeight="Bold" />
-                                        <TextBox Width="50"
-                                            Text="{Binding SquareMeter}"
-                                            Margin="10,0,0,0" />
-                                    </StackPanel>
-
-                                    <!-- Rent -->
-                                    <StackPanel Grid.Row="2"
-                                        Grid.Column="1"
-                                        Orientation="Horizontal"
-                                        Margin="0,5,10,5">
-                                        <TextBlock Text="Husleje i kr.: "
-                                            FontWeight="Bold" />
-                                        <TextBox Width="100"
-                                            Text="{Binding Rent}"
-                                            Margin="10,0,0,0" />
-                                    </StackPanel>
-
-                                    <!-- Rooms -->
-                                    <StackPanel Grid.Row="3"
-                                        Grid.Column="0"
-                                        Orientation="Horizontal"
-                                        Margin="0,5,10,5">
-                                        <TextBlock Text="Værelser: "
-                                            FontWeight="Bold" />
-                                        <TextBox Width="50"
-                                            Text="{Binding Rooms}"
-                                            Margin="10,0,0,0" />
-                                    </StackPanel>
-
-                                    <!-- Bathrooms -->
-                                    <StackPanel Grid.Row="3"
-                                        Grid.Column="1"
-                                        Orientation="Horizontal"
-                                        Margin="0,5,10,5">
-                                        <TextBlock Text="Badeværelser: "
-                                            FontWeight="Bold" />
-                                        <TextBox Width="50"
-                                            Text="{Binding Bathrooms}"
-                                            Margin="10,0,0,0" />
-                                    </StackPanel>
-
-                                    <!-- Dog Allowed -->
-                                    <StackPanel Grid.Row="4"
-                                        Grid.Column="0"
-                                        Orientation="Horizontal"
-                                        Margin="0,5,10,5">
-                                        <TextBlock Text="Hund tilladt: "
-                                            FontWeight="Bold" />
-                                        <ComboBox SelectedValue="{Binding PetsAllowed, Mode=TwoWay}" 
-                                            SelectedValuePath="Tag" 
-                                            Margin="10,0,0,0">
-                                            <ComboBoxItem Content="Ja" Tag="True" />
-                                            <ComboBoxItem Content="Nej" Tag="False" />
-                                        </ComboBox>
-
-                                    </StackPanel>
-
-                                    <!-- Company -->
-                                    <StackPanel Grid.Row="4"
-                                        Grid.Column="1"
-                                        Orientation="Horizontal"
-                                        Margin="0,5,10,5">
-                                        <TextBlock Text="Boligselskab: "
-                                            FontWeight="Bold" />
-                                        <TextBlock Width="150"
-                                            Text="{Binding Company}"
-                                            Margin="10,0,0,0" />
-                                    </StackPanel>
-
-                                    <!-- Tenant -->
-                                    <StackPanel Grid.Row="5"
-                                        Grid.ColumnSpan="2"
-                                        Orientation="Horizontal"
-                                        Margin="0,5,10,5">
-                                        <TextBlock Text="Lejer: "
-                                            FontWeight="Bold" />
-                                        <ComboBox Width="150"
-                                            ItemsSource="{Binding Tenants}"
-                                            SelectedItem="{Binding SelectedTenant}"
-                                            Margin="10,0,0,0" />
-                                    </StackPanel>
-
-                                    <!-- Owner -->
-                                    <StackPanel Grid.Row="5"
-                                        Grid.Column="1"
-                                        Orientation="Horizontal"
-                                        Margin="0,5,10,5">
-                                        <TextBlock Text="Ejer: "
-                                            FontWeight="Bold" />
-                                        <TextBlock Width="150"
-                                            Text="{Binding Owner}"
-                                            Margin="10,0,0,0" />
-                                    </StackPanel>
-
-                                    <!-- Action Buttons -->
-                                    <StackPanel Grid.Row="6"
-                                        Grid.ColumnSpan="2"
-                                        Orientation="Horizontal"
-                                        HorizontalAlignment="Right"
-                                        Margin="0,10,0,0">
-                                        <Button Content="Gem Ændringer"
-                                            Command="{Binding DataContext.UpdateTenancyCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
-                                            CommandParameter="{Binding}"
-                                            Background="#FF006DA0"
-                                            Foreground="White"
-                                            Margin="5,0,0,0"
-                                            Width="100">
-                                            <Button.Resources>
-                                                <Style TargetType="{x:Type Border}">
-                                                    <Setter Property="CornerRadius"
-                                                        Value="5" />
-                                                </Style>
-                                            </Button.Resources>
-                                        </Button>
-                                        <Button Content="Slet Lejer"
-                                            Command="{Binding DeleteTenantCommand}"
-                                            CommandParameter="{Binding}"
-                                            Background="#FF006DA0"
-                                            Foreground="White"
-                                            Margin="5,0,0,0"
-                                            Width="100">
-                                            <Button.Resources>
-                                                <Style TargetType="{x:Type Border}">
-                                                    <Setter Property="CornerRadius"
-                                                        Value="5" />
-                                                </Style>
-                                            </Button.Resources>
-                                        </Button>
-                                        <Button x:Name="NewTenant"
-                                            Content="Tilføj Lejer"
-                                            Command="{Binding AddTenantCommand}"
-                                            CommandParameter="{Binding}"
-                                            Background="#FF006DA0"
-                                            Foreground="White"
-                                            Margin="5,0,0,0"
-                                            Width="100">
-                                            <Button.Resources>
-                                                <Style TargetType="{x:Type Border}">
-                                                    <Setter Property="CornerRadius"
-                                                        Value="5" />
-                                                </Style>
-                                            </Button.Resources>
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
-                            </Border>
-                        </Expander>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Label Content="Lejemålsdata"
-                HorizontalAlignment="Left"
-                Margin="531,194,0,0"
-                VerticalAlignment="Top"
-                FontSize="44"
-                FontFamily="Tahoma"
-                Foreground="#FF006DA0" />
-            <Label Content="Standardiserede addresser"
-                HorizontalAlignment="Left"
-                Margin="1247,193,0,0"
-                VerticalAlignment="Top"
-                FontSize="44"
-                FontFamily="Tahoma"
-                Foreground="#FF006DA0" />
+            
+            
             <!-- ListBox for drag and drop -->
             <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="256,61,1256,387"/>
         </Grid>
+
     </Grid>
 </Window>
