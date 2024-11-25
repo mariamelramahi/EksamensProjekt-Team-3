@@ -2,8 +2,15 @@
 
 public class Company : Party
 {
-
+    public int CompanyID { get; set; }
     public string CompanyName { get; set; }
+
+
+    // Parameterless constructor for creating a Tenant with default values.
+    public Company() : base(string.Empty, string.Empty, "Company")
+    {
+        CompanyName = string.Empty;
+    }
 
 
     // Constructor to initialize the Company object, including properties inherited from Party.

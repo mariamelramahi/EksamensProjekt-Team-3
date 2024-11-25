@@ -56,7 +56,7 @@ public class TenancyRepo : IRepo<Tenancy>
                     tenancy = new Tenancy
                     {
                         TenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID")),
-                        TenancyStatus = Enum.TryParse<TenancyStatus>(reader.GetString(reader.GetOrdinal("TenancyStatus")), out var status) ? status: TenancyStatus.Vacant, // Provide a default value for invalid statuses.
+                        TenancyStatus = Enum.TryParse<TenancyStatus>(reader.GetString(reader.GetOrdinal("TenancyStatus")), out var status) ? status : TenancyStatus.Vacant, // Provide a default value for invalid statuses.
                         MoveInDate = reader.IsDBNull(reader.GetOrdinal("MoveInDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
                         MoveOutDate = reader.IsDBNull(reader.GetOrdinal("MoveOutDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("MoveOutDate")),
                         SquareMeter = reader.GetInt32(reader.GetOrdinal("SquareMeter")),
@@ -171,11 +171,11 @@ public class TenancyRepo : IRepo<Tenancy>
                         };
 
                         // Fetch the related address for the tenancy
-                        int standardAddressID = reader.GetInt32(9);
-                        tenancy.Address = GetStandardAddressById(standardAddressID);
+                        int AddressID = reader.GetInt32(9);
+                        tenancy.Address = GetAddressById(AddressID);
                         if (tenancy.Address == null)
                         {
-                            MessageBox.Show($"Ingen adresse blev fundet for lejemålet med ID {tenancy.TenancyID} og standardadresseID {standardAddressID}.");
+                            MessageBox.Show($"Ingen adresse blev fundet for lejemålet med ID {tenancy.TenancyID} og adresseID {AddressID}.");
                         }
 
                         // Fetch the related tenants for the tenancy
@@ -194,16 +194,16 @@ public class TenancyRepo : IRepo<Tenancy>
         return tenancies;
     }
 
-    // Helper method to get a StandardAddress by its ID
-    private Address GetStandardAddressById(int standardAddressID)
+    // Helper method to get a Address by its ID
+    private Address GetAddressById(int AddressID)
     {
         Address address = null;
 
         using (var conn = new SqlConnection(_connectionString))
         {
-            string addressQuery = "SELECT StandardAddressID, Street, Number, FloorNumber, Zipcode, Country FROM StandardAddress WHERE StandardAddressID = @StandardAddressID";
+            string addressQuery = "SELECT AddressID, Street, Number, FloorNumber, Zipcode, Country FROM Address WHERE AddressID = @AddressID";
             var cmd = new SqlCommand(addressQuery, conn);
-            cmd.Parameters.AddWithValue("@StandardAddressID", standardAddressID);
+            cmd.Parameters.AddWithValue("@AddressID", AddressID);
 
             try
             {

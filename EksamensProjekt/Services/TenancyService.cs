@@ -8,14 +8,14 @@ namespace EksamensProjekt.Services
     {
         public IRepo<Tenancy> tenancyRepo;
         public IRepo<Tenant> tenantRepo;
-        public IRepo<Address> standardAddressRepo;
+        public IRepo<Address> AddressRepo;
         
         // Constructor or property injection 
-        public TenancyService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo, IRepo<Address> standardAddressRepo)
+        public TenancyService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo, IRepo<Address> AddressRepo)
         {
             this.tenancyRepo = tenancyRepo;
             this.tenantRepo = tenantRepo;
-            this.standardAddressRepo = standardAddressRepo;
+            this.AddressRepo = AddressRepo;
         }
 
 
@@ -29,13 +29,13 @@ namespace EksamensProjekt.Services
                 int bathRooms,
                 bool petsAllowed,
                 List<Tenant> tenants,
-                Address standardAddress,
+                Address Address,
                 Company? company)
         {
             // Validate essential input fields
-            if (standardAddress == null)
+            if (Address == null)
             {
-                throw new ArgumentNullException(nameof(standardAddress), "Address cannot be null.");
+                throw new ArgumentNullException(nameof(Address), "Address cannot be null.");
             }
 
             if (company == null)
@@ -55,7 +55,7 @@ namespace EksamensProjekt.Services
                 Bathrooms = bathRooms,
                 PetsAllowed = petsAllowed,
                 Tenants = tenants ?? new List<Tenant>(),
-                Address = standardAddress,
+                Address = Address,
                 Company = company
             };
 
@@ -159,13 +159,7 @@ namespace EksamensProjekt.Services
         public Tenant CreateNewTenant()
         {
             // Create a new Tenant object with default values (not saved yet)
-            Tenant tenant = new Tenant
-            {
-                FirstName = string.Empty,
-                LastName = string.Empty,
-                PhoneNum = string.Empty,
-                Email = string.Empty
-            };
+            Tenant tenant = new(); // Parameterless constructor in Tenant model
 
             // Return the new Tenant object without saving it yet
             return tenant;
