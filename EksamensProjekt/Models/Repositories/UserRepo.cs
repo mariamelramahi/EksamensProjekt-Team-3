@@ -6,34 +6,17 @@ using Microsoft.Data.SqlClient;
 
 namespace EksamensProjekt.Models.Repositories;
 
-public class UserRepo : IRepo<User>
+public class UserRepo : IUserRepo<User>
 {
+
     private readonly string _connectionString;
+
 
     public UserRepo(string connectionString)
     {
         _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
     }
 
-    public void Create(User entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Delete(int entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    public User GetByID(int id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public User GetByName(string userName)
-    {
-        throw new NotImplementedException();
-    }
 
     // Method to get user by usernameInput
     public User GetByUsername(string usernameInput)
@@ -68,18 +51,4 @@ public class UserRepo : IRepo<User>
         return user;
     }
 
-    public IEnumerable<User> ReadAll()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Update(User entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    void IRepo<User>.Delete(User entity)
-    {
-        throw new NotImplementedException();
-    }
 }

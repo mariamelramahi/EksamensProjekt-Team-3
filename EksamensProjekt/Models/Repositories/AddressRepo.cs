@@ -74,10 +74,6 @@ public class AddressRepo : IRepo<Address>
         throw new NotImplementedException();
     }
 
-    Address IRepo<Address>.GetByUsername(string userName)
-    {
-        throw new NotImplementedException();
-    }
 
     IEnumerable<Address> IRepo<Address>.ReadAll()
     {

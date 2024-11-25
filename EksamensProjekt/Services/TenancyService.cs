@@ -30,7 +30,8 @@ namespace EksamensProjekt.Services
                 bool petsAllowed,
                 List<Tenant> tenants,
                 Address Address,
-                Company? company)
+                Company? company,
+                Organization organization)
         {
             // Validate essential input fields
             if (Address == null)
@@ -56,7 +57,8 @@ namespace EksamensProjekt.Services
                 PetsAllowed = petsAllowed,
                 Tenants = tenants ?? new List<Tenant>(),
                 Address = Address,
-                Company = company
+                Company = company,
+                Organization = organization
             };
 
             // Save the new tenancy using the repository
@@ -91,10 +93,8 @@ namespace EksamensProjekt.Services
                 existingTenancy.MoveOutDate = selectedTenancy.MoveOutDate;
 
             if (selectedTenancy.SquareMeter != 0)
-            {
                 existingTenancy.SquareMeter = selectedTenancy.SquareMeter;
-            }
-
+            
             if (selectedTenancy.Rent.HasValue)
                 existingTenancy.Rent = selectedTenancy.Rent;
 
@@ -115,6 +115,9 @@ namespace EksamensProjekt.Services
 
             if (selectedTenancy.Company != null)
                 existingTenancy.Company = selectedTenancy.Company;
+            
+            if (selectedTenancy.Organization != null)
+                existingTenancy.Organization = selectedTenancy.Organization;
 
             // Save the updated tenancy
             tenancyRepo.Update(existingTenancy);

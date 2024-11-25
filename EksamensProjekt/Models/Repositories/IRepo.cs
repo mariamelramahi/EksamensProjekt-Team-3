@@ -9,7 +9,6 @@ namespace EksamensProjekt.Models.Repositories
     public interface IRepo<T>
     {
         T GetByID(int id);
-        T GetByUsername(string userName);
         void Create(T entity);
         IEnumerable<T> ReadAll();
         void Update(T entity);

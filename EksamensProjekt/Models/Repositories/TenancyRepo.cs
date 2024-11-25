@@ -129,10 +129,8 @@ public class TenancyRepo : IRepo<Tenancy>
         }
     }
 
-    Tenancy IRepo<Tenancy>.GetByUsername(string userName)
-    {
-        throw new NotImplementedException();
-    }
+
+
     public IEnumerable<Tenancy> ReadAll()
     {
         var tenancies = new List<Tenancy>();
@@ -165,7 +163,7 @@ public class TenancyRepo : IRepo<Tenancy>
                             Rooms = reader.GetInt32(6),
                             Bathrooms = reader.GetInt32(7),
                             PetsAllowed = reader.GetBoolean(8),
-                            OrganizationID = reader.GetInt32(10),
+                            Organization = reader.IsDBNull(reader.GetOrdinal("OrganizationID")) ? null : new Organization { PartyID = reader.GetInt32(reader.GetOrdinal("OrganizationID")) },
                             Company = reader.IsDBNull(11) ? null : GetCompanyById(reader.GetInt32(11)),
                             IsDeleted = reader.GetBoolean(12)
                         };
