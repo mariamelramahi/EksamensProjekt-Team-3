@@ -14,7 +14,7 @@ namespace EksamensProjekt.Models
         public string FloorNumber { get; set; }
         public string Zipcode { get; set; }
         public string Country { get; set; }
-        public string IsStandardized { get; set; }
+        public bool IsStandardized { get; set; }
 
         public override string ToString()
         {

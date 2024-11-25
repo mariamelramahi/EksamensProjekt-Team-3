@@ -1,3 +1,4 @@
+using EksamensProjekt.Utilities.DataAccess;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Windows;
@@ -129,6 +130,7 @@ public class TenancyRepo : IRepo<Tenancy>
     public IEnumerable<Tenancy> ReadAll()
     {
         var tenancies = new List<Tenancy>();
+        var tenancyMap = new Dictionary<int, Tenancy>();
 
         using (var conn = new SqlConnection(_connectionString))
         {
@@ -144,58 +146,22 @@ public class TenancyRepo : IRepo<Tenancy>
                 {
                     while (reader.Read())
                     {
-                        var tenancy = new Tenancy
-                        {
-                            TenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID")),
-                            TenancyStatus = (TenancyStatus)Enum.Parse(typeof(TenancyStatus), reader.GetString(reader.GetOrdinal("TenancyStatus"))),
-                            MoveInDate = reader.IsDBNull(reader.GetOrdinal("MoveInDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
-                            MoveOutDate = reader.IsDBNull(reader.GetOrdinal("MoveOutDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("MoveOutDate")),
-                            SquareMeter = reader.GetInt32(reader.GetOrdinal("SquareMeter")),
-                            Rent = reader.IsDBNull(reader.GetOrdinal("Rent")) ? (decimal?)null : reader.GetDecimal(reader.GetOrdinal("Rent")),
-                            Rooms = reader.GetInt32(reader.GetOrdinal("Rooms")),
-                            Bathrooms = reader.GetInt32(reader.GetOrdinal("Bathrooms")),
-                            PetsAllowed = reader.GetBoolean(reader.GetOrdinal("PetsAllowed")),
-                            IsDeleted = reader.GetBoolean(reader.GetOrdinal("IsDeleted")),
-                            // Populate Organization details directly
-                            Organization = new Organization
-                            {
-                                OrganizationID = reader.GetInt32(reader.GetOrdinal("OrganizationID")),
-                                OrganizationName = reader.GetString(reader.GetOrdinal("OrganizationName")),
-                                PhoneNum = reader.GetString(reader.GetOrdinal("OrganizationPhoneNum")),
-                                Email = reader.GetString(reader.GetOrdinal("OrganizationEmail"))
-                            }
-                        };
+                        int tenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID"));
 
-                        // Populate Company if it exists
-                        if (!reader.IsDBNull(reader.GetOrdinal("CompanyID")))
+                        // Check if we already added this tenancy, otherwise create a new instance
+                        if (!tenancyMap.ContainsKey(tenancyID))
                         {
-                            tenancy.Company = new Company
-                            {
-                                CompanyID = reader.GetInt32(reader.GetOrdinal("CompanyID")),
-                                CompanyName = reader.GetString(reader.GetOrdinal("CompanyName")),
-                                PhoneNum = reader.GetString(reader.GetOrdinal("CompanyPhoneNum")),
-                                Email = reader.GetString(reader.GetOrdinal("CompanyEmail"))
-                            };
+                            var tenancy = SqlDataMapper.PopulateTenancyFromReader(reader);
+                            tenancyMap[tenancyID] = tenancy;
+                            tenancies.Add(tenancy);
                         }
 
-                        tenancies.Add(tenancy);
-
-
-
-                        //Fetch the related address for the tenancy
-
-                        int AddressID = reader.GetInt32(9);
-                        tenancy.Address = GetAddressById(AddressID);
-                        if (tenancy.Address == null)
+                        // Add tenant details if they exist
+                        if (!reader.IsDBNull(reader.GetOrdinal("TenantID")))
                         {
-                            MessageBox.Show($"Ingen adresse blev fundet for lejemålet med ID {tenancy.TenancyID} og adresseID {AddressID}.");
+                            var tenant = SqlDataMapper.PopulateTenantFromReader(reader);
+                            tenancyMap[tenancyID].Tenants.Add(tenant);
                         }
-
-                        // Fetch the related tenants for the tenancy
-                        tenancy.Tenants = GetTenantsByTenancyId(tenancy.TenancyID) ?? new List<Tenant>();
-
-                        tenancies.Add(tenancy);
-
                     }
                 }
             }
@@ -209,131 +175,248 @@ public class TenancyRepo : IRepo<Tenancy>
     }
 
 
-    // Helper method to get a Address by its ID
-    private Address GetAddressById(int AddressID)
-    {
-        Address address = null;
 
-        using (var conn = new SqlConnection(_connectionString))
-        {
-            string addressQuery = "SELECT AddressID, Street, Number, FloorNumber, Zipcode, Country FROM Address WHERE AddressID = @AddressID";
-            var cmd = new SqlCommand(addressQuery, conn);
-            cmd.Parameters.AddWithValue("@AddressID", AddressID);
-
-            try
-            {
-                conn.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        address = new Address()
-                        {
-                            AddressID = reader.GetInt32(0),
-                            Street = reader.GetString(1),
-                            Number = reader.GetString(2),
-                            FloorNumber = reader.IsDBNull(3) ? null : reader.GetString(3),
-                            Zipcode = reader.GetString(4),
-                            Country = reader.GetString(5)
-                        };
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Der opstod en fejl under læsning af adressen: " + ex.Message);
-            }
-        }
-
-        return address;
-    }
-
-    // Helper method to get tenants by TenancyID
-    private List<Tenant> GetTenantsByTenancyId(int tenancyId)
-    {
-        var tenants = new List<Tenant>();
-
-        using (var conn = new SqlConnection(_connectionString))
-        {
-            string tenantQuery = "SELECT p.PartyID, p.FirstName, p.LastName, p.PhoneNum, p.Email, p.PartyRole " +
-                                 "FROM TenancyTenant tt " +
-                                 "JOIN Tenant t ON tt.TenantID = t.TenantID " +
-                                 "JOIN Party p ON t.PartyID = p.PartyID " +
-                                 "WHERE tt.TenancyID = @TenancyID";
-            var cmd = new SqlCommand(tenantQuery, conn);
-            cmd.Parameters.AddWithValue("@TenancyID", tenancyId);
-
-            try
-            {
-                conn.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var tenant = new Tenant()
-                        {
-                            TenantID = reader.GetInt32(0),
-                            FirstName = reader.GetString(1),
-                            LastName = reader.GetString(2),
-                            PhoneNum = reader.GetString(3),
-                            Email = reader.GetString(4),
-                            PartyRole = reader.GetString(5)
-                        };
-
-                        tenants.Add(tenant);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Der opstod en fejl under læsning af lejere: " + ex.Message);
-            }
-        }
-
-        return tenants;
-    }
-    private Company GetCompanyById(int companyId)
-    {
-        Company company = null;
-
-        using (var conn = new SqlConnection(_connectionString))
-        {
-            string companyQuery = "SELECT CompanyID, CompanyName, PartyID FROM Company WHERE CompanyID = @CompanyID";
-            var cmd = new SqlCommand(companyQuery, conn);
-            cmd.Parameters.AddWithValue("@CompanyID", companyId);
-
-            try
-            {
-                conn.Open();
-
-                using (SqlDataReader reader = cmd.ExecuteReader())
-                {
-                    if (reader.Read())
-                    {
-                        company = new Company()
-                        {
-                            CompanyID = reader.GetInt32(0),
-                            CompanyName = reader.GetString(1),
-                            PartyID = reader.GetInt32(2)
-                        };
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Der opstod en fejl under læsning af firma: " + ex.Message);
-            }
-        }
-
-        return company;
-    }
-
-    //IEnumerable<Tenancy> IRepo<Tenancy>.ReadAll()
+    //public IEnumerable<Tenancy> ReadAll()
     //{
-    //    throw new NotImplementedException();
+    //    var tenancies = new List<Tenancy>();
+    //    var tenancyMap = new Dictionary<int, Tenancy>();
+
+    //    using (var conn = new SqlConnection(_connectionString))
+    //    {
+    //        var cmd = new SqlCommand("usp_ReadAllTenancies", conn)
+    //        {
+    //            CommandType = CommandType.StoredProcedure
+    //        };
+
+    //        try
+    //        {
+    //            conn.Open();
+    //            using (SqlDataReader reader = cmd.ExecuteReader())
+    //            {
+    //                while (reader.Read())
+    //                {
+    //                    int tenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID"));
+
+    //                    // Check if we already added this tenancy, otherwise create a new instance
+    //                    if (!tenancyMap.ContainsKey(tenancyID))
+    //                    {
+    //                        var tenancy = PopulateTenancyFromReader(reader);
+    //                        tenancyMap[tenancyID] = tenancy;
+    //                        tenancies.Add(tenancy);
+    //                    }
+
+    //                    // Add tenant details if they exist
+    //                    if (!reader.IsDBNull(reader.GetOrdinal("TenantID")))
+    //                    {
+    //                        var tenant = PopulateTenantFromReader(reader);
+    //                        tenancyMap[tenancyID].Tenants.Add(tenant);
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Console.WriteLine("Error while fetching tenancies: " + ex.Message);
+    //        }
+    //    }
+
+    //    return tenancies;
     //}
+
+    //private Tenancy PopulateTenancyFromReader(SqlDataReader reader)
+    //{
+    //    var tenancy = new Tenancy
+    //    {
+    //        TenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID")),
+    //        TenancyStatus = (TenancyStatus)Enum.Parse(typeof(TenancyStatus), reader.GetString(reader.GetOrdinal("TenancyStatus"))),
+    //        MoveInDate = GetValueOrDefault<DateTime?>(reader, "MoveInDate"),
+    //        MoveOutDate = GetValueOrDefault<DateTime?>(reader, "MoveOutDate"),
+    //        SquareMeter = reader.GetInt32(reader.GetOrdinal("SquareMeter")),
+    //        Rent = GetValueOrDefault<decimal?>(reader, "Rent"),
+    //        Rooms = reader.GetInt32(reader.GetOrdinal("Rooms")),
+    //        Bathrooms = reader.GetInt32(reader.GetOrdinal("BathRooms")),
+    //        PetsAllowed = reader.GetBoolean(reader.GetOrdinal("PetsAllowed")),
+    //        IsDeleted = reader.GetBoolean(reader.GetOrdinal("IsDeleted")),
+    //        Address = new Address
+    //        {
+    //            AddressID = reader.GetInt32(reader.GetOrdinal("AddressID")),
+    //            Street = GetValueOrDefault<string>(reader, "Street"),
+    //            Number = GetValueOrDefault<string>(reader, "Number"),
+    //            FloorNumber = GetValueOrDefault<string>(reader, "FloorNumber"),
+    //            Zipcode = GetValueOrDefault<string>(reader, "Zipcode"),
+    //            Country = GetValueOrDefault<string>(reader, "Country"),
+    //            IsStandardized = reader.GetBoolean(reader.GetOrdinal("IsStandardized"))
+    //        },
+    //        Organization = new Organization
+    //        {
+    //            OrganizationID = reader.GetInt32(reader.GetOrdinal("OrganizationID")),
+    //            OrganizationName = GetValueOrDefault<string>(reader, "OrganizationName"),
+    //            PhoneNum = GetValueOrDefault<string>(reader, "OrganizationPhoneNum"),
+    //            Email = GetValueOrDefault<string>(reader, "OrganizationEmail")
+    //        }
+    //    };
+
+    //    if (!reader.IsDBNull(reader.GetOrdinal("CompanyID")))
+    //    {
+    //        tenancy.Company = new Company
+    //        {
+    //            CompanyID = reader.GetInt32(reader.GetOrdinal("CompanyID")),
+    //            CompanyName = GetValueOrDefault<string>(reader, "CompanyName"),
+    //            PhoneNum = GetValueOrDefault<string>(reader, "CompanyPhoneNum"),
+    //            Email = GetValueOrDefault<string>(reader, "CompanyEmail")
+    //        };
+    //    }
+
+    //    // Initialize tenants list to add later
+    //    tenancy.Tenants = new List<Tenant>();
+
+    //    return tenancy;
+    //}
+
+    //private Tenant PopulateTenantFromReader(SqlDataReader reader)
+    //{
+    //    return new Tenant
+    //    {
+    //        TenantID = reader.GetInt32(reader.GetOrdinal("TenantID")),
+    //        FirstName = GetValueOrDefault<string>(reader, "TenantFirstName"),
+    //        LastName = GetValueOrDefault<string>(reader, "TenantLastName"),
+    //        PhoneNum = GetValueOrDefault<string>(reader, "TenantPhoneNum"),
+    //        Email = GetValueOrDefault<string>(reader, "TenantEmail")
+    //    };
+    //}
+
+    //// Helper method to handle nullable value types and strings in SqlDataReader
+    //private T GetValueOrDefault<T>(SqlDataReader reader, string columnName)
+    //{
+    //    int columnOrdinal = reader.GetOrdinal(columnName);
+    //    if (reader.IsDBNull(columnOrdinal))
+    //    {
+    //        if (typeof(T) == typeof(string))
+    //        {
+    //            return (T)(object)string.Empty; // Return empty string for strings
+    //        }
+    //        return default(T); // Return default value for other types
+    //    }
+    //    return reader.GetFieldValue<T>(columnOrdinal);
+    //}
+
+
+
+
+    //public IEnumerable<Tenancy> ReadAll() // Reference type (classes in C#)
+    //{
+    //    var tenancies = new List<Tenancy>(); // Points to the same object as Dictionary
+    //    var tenancyMap = new Dictionary<int, Tenancy>(); // Points to the same object as List
+
+    //    using (var conn = new SqlConnection(_connectionString))
+    //    {
+    //        var cmd = new SqlCommand("usp_ReadAllTenancies", conn)
+    //        {
+    //            CommandType = CommandType.StoredProcedure
+    //        };
+
+    //        try
+    //        {
+    //            conn.Open();
+    //            using (SqlDataReader reader = cmd.ExecuteReader())
+    //            {
+    //                while (reader.Read())
+    //                {
+    //                    int tenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID"));
+
+    //                    // Check if we already added this tenancy, otherwise create a new instance
+    //                    if (!tenancyMap.ContainsKey(tenancyID))
+    //                    {
+    //                        var tenancy = CreateTenancyFromReader(reader);
+    //                        tenancyMap[tenancyID] = tenancy;
+    //                        tenancies.Add(tenancy);
+    //                    }
+
+    //                    // Add tenant details if they exist
+    //                    if (!reader.IsDBNull(reader.GetOrdinal("TenantID")))
+    //                    {
+    //                        var tenant = CreateTenantFromReader(reader);
+    //                        tenancyMap[tenancyID].Tenants.Add(tenant);
+    //                    }
+    //                }
+    //            }
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            Console.WriteLine("Error while fetching tenancies: " + ex.Message);
+    //        }
+    //    }
+
+    //    return tenancies;
+    //}
+    //private Tenancy CreateTenancyFromReader(SqlDataReader reader)
+    //{
+    //    var tenancy = new Tenancy
+    //    {
+    //        TenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID")),
+    //        TenancyStatus = (TenancyStatus)Enum.Parse(typeof(TenancyStatus), reader.GetString(reader.GetOrdinal("TenancyStatus"))),
+    //        MoveInDate = reader.IsDBNull(reader.GetOrdinal("MoveInDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
+    //        MoveOutDate = reader.IsDBNull(reader.GetOrdinal("MoveOutDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("MoveOutDate")),
+    //        SquareMeter = reader.GetInt32(reader.GetOrdinal("SquareMeter")),
+    //        Rent = reader.IsDBNull(reader.GetOrdinal("Rent")) ? (decimal?)null : reader.GetDecimal(reader.GetOrdinal("Rent")),
+    //        Rooms = reader.GetInt32(reader.GetOrdinal("Rooms")),
+    //        Bathrooms = reader.GetInt32(reader.GetOrdinal("BathRooms")),
+    //        PetsAllowed = reader.GetBoolean(reader.GetOrdinal("PetsAllowed")),
+    //        IsDeleted = reader.GetBoolean(reader.GetOrdinal("IsDeleted")),
+    //        Address = new Address
+    //        {
+    //            AddressID = reader.GetInt32(reader.GetOrdinal("AddressID")),
+    //            Street = reader.GetString(reader.GetOrdinal("Street")),
+    //            Number = reader.GetString(reader.GetOrdinal("Number")),
+    //            FloorNumber = reader.IsDBNull(reader.GetOrdinal("FloorNumber")) ? string.Empty : reader.GetString(reader.GetOrdinal("FloorNumber")),
+    //            Zipcode = reader.GetString(reader.GetOrdinal("Zipcode")),
+    //            Country = reader.GetString(reader.GetOrdinal("Country")),
+    //            IsStandardized = reader.GetBoolean(reader.GetOrdinal("IsStandardized"))
+    //        },
+    //        Organization = new Organization
+    //        {
+    //            OrganizationID = reader.GetInt32(reader.GetOrdinal("OrganizationID")),
+    //            OrganizationName = reader.GetString(reader.GetOrdinal("OrganizationName")),
+    //            PhoneNum = reader.GetString(reader.GetOrdinal("OrganizationPhoneNum")),
+    //            Email = reader.GetString(reader.GetOrdinal("OrganizationEmail"))
+    //        }
+    //    };
+
+    //    if (!reader.IsDBNull(reader.GetOrdinal("CompanyID")))
+    //    {
+    //        tenancy.Company = new Company
+    //        {
+    //            CompanyID = reader.GetInt32(reader.GetOrdinal("CompanyID")),
+    //            CompanyName = reader.GetString(reader.GetOrdinal("CompanyName")),
+    //            PhoneNum = reader.GetString(reader.GetOrdinal("CompanyPhoneNum")),
+    //            Email = reader.GetString(reader.GetOrdinal("CompanyEmail"))
+    //        };
+    //    }
+
+    //    // Initialize tenants list to add later
+    //    tenancy.Tenants = new List<Tenant>();
+
+    //    return tenancy;
+    //}
+    //private Tenant CreateTenantFromReader(SqlDataReader reader)
+    //{
+    //    return new Tenant
+    //    {
+    //        TenantID = reader.GetInt32(reader.GetOrdinal("TenantID")),
+    //        FirstName = reader.GetString(reader.GetOrdinal("TenantFirstName")),
+    //        LastName = reader.GetString(reader.GetOrdinal("TenantLastName")),
+    //        PhoneNum = reader.GetString(reader.GetOrdinal("TenantPhoneNum")),
+    //        Email = reader.GetString(reader.GetOrdinal("TenantEmail"))
+    //    };
+    //}
+
+
+
+
+
+
+
+
 
     void IRepo<Tenancy>.Update(Tenancy entity)
     {
