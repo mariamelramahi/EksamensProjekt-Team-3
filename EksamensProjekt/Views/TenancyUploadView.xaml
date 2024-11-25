@@ -93,26 +93,6 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Slet"
-            HorizontalAlignment="Left"
-            Margin="690,378,0,0"
-            VerticalAlignment="Top"
-            Width="109"
-            Background="White"
-            Foreground="#FF006DA0"
-            Height="32"
-            FontFamily="Tahoma"
-            Command="{Binding SoftDeleteTenancyCommand}"
-            CommandParameter="{Binding}"
-            FontSize="16"
-            BorderBrush="#FF006DA0" Grid.Row="1">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius"
-                        Value="5" />
-                    </Style>
-                </Button.Resources>
-            </Button>
             <!--images-->
             <Image Margin="0,-31,1822,483"
            Source="/Images/LogoImage.png"
@@ -265,7 +245,7 @@
             <ListBox x:Name="StandarisedAddressListBox"
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     ScrollViewer.CanContentScroll="True"
-                    Margin="1104,262,28,165"
+                    Margin="1080,262,52,165"
                     ItemsSource="{Binding FilteredMatchedAddresses}"
                     SelectedItem="{Binding SelectedAddress, Mode=TwoWay}"
                     Grid.RowSpan="2">
@@ -316,6 +296,26 @@
             
             <!-- ListBox for drag and drop -->
             <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="256,61,1256,387"/>
+            <Button Content="Slet lejemål"
+                HorizontalAlignment="Left"
+                Margin="256,378,0,0"
+                VerticalAlignment="Top"
+                Width="254"
+                Background="White"
+                Foreground="#FF006DA0"
+                Height="48"
+                FontFamily="Tahoma"
+                Command="{Binding SaveAddress}"
+                CommandParameter="{Binding}"
+                FontSize="25"
+                BorderBrush="#FF006DA0" Grid.Row="1">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius"
+                            Value="5" />
+                    </Style>
+                </Button.Resources>
+            </Button>
         </Grid>
 
     </Grid>
