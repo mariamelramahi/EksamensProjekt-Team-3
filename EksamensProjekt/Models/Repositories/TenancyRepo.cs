@@ -127,9 +127,9 @@ public class TenancyRepo : IRepo<Tenancy>
     }
 
 
-    public IEnumerable<Tenancy> ReadAll()
+    public IEnumerable<Tenancy> ReadAll() // classes C# reference type meaning List and Dict points to the same object in memory
     {
-        var tenancies = new List<Tenancy>();
+        var tenancies = new List<Tenancy>(); 
         var tenancyMap = new Dictionary<int, Tenancy>();
 
         using (var conn = new SqlConnection(_connectionString))
