@@ -11,7 +11,7 @@ public class TenancyServiceTests
     // Using Mock for the repositories to simulate repository behaviour
     private Mock<IRepo<Tenancy>> _mockTenancyRepo;
     private Mock<IRepo<Tenant>> _mockTenantRepo;
-    private Mock<IRepo<StandardAddress>> _mockAddressRepo;
+    private Mock<IRepo<Address>> _mockAddressRepo;
     private TenancyService _service;
 
     // This method runs before each test and sets up the mocks and service
@@ -21,7 +21,7 @@ public class TenancyServiceTests
         // Initialize the mocks
         _mockTenancyRepo = new Mock<IRepo<Tenancy>>();
         _mockTenantRepo = new Mock<IRepo<Tenant>>();
-        _mockAddressRepo = new Mock<IRepo<StandardAddress>>();
+        _mockAddressRepo = new Mock<IRepo<Address>>();
 
         // Pass the mocked dependencies to the service constructor
         _service = new TenancyService(

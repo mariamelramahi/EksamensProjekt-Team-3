@@ -29,7 +29,7 @@ namespace EksamensProjekt.Models
         public int? Bathrooms { get; set; }
         public bool? PetsAllowed { get; set; }
         public List<Tenant>? Tenants { get; set; }
-        public StandardAddress? Address { get; set; }
+        public Address? Address { get; set; }
         public Company? Company { get; set; }
         public int? OrganizationID { get; set; }
         public bool IsDeleted { get; set; }

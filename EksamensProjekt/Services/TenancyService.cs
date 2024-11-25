@@ -8,10 +8,10 @@ namespace EksamensProjekt.Services
     {
         public IRepo<Tenancy> tenancyRepo;
         public IRepo<Tenant> tenantRepo;
-        public IRepo<StandardAddress> standardAddressRepo;
+        public IRepo<Address> standardAddressRepo;
         
         // Constructor or property injection 
-        public TenancyService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo, IRepo<StandardAddress> standardAddressRepo)
+        public TenancyService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo, IRepo<Address> standardAddressRepo)
         {
             this.tenancyRepo = tenancyRepo;
             this.tenantRepo = tenantRepo;
@@ -29,7 +29,7 @@ namespace EksamensProjekt.Services
                 int bathRooms,
                 bool petsAllowed,
                 List<Tenant> tenants,
-                StandardAddress standardAddress,
+                Address standardAddress,
                 Company? company)
         {
             // Validate essential input fields

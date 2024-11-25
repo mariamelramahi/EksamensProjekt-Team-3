@@ -5,7 +5,7 @@ using Microsoft.Data.SqlClient;
 
 namespace EksamensProjekt.Models.Repositories;
 
-public class StandardAddressRepo : IRepo<StandardAddress>
+public class StandardAddressRepo : IRepo<Address>
 {
     private readonly string _connectionString;
 
@@ -21,10 +21,10 @@ public class StandardAddressRepo : IRepo<StandardAddress>
     }
 
     //Methhod to retrieve a StandardAddress object by its ID using a stored procedure
-    public StandardAddress GetByID(int id)
+    public Address GetByID(int id)
     {
         // Intializes a new StandardAddressContext object with the connection string
-        StandardAddress address = null;
+        Address address = null;
 
         // Establishes a new SQL database connection
         using (var connection = new SqlConnection(_connectionString))
@@ -49,9 +49,9 @@ public class StandardAddressRepo : IRepo<StandardAddress>
                 if (reader.Read())
                 {
                     // Initializes a new StandardAddress object with the data from the reader
-                    address = new StandardAddress
+                    address = new Address
                     {
-                        StandardAddressID = reader.GetInt32(reader.GetOrdinal("AddressID")),
+                        AddressID = reader.GetInt32(reader.GetOrdinal("AddressID")),
                         Street = reader.GetString(reader.GetOrdinal("Street")),
                         Number = reader.GetString(reader.GetOrdinal("Number")),
                         FloorNumber = reader.GetString(reader.GetOrdinal("Floor")),
@@ -64,31 +64,31 @@ public class StandardAddressRepo : IRepo<StandardAddress>
         return address;
     }
 
-    void IRepo<StandardAddress>.Create(StandardAddress entity)
+    void IRepo<Address>.Create(Address entity)
     {
         throw new NotImplementedException();
     }
 
-    StandardAddress IRepo<StandardAddress>.GetByID(int id)
+    Address IRepo<Address>.GetByID(int id)
     {
         throw new NotImplementedException();
     }
 
-    StandardAddress IRepo<StandardAddress>.GetByUsername(string userName)
+    Address IRepo<Address>.GetByUsername(string userName)
     {
         throw new NotImplementedException();
     }
 
-    IEnumerable<StandardAddress> IRepo<StandardAddress>.ReadAll()
+    IEnumerable<Address> IRepo<Address>.ReadAll()
     {
         throw new NotImplementedException();
     }
 
-    void IRepo<StandardAddress>.Update(StandardAddress entity)
+    void IRepo<Address>.Update(Address entity)
     {
         throw new NotImplementedException();
     }
-    public void Delete(StandardAddress entity)
+    public void Delete(Address entity)
     {
         throw new NotImplementedException();
     }
