@@ -1,22 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EksamensProjekt.Models;
 
-namespace EksamensProjekt.Models
+public class Company : Party
 {
-    public class Company
-    {
-        public int CompanyID { get; set; }
-        public string CompanyName { get; set; }
-        public string PhoneNumber { get; set; }
-        public string Email { get; set; }
-        public int PartyID { get; set; }
+    public int CompanyID { get; set; }
+    public string CompanyName { get; set; }
 
-        public override string ToString()
-        {
-            return CompanyName;
-        }
+
+    // Parameterless constructor for creating a Tenant with default values.
+    public Company() : base(string.Empty, string.Empty, "Company")
+    {
+        CompanyName = string.Empty;
+    }
+
+
+    // Constructor to initialize the Company object, including properties inherited from Party.
+    public Company(string companyName, string phoneNum, string email)
+        : base(phoneNum, email, "Company")  // Calls the base class constructor to initialize common properties, with PartyRole set to 'Company'.
+    {
+        CompanyName = companyName;
+    }
+
+
+    
+    public override string ToString()
+    {
+        return CompanyName;
     }
 }
