@@ -8,7 +8,7 @@
 //    public class TenancyServiceTests
 //    {
 //        //mock repo using moq NuGet package
-//        private Mock<IRepo<Tenancy>> _mockTenancyRepo;
+//        private Mock<IRepo<Address>> _mockTenancyRepo;
 //        private Mock<IRepo<Tenant>> _mockTenantRepo;
 //        private Mock<IRepo<StandardAddress>> _mockAddressRepo;
 //        private TenancyService _service;
@@ -17,7 +17,7 @@
 //        public void SetupForTest()
 //        {
 //            // Initialize mocks
-//            _mockTenancyRepo = new Mock<IRepo<Tenancy>>();
+//            _mockTenancyRepo = new Mock<IRepo<Address>>();
 //            _mockTenantRepo = new Mock<IRepo<Tenant>>();
 //            _mockAddressRepo = new Mock<IRepo<StandardAddress>>();
 
@@ -50,7 +50,7 @@
 
 //            // Act
 //            _service.CreateNewTenancy(
-//                Tenancy.Status.Occupied,
+//                Address.Status.Occupied,
 //                DateTime.Now,
 //                DateTime.Now.AddMonths(12),
 //                "100",
@@ -64,7 +64,7 @@
 //            );
 
 //            // Assert: Verify that the Add method of tenancyRepo was called once
-//            _mockTenancyRepo.Verify(repo => repo.Add(It.IsAny<Tenancy>()), Times.Once);
+//            _mockTenancyRepo.Verify(repo => repo.Add(It.IsAny<Address>()), Times.Once);
 //        }
 //    }
 //}

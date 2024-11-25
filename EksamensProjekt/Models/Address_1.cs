@@ -17,7 +17,7 @@ namespace EksamensProjekt.Models
     UnderRenovation
     }
 
-   public class Tenancy
+   public class Address
     {
         public int TenancyID { get; set; }
         public TenancyStatus? TenancyStatus { get; set; }

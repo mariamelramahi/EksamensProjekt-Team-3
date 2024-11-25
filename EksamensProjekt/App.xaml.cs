@@ -33,7 +33,7 @@ public partial class App : Application
 
         // Repositories
         IRepo<User> userRepo = new UserRepo(connectionString);
-        IRepo<Tenancy> tenancyRepo = new TenancyRepo(connectionString);
+        IRepo<Address> tenancyRepo = new TenancyRepo(connectionString);
         IRepo<Tenant> tenantRepo = new TenantRepo(connectionString);
         IRepo<StandardAddress> standardAddressRepo = new StandardAddressRepo(connectionString);
 
@@ -43,6 +43,7 @@ public partial class App : Application
         SearchService searchService = new SearchService();
         FilterService filterService = new FilterService();
         HistoryService historyService = new HistoryService();
+        ExcelImportService excelImportService = new ExcelImportService();
         INavigationService navigationService = new NavigationService();
 
         //if (authLoginService == null || navigationService == null) { MessageBox.Show("Error: One or more services failed to initialize."); return; }
@@ -50,11 +51,13 @@ public partial class App : Application
         // Create ViewModels
         LoginViewModel loginViewModel = new LoginViewModel(authLoginService, navigationService);
         TenancyViewModel tenancyViewModel = new TenancyViewModel(navigationService, tenancyService, filterService, searchService);
+        TenancyUploadViewModel tenancyUploadViewModel = new TenancyUploadViewModel(navigationService, tenancyService, filterService, searchService, excelImportService);
         //HistoryViewModel historyViewModel = new HistoryViewModel(navigationService, historyService, filterService, searchService);
 
         // Set up factory methods for creating views
         navigationService.RegisterFactory( () => new LoginView(loginViewModel));
         navigationService.RegisterFactory( () => new TenancyView(tenancyViewModel));
+        navigationService.RegisterFactory(() => new TenancyUploadView(tenancyUploadViewModel));
         //navigationService.RegisterFactory( () => new HistoryView(historyViewModel));
 
         // Set up the initial window

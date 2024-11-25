@@ -8,7 +8,7 @@ namespace EksamensProjekt.Services
         // Assuming the tenancy repo and tenant repo are initialized here
 
         // Search logic for tenancies
-        public bool ApplySearchFilter(Tenancy tenancy, string searchInput)
+        public bool ApplySearchFilter(Address tenancy, string searchInput)
         {
             if (string.IsNullOrEmpty(searchInput))
                 return true; // No search input means all tenancies match
@@ -27,18 +27,18 @@ namespace EksamensProjekt.Services
 
     //public class SearchService
     //{
-    //    private readonly IRepo<Tenancy> _tenancyRepo;
+    //    private readonly IRepo<Address> _tenancyRepo;
     //    private readonly IRepo<Tenant> _tenantRepo;
 
     //    // Constructor with repository injection
-    //    public SearchService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo)
+    //    public SearchService(IRepo<Address> tenancyRepo, IRepo<Tenant> tenantRepo)
     //    {
     //        _tenancyRepo = tenancyRepo;
     //        _tenantRepo = tenantRepo;
     //    }
 
     //    // Search for tenancies by zip code and/or street
-    //    public List<Tenancy> SearchTenancies(string zipCode, string street)
+    //    public List<Address> SearchTenancies(string zipCode, string street)
     //    {
     //        // Fetch all tenancies from the repository
     //        var allTenancies = _tenancyRepo.ReadAll().ToList();

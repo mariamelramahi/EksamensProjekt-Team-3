@@ -7,23 +7,23 @@
 //    [TestClass]
 //    public class FilterServiceTests
 //    {
-//        private ObservableCollection<Tenancy> _tenancies;
+//        private ObservableCollection<Address> _tenancies;
 //        private FilterService _filterService;
 
 
 //        [TestInitialize]
 //        public void SetupForTest()
 //        {
-//            // Sample Tenancy Data
-//            _tenancies = new ObservableCollection<Tenancy>
+//            // Sample Address Data
+//            _tenancies = new ObservableCollection<Address>
 //            {
-//                new Tenancy(Tenancy.Status.Occupied, new DateTime(2023, 6, 1), null, "100m2", 15000, 3, 1, true, new List<Tenant>(),
+//                new Address(Address.Status.Occupied, new DateTime(2023, 6, 1), null, "100m2", 15000, 3, 1, true, new List<Tenant>(),
 //                    new Address { StreetName = "Main St", Number = "10", ZipCode = "12345", City = "Copenhagen", Country = "Denmark" }, new Company()),
 
-//                new Tenancy(Tenancy.Status.Vacant, new DateTime(2024, 1, 15), null, "85m2", 12000, 2, 1, false, new List<Tenant>(),
+//                new Address(Address.Status.Vacant, new DateTime(2024, 1, 15), null, "85m2", 12000, 2, 1, false, new List<Tenant>(),
 //                    new Address { StreetName = "Elm St", Number = "5", ZipCode = "54321", City = "Aarhus", Country = "Denmark" }, new Company()),
 
-//                new Tenancy(Tenancy.Status.UnderRenovation, null, new DateTime(2025, 5, 20), "200m2", 18000, 5, 2, true, new List<Tenant>(),
+//                new Address(Address.Status.UnderRenovation, null, new DateTime(2025, 5, 20), "200m2", 18000, 5, 2, true, new List<Tenant>(),
 //                    new Address { StreetName = "Oak St", Number = "7B", ZipCode = "67890", City = "Odense", Country = "Denmark" }, new Company())
 //            };
 
@@ -39,7 +39,7 @@
 //            _filterService.ApplyFilters("12345", null, null);
 
 //            // Assert: Only one tenancy should match the zip code "12345"
-//            var results = _filterService.TenancyCollectionView.Cast<Tenancy>().ToList();//Cast<> used to convert the item in iCollectionView to a tenancy object
+//            var results = _filterService.TenancyCollectionView.Cast<Address>().ToList();//Cast<> used to convert the item in iCollectionView to a tenancy object
 //            Assert.AreEqual(1, results.Count);
 //            Assert.AreEqual("12345", results.First().StandardAddress.ZipCode);//Since asserted one tenancy in the list, the first one should match filter
 //        }
@@ -51,7 +51,7 @@
 //            _filterService.ApplyFilters(null, "Elm St", null);
 
 //            // Assert: Only one tenancy should match the street name "Elm St"
-//            var results = _filterService.TenancyCollectionView.Cast<Tenancy>().ToList();
+//            var results = _filterService.TenancyCollectionView.Cast<Address>().ToList();
 //            Assert.AreEqual(1, results.Count);
 //            Assert.AreEqual("Elm St", results.First().StandardAddress.StreetName);
 //        }
@@ -63,9 +63,9 @@
 //            _filterService.ApplyFilters(null, null, "Vacant");
 
 //            // Assert: Only one tenancy should have the status "Vacant"
-//            var results = _filterService.TenancyCollectionView.Cast<Tenancy>().ToList();
+//            var results = _filterService.TenancyCollectionView.Cast<Address>().ToList();
 //            Assert.AreEqual(1, results.Count);
-//            Assert.AreEqual(Tenancy.Status.Vacant, results.First().TenancyStatus);
+//            Assert.AreEqual(Address.Status.Vacant, results.First().TenancyStatus);
 //        }
 
 //        [TestMethod]
@@ -75,11 +75,11 @@
 //            _filterService.ApplyFilters(null, "Oak St", "UnderRenovation");
 
 //            // Assert: Only one tenancy should match both criteria
-//            var results = _filterService.TenancyCollectionView.Cast<Tenancy>().ToList();
+//            var results = _filterService.TenancyCollectionView.Cast<Address>().ToList();
 //            Assert.AreEqual(1, results.Count);
 //            var result = results.First();
 //            Assert.AreEqual("Oak St", result.StandardAddress.StreetName);
-//            Assert.AreEqual(Tenancy.Status.UnderRenovation, result.TenancyStatus);
+//            Assert.AreEqual(Address.Status.UnderRenovation, result.TenancyStatus);
 //        }
 //    }
 //}

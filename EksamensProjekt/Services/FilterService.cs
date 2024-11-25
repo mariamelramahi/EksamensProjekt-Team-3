@@ -10,11 +10,11 @@ public class FilterService
     public bool IsFilterAEnabled { get; set; }
     public bool IsFilterBEnabled { get; set; }
     public bool IsFilterCEnabled { get; set; }
-    public bool IsFilterDEnabled => true;
+    public bool IsFilterDEnabled = true;
 
 
 
-    public bool ApplyFilter(Tenancy tenancy)
+    public bool ApplyCheckboxFilter(Address tenancy)
     {
         if (tenancy == null)
             return false;
@@ -53,7 +53,7 @@ public class FilterService
 
 
     // Apply the filter and set the IsFilterAEnabled property directly within this method
-    //public bool ApplyTenancyFilter(Tenancy tenancy)
+    //public bool ApplyTenancyFilter(Address tenancy)
     //{
         //    if (tenancy == null)
         //    {
@@ -92,7 +92,7 @@ public class FilterService
      //{
      //    collectionView.Filter = tenancy =>
      //    {
-     //        if (tenancy is not Tenancy t) return false;
+     //        if (tenancy is not Address t) return false;
 
     //        // Filter by Zip Code if provided. If not provided it returns true, meaning the filter will not sort tenancies on zipcode
     //        //if zipcode is provided it evaluates which of the tenancies that contains specific zipcode, returning them true.
@@ -111,12 +111,12 @@ public class FilterService
 
     //public void FilterTenancyMatchType(string matchType, List<MatchResult> matchResults)
     //{
-    //    if (_tenancyCollectionView == null || matchResults == null) return;
+    //    if (_importedAddressesCollectionView == null || matchResults == null) return;
 
     //    // Set the filter predicate based on the selected match type
-    //    _tenancyCollectionView.Filter = tenancy =>
+    //    _importedAddressesCollectionView.Filter = tenancy =>
     //    {
-    //        if (tenancy is Tenancy t)
+    //        if (tenancy is Address t)
     //        {
     //            // Find the corresponding match result for this tenancy
     //            var matchResult = matchResults.FirstOrDefault(r =>
@@ -138,7 +138,7 @@ public class FilterService
     //    };
 
     //    // Refresh the view to apply the filter
-    //    _tenancyCollectionView.Refresh();
+    //    _importedAddressesCollectionView.Refresh();
     //}
 
 //}
