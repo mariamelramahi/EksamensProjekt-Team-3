@@ -1,7 +1,7 @@
 ﻿using EksamensProjekt.Models;
 using Microsoft.Data.SqlClient;
 
-namespace EksamensProjekt.Utilities.DataAccess
+namespace EksamensProjekt.DataAccess
 {
     public static class SqlDataMapper
     {

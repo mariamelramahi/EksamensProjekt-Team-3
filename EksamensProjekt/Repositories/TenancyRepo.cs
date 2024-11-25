@@ -1,5 +1,5 @@
+using EksamensProjekt.DataAccess;
 using EksamensProjekt.Models;
-using EksamensProjekt.Utilities.DataAccess;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Windows;
