@@ -6,12 +6,12 @@ namespace EksamensProjekt.Services
 {
     public class TenancyService
     {
-        public IRepo<Address> tenancyRepo;
+        public IRepo<Tenancy> tenancyRepo;
         public IRepo<Tenant> tenantRepo;
         public IRepo<StandardAddress> standardAddressRepo;
         
         // Constructor or property injection 
-        public TenancyService(IRepo<Address> tenancyRepo, IRepo<Tenant> tenantRepo, IRepo<StandardAddress> standardAddressRepo)
+        public TenancyService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo, IRepo<StandardAddress> standardAddressRepo)
         {
             this.tenancyRepo = tenancyRepo;
             this.tenantRepo = tenantRepo;
@@ -35,7 +35,7 @@ namespace EksamensProjekt.Services
             // Validate essential input fields
             if (standardAddress == null)
             {
-                throw new ArgumentNullException(nameof(standardAddress), "Address cannot be null.");
+                throw new ArgumentNullException(nameof(standardAddress), "Tenancy cannot be null.");
             }
 
             if (company == null)
@@ -43,8 +43,8 @@ namespace EksamensProjekt.Services
                 throw new ArgumentNullException(nameof(company), "Company cannot be null.");
             }
 
-            // Use the empty constructor to create a new Address object
-            Address newTenancy = new Address
+            // Use the empty constructor to create a new Tenancy object
+            Tenancy newTenancy = new Tenancy
             {
                 TenancyStatus = tenancyStatus,
                 MoveInDate = moveInDate ?? DateTime.Now,
@@ -62,16 +62,16 @@ namespace EksamensProjekt.Services
             // Save the new tenancy using the repository
             tenancyRepo.Create(newTenancy);
         }
-        public List<Address> GetAllTenancies()
+        public List<Tenancy> GetAllTenancies()
         {
             // Fetch all tenancies from the repository
             return tenancyRepo.ReadAll().ToList();
         }
 
-        public void UpdateTenancy(Address selectedTenancy)
+        public void UpdateTenancy(Tenancy selectedTenancy)
         {
             // Fetch the existing tenancy from the repository using its ID
-            Address? existingTenancy = tenancyRepo.GetByID(selectedTenancy.TenancyID);
+            Tenancy? existingTenancy = tenancyRepo.GetByID(selectedTenancy.TenancyID);
 
             // Check if the tenancy exists
             if (existingTenancy == null)
@@ -120,10 +120,10 @@ namespace EksamensProjekt.Services
             tenancyRepo.Update(existingTenancy);
             MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} er blevet opdateret.");
         }
-        public void DeleteTenancy(Address selectedTenancy)
+        public void DeleteTenancy(Tenancy selectedTenancy)
         {
             // Fetch the existing tenancy from the repository using its ID
-            Address? tenancyToDelete = tenancyRepo.GetByID(selectedTenancy.TenancyID);
+            Tenancy? tenancyToDelete = tenancyRepo.GetByID(selectedTenancy.TenancyID);
 
             // Check if the tenancy exists
             if (tenancyToDelete == null)
@@ -137,10 +137,10 @@ namespace EksamensProjekt.Services
             MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} er blevet slettet.");
         }
 
-        public void SoftDeleteTenancy(Address selectedTenancy)
+        public void SoftDeleteTenancy(Tenancy selectedTenancy)
         {
             // Fetch the existing tenancy from the repository using its ID
-            Address? tenancyToDelete = tenancyRepo.GetByID(selectedTenancy.TenancyID);
+            Tenancy? tenancyToDelete = tenancyRepo.GetByID(selectedTenancy.TenancyID);
 
             // Check if the tenancy exists
             if (tenancyToDelete == null)
@@ -181,7 +181,7 @@ namespace EksamensProjekt.Services
             }
         }
 
-        //private void UpdateTenancyDetailsFromExcel(Address tenancy, ModifiedExcelAddress importedAddress)
+        //private void UpdateTenancyDetailsFromExcel(Tenancy tenancy, ModifiedExcelAddress importedAddress)
         //{
         //    // Update the address fields if available
         //    if (!string.IsNullOrEmpty(importedAddress.StreetName))
@@ -220,7 +220,7 @@ namespace EksamensProjekt.Services
         //{
         //    // Liste til at gemme resultaterne
         //    List<MatchResult> matchResults = new List<MatchResult>();
-        //    List<Address> tenancies = tenancyRepo.GetAllTenancies();
+        //    List<Tenancy> tenancies = tenancyRepo.GetAllTenancies();
         //    List<StandardAddress> databaseAddresses = standardAddressRepo.GetAllStandardAddresses();
 
         //    // Trin 1: Standardiser og match adresser mod database-adresser først
@@ -291,7 +291,7 @@ namespace EksamensProjekt.Services
         //}
 
 
-        //public static string CalculateAddressMatchScore(Address standardAddress, Address importedAddress)
+        //public static string CalculateAddressMatchScore(Tenancy standardAddress, Tenancy importedAddress)
         //{
         //    double streetMatchScore = CalculateLevenshteinMatchScore(standardAddress.StreetName, importedAddress.StreetName) * 0.4;
         //    double zipCodeMatchScore = CalculateLevenshteinMatchScore(standardAddress.ZipCode, importedAddress.ZipCode) * 0.3;

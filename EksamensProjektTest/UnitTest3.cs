@@ -9,7 +9,7 @@ using System;
 public class TenancyServiceTests
 {
     // Using Mock for the repositories to simulate repository behaviour
-    private Mock<IRepo<Address>> _mockTenancyRepo;
+    private Mock<IRepo<Tenancy>> _mockTenancyRepo;
     private Mock<IRepo<Tenant>> _mockTenantRepo;
     private Mock<IRepo<StandardAddress>> _mockAddressRepo;
     private TenancyService _service;
@@ -19,7 +19,7 @@ public class TenancyServiceTests
     public void TestInitialize()
     {
         // Initialize the mocks
-        _mockTenancyRepo = new Mock<IRepo<Address>>();
+        _mockTenancyRepo = new Mock<IRepo<Tenancy>>();
         _mockTenantRepo = new Mock<IRepo<Tenant>>();
         _mockAddressRepo = new Mock<IRepo<StandardAddress>>();
 
@@ -35,7 +35,7 @@ public class TenancyServiceTests
     public void UpdateTenancy_WithNewValues_UpdatesSuccessfully()
     {
         // Arrange: Set up the existing tenancy in the mock repository
-        var existingTenancy = new Address
+        var existingTenancy = new Tenancy
         {
             TenancyID = 1,
             TenancyStatus = TenancyStatus.Occupied, // Existing status
@@ -44,7 +44,7 @@ public class TenancyServiceTests
         };
 
         // Arrange: Create a tenancy object with updated values
-        var updatedTenancy = new Address
+        var updatedTenancy = new Tenancy
         {
             TenancyID = 1,                                // Same ID as the existing tenancy
             TenancyStatus = TenancyStatus.Vacant, // New status
@@ -59,7 +59,7 @@ public class TenancyServiceTests
         _service.UpdateTenancy(updatedTenancy);
 
         // Assert: Verify that the repository's Update method was called with the correct updated tenancy
-        _mockTenancyRepo.Verify(repo => repo.Update(It.Is<Address>(t =>
+        _mockTenancyRepo.Verify(repo => repo.Update(It.Is<Tenancy>(t =>
             t.TenancyID == 1 &&                                  // Assert ID matches
             t.TenancyStatus == TenancyStatus.Vacant &&    // Assert status updated
             t.MoveInDate == new DateTime(2024, 1, 1) &&          // Assert move-in date updated

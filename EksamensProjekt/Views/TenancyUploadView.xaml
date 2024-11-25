@@ -227,8 +227,8 @@
              ScrollViewer.CanContentScroll="False"
              Margin="256,262,876,165"
              Grid.RowSpan="2"
-             ItemsSource="{Binding FilteredImportedTenancies}"
-             SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}">
+             ItemsSource="{Binding FilteredImportedAddresses}"
+             SelectedItem="{Binding SelectedAddress, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Expander Header="{Binding Address}"

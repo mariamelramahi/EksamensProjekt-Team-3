@@ -33,7 +33,7 @@ public partial class App : Application
 
         // Repositories
         IRepo<User> userRepo = new UserRepo(connectionString);
-        IRepo<Address> tenancyRepo = new TenancyRepo(connectionString);
+        IRepo<Tenancy> tenancyRepo = new TenancyRepo(connectionString);
         IRepo<Tenant> tenantRepo = new TenantRepo(connectionString);
         IRepo<StandardAddress> standardAddressRepo = new StandardAddressRepo(connectionString);
 

@@ -8,7 +8,7 @@ using System.Runtime.ConstrainedExecution;
 
 namespace EksamensProjekt.Models.Repositories;
 
-public class TenancyRepo : IRepo<Address>
+public class TenancyRepo : IRepo<Tenancy>
 {
     private readonly string _connectionString;
 
@@ -24,11 +24,11 @@ public class TenancyRepo : IRepo<Address>
         throw new NotImplementedException();
     }
 
-    // Method to retrieve a Address object by its ID using a stored procedure
-    public Address GetByID(int tenancyID)
+    // Method to retrieve a Tenancy object by its ID using a stored procedure
+    public Tenancy GetByID(int tenancyID)
     {
-        // intializies a Address object to null. If the query finds a tenancy record, this variable will hold hold the data. 
-        Address tenancy = null;
+        // intializies a Tenancy object to null. If the query finds a tenancy record, this variable will hold hold the data. 
+        Tenancy tenancy = null;
 
         // Establishes a new SQL database connection using the provided connection string
         using (var connection = new SqlConnection(_connectionString))
@@ -43,7 +43,7 @@ public class TenancyRepo : IRepo<Address>
                 CommandType = CommandType.StoredProcedure
             };
 
-            // Adds a parameter to the SqlCommand for the TenancyID, used by the stored procedure to identify the Address record
+            // Adds a parameter to the SqlCommand for the TenancyID, used by the stored procedure to identify the Tenancy record
             command.Parameters.AddWithValue("@TenancyID", tenancyID);
 
             // Executes the command and stores the result in a SqlDataReader object
@@ -52,8 +52,8 @@ public class TenancyRepo : IRepo<Address>
                 // Checks if the reader has any rows to read
                 if (reader.Read())
                 {
-                    // Initializes a new Address object with the data from the reader
-                    tenancy = new Address
+                    // Initializes a new Tenancy object with the data from the reader
+                    tenancy = new Tenancy
                     {
                         TenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID")),
                         TenancyStatus = Enum.TryParse<TenancyStatus>(reader.GetString(reader.GetOrdinal("TenancyStatus")), out var status) ? status: TenancyStatus.Vacant, // Provide a default value for invalid statuses.
@@ -73,16 +73,16 @@ public class TenancyRepo : IRepo<Address>
             }
         }
 
-        // Returns the Address object, which is either null or contains the data from the database
+        // Returns the Tenancy object, which is either null or contains the data from the database
         return tenancy;
     }
 
-    void IRepo<Address>.Create(Address entity)
+    void IRepo<Tenancy>.Create(Tenancy entity)
     {
         throw new NotImplementedException();
     }
 
-    void IRepo<Address>.Delete(Address entity)
+    void IRepo<Tenancy>.Delete(Tenancy entity)
     {
         // Validate the entity (check for null)
         if (entity == null)
@@ -91,11 +91,11 @@ public class TenancyRepo : IRepo<Address>
         }
 
         // Use the GetByID method to retrieve the existing tenancy from the database
-        Address existingTenancy = GetByID(entity.TenancyID);
+        Tenancy existingTenancy = GetByID(entity.TenancyID);
 
         if (existingTenancy == null)
         {
-            throw new InvalidOperationException($"Address with ID {entity.TenancyID} not found.");
+            throw new InvalidOperationException($"Tenancy with ID {entity.TenancyID} not found.");
         }
 
         // Call the stored procedure to update the tenancy in the database
@@ -129,13 +129,13 @@ public class TenancyRepo : IRepo<Address>
         }
     }
 
-    Address IRepo<Address>.GetByUsername(string userName)
+    Tenancy IRepo<Tenancy>.GetByUsername(string userName)
     {
         throw new NotImplementedException();
     }
-    public IEnumerable<Address> ReadAll()
+    public IEnumerable<Tenancy> ReadAll()
     {
-        var tenancies = new List<Address>();
+        var tenancies = new List<Tenancy>();
 
         using (var conn = new SqlConnection(_connectionString))
         {
@@ -153,8 +153,8 @@ public class TenancyRepo : IRepo<Address>
                 {
                     while (reader.Read())
                     {
-                        // Create a Address object from the SQL data reader
-                        var tenancy = new Address()
+                        // Create a Tenancy object from the SQL data reader
+                        var tenancy = new Tenancy()
                         {
                             TenancyID = reader.GetInt32(0),
                             TenancyStatus = (TenancyStatus)Enum.Parse(typeof(TenancyStatus), reader.GetString(1)),
@@ -315,12 +315,12 @@ public class TenancyRepo : IRepo<Address>
         return company;
     }
 
-    //IEnumerable<Address> IRepo<Address>.ReadAll()
+    //IEnumerable<Tenancy> IRepo<Tenancy>.ReadAll()
     //{
     //    throw new NotImplementedException();
     //}
 
-    void IRepo<Address>.Update(Address entity)
+    void IRepo<Tenancy>.Update(Tenancy entity)
     {
         // Validate the entity (check for null)
         if (entity == null)
@@ -329,11 +329,11 @@ public class TenancyRepo : IRepo<Address>
         }
 
         // Use the GetByID method to retrieve the existing tenancy from the database
-        Address existingTenancy = GetByID(entity.TenancyID);
+        Tenancy existingTenancy = GetByID(entity.TenancyID);
 
         if (existingTenancy == null)
         {
-            throw new InvalidOperationException($"Address with ID {entity.TenancyID} not found.");
+            throw new InvalidOperationException($"Tenancy with ID {entity.TenancyID} not found.");
         }
 
         // Call the stored procedure to update the tenancy in the database

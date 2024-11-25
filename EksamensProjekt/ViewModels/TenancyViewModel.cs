@@ -28,7 +28,7 @@ namespace EksamensProjekt.ViewModels
             _searchService = searchService;
 
             // Initialize ObservableCollection
-            Tenancies = new ObservableCollection<Address>();
+            Tenancies = new ObservableCollection<Tenancy>();
 
             // Load initial data
             LoadTenancies();
@@ -36,7 +36,7 @@ namespace EksamensProjekt.ViewModels
             // Set up CollectionView for displaying items
             _tenancyCollectionView = CollectionViewSource.GetDefaultView(Tenancies);
 
-            _tenancyCollectionView.Filter = item => ApplyCombinedFilter(item as Address);
+            _tenancyCollectionView.Filter = item => ApplyCombinedFilter(item as Tenancy);
 
 
             // Initialize commands
@@ -49,7 +49,7 @@ namespace EksamensProjekt.ViewModels
 
 
         // Observable Collections
-        public ObservableCollection<Address> Tenancies { get; set; }
+        public ObservableCollection<Tenancy> Tenancies { get; set; }
 
 
         // Filtered view of tenancies
@@ -57,8 +57,8 @@ namespace EksamensProjekt.ViewModels
 
 
         // Properties
-        private Address _selectedTenancy;
-        public Address SelectedTenancy
+        private Tenancy _selectedTenancy;
+        public Tenancy SelectedTenancy
         {
             get => _selectedTenancy;
             set
@@ -162,7 +162,7 @@ namespace EksamensProjekt.ViewModels
 
         //private void ExecuteCreateTenancy()
         //{
-        //    Address newTenancy = _tenancyService.CreateNewTenancy();
+        //    Tenancy newTenancy = _tenancyService.CreateNewTenancy();
         //    if (newTenancy != null)
         //    {
         //        ImportedAddresses.Add(newTenancy);
@@ -201,7 +201,7 @@ namespace EksamensProjekt.ViewModels
         //    }
         //}
 
-        private bool ApplyCombinedFilter(Address tenancy)
+        private bool ApplyCombinedFilter(Tenancy tenancy)
         {
             return _filterService.ApplyCheckboxFilter(tenancy) &&
                    _searchService.ApplySearchFilter(tenancy, SearchInput);

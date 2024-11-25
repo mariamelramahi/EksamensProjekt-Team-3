@@ -39,7 +39,7 @@ public class StandardAddressRepo : IRepo<StandardAddress>
                 CommandType = CommandType.StoredProcedure
             };
 
-            // Adds a parameter to the SqlCommand for the AddressID, used by the stored procedure to identify the Address record
+            // Adds a parameter to the SqlCommand for the AddressID, used by the stored procedure to identify the Tenancy record
             command.Parameters.AddWithValue("@AddressID", id);
 
             // Executes the command and stores the result in a SqlDataReader object

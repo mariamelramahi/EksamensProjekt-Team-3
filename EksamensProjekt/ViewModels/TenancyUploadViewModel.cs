@@ -27,12 +27,12 @@ namespace EksamensProjekt
             _searchService = searchService;
             _excelImportService = excelImportService;
             // Initialize ObservableCollection
-            ImportedAddresses = new ObservableCollection<Address>();
+            ImportedAddresses = new ObservableCollection<Tenancy>();
 
             // Set up CollectionView for displaying items
             _importedAddressesCollectionView = CollectionViewSource.GetDefaultView(ImportedAddresses);
 
-            _importedAddressesCollectionView.Filter = item => ApplyCombinedFilter(item as Address);
+            _importedAddressesCollectionView.Filter = item => ApplyCombinedFilter(item as Tenancy);
 
 
             // Initialize commands
@@ -43,15 +43,15 @@ namespace EksamensProjekt
         }
 
         // Observable Collections
-        public ObservableCollection<Address> ImportedAddresses { get; set; }
+        public ObservableCollection<Tenancy> ImportedAddresses { get; set; }
 
 
         // Filtered view of tenancies
         public ICollectionView FilteredImportedAddresses => _importedAddressesCollectionView;
 
         // Properties
-        private Address _selectedAddress;
-        public Address SelectedAddress
+        private Tenancy _selectedAddress;
+        public Tenancy SelectedAddress
         {
             get => _selectedAddress;
             set
@@ -192,7 +192,7 @@ namespace EksamensProjekt
         //    }
         //}
 
-        private bool ApplyCombinedFilter(Address importedAddress)
+        private bool ApplyCombinedFilter(Tenancy importedAddress)
         {
             return _filterService.ApplyCheckboxFilter(importedAddress) &&
                    _searchService.ApplySearchFilter(importedAddress, SearchInput);

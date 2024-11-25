@@ -14,7 +14,7 @@ public class FilterService
 
 
 
-    public bool ApplyCheckboxFilter(Address tenancy)
+    public bool ApplyCheckboxFilter(Tenancy tenancy)
     {
         if (tenancy == null)
             return false;
@@ -53,7 +53,7 @@ public class FilterService
 
 
     // Apply the filter and set the IsFilterAEnabled property directly within this method
-    //public bool ApplyTenancyFilter(Address tenancy)
+    //public bool ApplyTenancyFilter(Tenancy tenancy)
     //{
         //    if (tenancy == null)
         //    {
@@ -92,7 +92,7 @@ public class FilterService
      //{
      //    collectionView.Filter = tenancy =>
      //    {
-     //        if (tenancy is not Address t) return false;
+     //        if (tenancy is not Tenancy t) return false;
 
     //        // Filter by Zip Code if provided. If not provided it returns true, meaning the filter will not sort tenancies on zipcode
     //        //if zipcode is provided it evaluates which of the tenancies that contains specific zipcode, returning them true.
@@ -116,7 +116,7 @@ public class FilterService
     //    // Set the filter predicate based on the selected match type
     //    _importedAddressesCollectionView.Filter = tenancy =>
     //    {
-    //        if (tenancy is Address t)
+    //        if (tenancy is Tenancy t)
     //        {
     //            // Find the corresponding match result for this tenancy
     //            var matchResult = matchResults.FirstOrDefault(r =>
