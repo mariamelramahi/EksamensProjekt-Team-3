@@ -27,7 +27,7 @@ namespace EksamensProjekt
             _searchService = searchService;
             _excelImportService = excelImportService;
             // Initialize ObservableCollection
-            ImportedAddresses = new ObservableCollection<Tenancy>();
+            ImportedAddresses = new ObservableCollection<Address>();
 
             // Set up CollectionView for displaying items
             _importedAddressesCollectionView = CollectionViewSource.GetDefaultView(ImportedAddresses);
@@ -38,12 +38,11 @@ namespace EksamensProjekt
             // Initialize commands
             //GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);
             //CreateTenancyCommand = new RelayCommand(ExecuteCreateTenancy);
-            SoftDeleteTenancyCommand = new RelayCommand(ExecuteSoftDeleteTenancy, CanExecuteModifyTenancy);
             //UploadFileCommand = new RelayCommand(ExecuteUploadFile);
         }
 
         // Observable Collections
-        public ObservableCollection<Tenancy> ImportedAddresses { get; set; }
+        public ObservableCollection<Address> ImportedAddresses { get; set; }
 
 
         // Filtered view of tenancies
@@ -169,14 +168,6 @@ namespace EksamensProjekt
         //    _navigationService.NavigateTo<HistoryView>();
         //}
 
-        private void ExecuteSoftDeleteTenancy()
-        {
-            if (SelectedAddress != null)
-            {
-                _tenancyService.SoftDeleteTenancy(SelectedAddress);
-                ImportedAddresses.Remove(SelectedAddress);
-            }
-        }
 
         private bool CanExecuteModifyTenancy()
         {
