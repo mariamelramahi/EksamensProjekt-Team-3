@@ -14,7 +14,7 @@ public class Tenancy
     public DateTime? MoveInDate { get; set; }
     public DateTime? MoveOutDate { get; set; }
     public int? SquareMeter { get; set; }
-    public int? Rent { get; set; }
+    public Decimal? Rent { get; set; }
     public int? Rooms { get; set; }
     public int? Bathrooms { get; set; }
     public bool? PetsAllowed { get; set; }
@@ -23,15 +23,6 @@ public class Tenancy
     public Company? Company { get; set; }
     public Organization Organization { get; set; }
     public bool IsDeleted { get; set; }
-
-
-    // Make constructor - fix Org ID to Organization organization
-
-    // look at new object creation in service in relation to constructors
-
-    // Look at refactoring repos to only have Irepo methods
-
-
 
 
 

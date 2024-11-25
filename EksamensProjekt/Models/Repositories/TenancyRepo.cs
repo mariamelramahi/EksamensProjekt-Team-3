@@ -1,10 +1,6 @@
 using Microsoft.Data.SqlClient;
-﻿using Microsoft.Extensions.Configuration; // Til indlæsning af konfigurationsindstillinger fra appsettings.json
 using System.Data;
-using System.Data.SqlClient; // Til at arbejde med SQL Server via ADO.NET
-using Microsoft.Data.SqlClient;
 using System.Windows;
-using System.Runtime.ConstrainedExecution;
 
 namespace EksamensProjekt.Models.Repositories;
 
@@ -130,14 +126,12 @@ public class TenancyRepo : IRepo<Tenancy>
     }
 
 
-
     public IEnumerable<Tenancy> ReadAll()
     {
         var tenancies = new List<Tenancy>();
 
         using (var conn = new SqlConnection(_connectionString))
         {
-            // calling stored procedure in sql
             var cmd = new SqlCommand("usp_ReadAllTenancies", conn)
             {
                 CommandType = CommandType.StoredProcedure
@@ -146,29 +140,50 @@ public class TenancyRepo : IRepo<Tenancy>
             try
             {
                 conn.Open();
-
                 using (SqlDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        // Create a Tenancy object from the SQL data reader
-                        var tenancy = new Tenancy()
+                        var tenancy = new Tenancy
                         {
-                            TenancyID = reader.GetInt32(0),
-                            TenancyStatus = (TenancyStatus)Enum.Parse(typeof(TenancyStatus), reader.GetString(1)),
-                            MoveInDate = reader.IsDBNull(2) ? (DateTime?)null : reader.GetDateTime(2),
-                            MoveOutDate = reader.IsDBNull(3) ? (DateTime?)null : reader.GetDateTime(3),
-                            SquareMeter = reader.GetInt32(4),
-                            Rent = (int?)reader.GetDecimal(5),
-                            Rooms = reader.GetInt32(6),
-                            Bathrooms = reader.GetInt32(7),
-                            PetsAllowed = reader.GetBoolean(8),
-                            Organization = reader.IsDBNull(reader.GetOrdinal("OrganizationID")) ? null : new Organization { PartyID = reader.GetInt32(reader.GetOrdinal("OrganizationID")) },
-                            Company = reader.IsDBNull(11) ? null : GetCompanyById(reader.GetInt32(11)),
-                            IsDeleted = reader.GetBoolean(12)
+                            TenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID")),
+                            TenancyStatus = (TenancyStatus)Enum.Parse(typeof(TenancyStatus), reader.GetString(reader.GetOrdinal("TenancyStatus"))),
+                            MoveInDate = reader.IsDBNull(reader.GetOrdinal("MoveInDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
+                            MoveOutDate = reader.IsDBNull(reader.GetOrdinal("MoveOutDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("MoveOutDate")),
+                            SquareMeter = reader.GetInt32(reader.GetOrdinal("SquareMeter")),
+                            Rent = reader.IsDBNull(reader.GetOrdinal("Rent")) ? (decimal?)null : reader.GetDecimal(reader.GetOrdinal("Rent")),
+                            Rooms = reader.GetInt32(reader.GetOrdinal("Rooms")),
+                            Bathrooms = reader.GetInt32(reader.GetOrdinal("Bathrooms")),
+                            PetsAllowed = reader.GetBoolean(reader.GetOrdinal("PetsAllowed")),
+                            IsDeleted = reader.GetBoolean(reader.GetOrdinal("IsDeleted")),
+                            // Populate Organization details directly
+                            Organization = new Organization
+                            {
+                                OrganizationID = reader.GetInt32(reader.GetOrdinal("OrganizationID")),
+                                OrganizationName = reader.GetString(reader.GetOrdinal("OrganizationName")),
+                                PhoneNum = reader.GetString(reader.GetOrdinal("OrganizationPhoneNum")),
+                                Email = reader.GetString(reader.GetOrdinal("OrganizationEmail"))
+                            }
                         };
 
-                        // Fetch the related address for the tenancy
+                        // Populate Company if it exists
+                        if (!reader.IsDBNull(reader.GetOrdinal("CompanyID")))
+                        {
+                            tenancy.Company = new Company
+                            {
+                                CompanyID = reader.GetInt32(reader.GetOrdinal("CompanyID")),
+                                CompanyName = reader.GetString(reader.GetOrdinal("CompanyName")),
+                                PhoneNum = reader.GetString(reader.GetOrdinal("CompanyPhoneNum")),
+                                Email = reader.GetString(reader.GetOrdinal("CompanyEmail"))
+                            };
+                        }
+
+                        tenancies.Add(tenancy);
+
+
+
+                        //Fetch the related address for the tenancy
+
                         int AddressID = reader.GetInt32(9);
                         tenancy.Address = GetAddressById(AddressID);
                         if (tenancy.Address == null)
@@ -180,17 +195,19 @@ public class TenancyRepo : IRepo<Tenancy>
                         tenancy.Tenants = GetTenantsByTenancyId(tenancy.TenancyID) ?? new List<Tenant>();
 
                         tenancies.Add(tenancy);
+
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Der opstod en fejl under indlæsningen af alle lejemål: " + ex.Message);
+                Console.WriteLine("Error while fetching tenancies: " + ex.Message);
             }
         }
 
         return tenancies;
     }
+
 
     // Helper method to get a Address by its ID
     private Address GetAddressById(int AddressID)
