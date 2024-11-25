@@ -34,6 +34,8 @@ namespace EksamensProjekt
 
             _importedAddressesCollectionView.Filter = item => ApplyCombinedFilter(item as Tenancy);
 
+            //LoadTestData
+            LoadImportedAddresses();
 
             // Initialize commands
             //GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);
@@ -83,7 +85,7 @@ namespace EksamensProjekt
             get => _filepath;
             set
             {
-                _filepath = value;
+                _filepath = "C:\\Users\\marle\\Desktop\\mock_addresses.xlsx";
                 OnPropertyChanged();
             }
         }
