@@ -11,32 +11,32 @@ namespace EksamensProjekt.Utilities.DataAccess
             {
                 TenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID")),
                 TenancyStatus = SqlDataReaderHelper.GetEnumValue<TenancyStatus>(reader, "TenancyStatus"),
-                MoveInDate = SqlDataReaderHelper.GetValueOrDefault<DateTime?>(reader, "MoveInDate"),
-                MoveOutDate = SqlDataReaderHelper.GetValueOrDefault<DateTime?>(reader, "MoveOutDate"),
-                SquareMeter = SqlDataReaderHelper.GetValueOrDefault<int?>(reader, "SquareMeter"),
-                Rent = SqlDataReaderHelper.GetValueOrDefault<decimal?>(reader, "Rent"),
-                Rooms = SqlDataReaderHelper.GetValueOrDefault<int?>(reader, "Rooms"),
-                Bathrooms = SqlDataReaderHelper.GetValueOrDefault<int?>(reader, "BathRooms"),
-                PetsAllowed = SqlDataReaderHelper.GetValueOrDefault<bool?>(reader, "PetsAllowed"),
+                MoveInDate = SqlDataReaderHelper.GetValueOrNull<DateTime?>(reader, "MoveInDate"),
+                MoveOutDate = SqlDataReaderHelper.GetValueOrNull<DateTime?>(reader, "MoveOutDate"),
+                SquareMeter = SqlDataReaderHelper.GetValueOrNull<int?>(reader, "SquareMeter"),
+                Rent = SqlDataReaderHelper.GetValueOrNull<decimal?>(reader, "Rent"),
+                Rooms = SqlDataReaderHelper.GetValueOrNull<int?>(reader, "Rooms"),
+                Bathrooms = SqlDataReaderHelper.GetValueOrNull<int?>(reader, "BathRooms"),
+                PetsAllowed = SqlDataReaderHelper.GetValueOrNull<bool?>(reader, "PetsAllowed"),
                 IsDeleted = reader.GetBoolean(reader.GetOrdinal("IsDeleted")),
 
                 Address = new Address
                 {
                     AddressID = reader.GetInt32(reader.GetOrdinal("AddressID")),
-                    Street = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "Street"),
-                    Number = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "Number"),
-                    FloorNumber = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "FloorNumber"),
-                    Zipcode = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "Zipcode"),
-                    Country = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "Country"),
+                    Street = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Street"),
+                    Number = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Number"),
+                    FloorNumber = SqlDataReaderHelper.GetValueOrNull<string>(reader, "FloorNumber"),
+                    Zipcode = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Zipcode"),
+                    Country = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Country"),
                     IsStandardized = reader.GetBoolean(reader.GetOrdinal("IsStandardized"))
                 },
 
                 Organization = new Organization
                 {
                     OrganizationID = reader.GetInt32(reader.GetOrdinal("OrganizationID")),
-                    OrganizationName = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "OrganizationName"),
-                    PhoneNum = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "OrganizationPhoneNum"),
-                    Email = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "OrganizationEmail")
+                    OrganizationName = SqlDataReaderHelper.GetValueOrNull<string>(reader, "OrganizationName"),
+                    PhoneNum = SqlDataReaderHelper.GetValueOrNull<string>(reader, "OrganizationPhoneNum"),
+                    Email = SqlDataReaderHelper.GetValueOrNull<string>(reader, "OrganizationEmail")
                 }
             };
 
@@ -45,9 +45,9 @@ namespace EksamensProjekt.Utilities.DataAccess
                 tenancy.Company = new Company
                 {
                     CompanyID = reader.GetInt32(reader.GetOrdinal("CompanyID")),
-                    CompanyName = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "CompanyName"),
-                    PhoneNum = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "CompanyPhoneNum"),
-                    Email = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "CompanyEmail")
+                    CompanyName = SqlDataReaderHelper.GetValueOrNull<string>(reader, "CompanyName"),
+                    PhoneNum = SqlDataReaderHelper.GetValueOrNull<string>(reader, "CompanyPhoneNum"),
+                    Email = SqlDataReaderHelper.GetValueOrNull<string>(reader, "CompanyEmail")
                 };
             }
 
@@ -61,10 +61,10 @@ namespace EksamensProjekt.Utilities.DataAccess
             return new Tenant
             {
                 TenantID = reader.GetInt32(reader.GetOrdinal("TenantID")),
-                FirstName = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "TenantFirstName"),
-                LastName = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "TenantLastName"),
-                PhoneNum = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "TenantPhoneNum"),
-                Email = SqlDataReaderHelper.GetReferenceValueOrDefault<string>(reader, "TenantEmail")
+                FirstName = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantFirstName"),
+                LastName = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantLastName"),
+                PhoneNum = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantPhoneNum"),
+                Email = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantEmail")
             };
         }
     }
