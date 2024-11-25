@@ -19,14 +19,8 @@ namespace EksamensProjekt.Utilities.DataAccess
 
             if (reader.IsDBNull(columnOrdinal))
             {
-                if (typeof(T).IsValueType && Nullable.GetUnderlyingType(typeof(T)) == null)
-                {
-                    // For non-nullable value types, return default value of T
-                    return default;
-                }
-
-                // For nullable value types, return null
-                return (T)(object)null;
+                // Return null for both reference and nullable value types
+                return default;
             }
             else
             {

@@ -1,9 +1,9 @@
-﻿using EksamensProjekt.Models.Repositories;
-using EksamensProjekt.Models;
+﻿using EksamensProjekt.Models;
 using EksamensProjekt.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting; // MSTest namespace for testing
 using Moq; // Moq library for mocking dependencies
 using System;
+using EksamensProjekt.Repos;
 
 [TestClass] // Marks this class as containing unit tests
 public class TenancyServiceTests

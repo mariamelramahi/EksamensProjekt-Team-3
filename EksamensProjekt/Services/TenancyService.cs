@@ -1,5 +1,5 @@
 ﻿using EksamensProjekt.Models;
-using EksamensProjekt.Models.Repositories;
+using EksamensProjekt.Repos;
 using System.Windows;
 
 namespace EksamensProjekt.Services

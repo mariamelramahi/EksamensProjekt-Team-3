@@ -1,9 +1,10 @@
+using EksamensProjekt.Models;
 using EksamensProjekt.Utilities.DataAccess;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Windows;
 
-namespace EksamensProjekt.Models.Repositories;
+namespace EksamensProjekt.Repos;
 
 public class TenancyRepo : IRepo<Tenancy>
 {
@@ -54,8 +55,8 @@ public class TenancyRepo : IRepo<Tenancy>
                     {
                         TenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID")),
                         TenancyStatus = Enum.TryParse<TenancyStatus>(reader.GetString(reader.GetOrdinal("TenancyStatus")), out var status) ? status : TenancyStatus.Vacant, // Provide a default value for invalid statuses.
-                        MoveInDate = reader.IsDBNull(reader.GetOrdinal("MoveInDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
-                        MoveOutDate = reader.IsDBNull(reader.GetOrdinal("MoveOutDate")) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal("MoveOutDate")),
+                        MoveInDate = reader.IsDBNull(reader.GetOrdinal("MoveInDate")) ? null : reader.GetDateTime(reader.GetOrdinal("MoveInDate")),
+                        MoveOutDate = reader.IsDBNull(reader.GetOrdinal("MoveOutDate")) ? null : reader.GetDateTime(reader.GetOrdinal("MoveOutDate")),
                         SquareMeter = reader.GetInt32(reader.GetOrdinal("SquareMeter")),
                         Rent = reader.IsDBNull(reader.GetOrdinal("Rent")) ? null : (int?)reader.GetDecimal(reader.GetOrdinal("Rent")),
                         Rooms = reader.GetInt32(reader.GetOrdinal("Rooms")),
@@ -129,7 +130,7 @@ public class TenancyRepo : IRepo<Tenancy>
 
     public IEnumerable<Tenancy> ReadAll() // classes C# reference type meaning List and Dict points to the same object in memory
     {
-        var tenancies = new List<Tenancy>(); 
+        var tenancies = new List<Tenancy>();
         var tenancyMap = new Dictionary<int, Tenancy>();
 
         using (var conn = new SqlConnection(_connectionString))
@@ -448,16 +449,16 @@ public class TenancyRepo : IRepo<Tenancy>
             command.Parameters.AddWithValue("@TenancyID", entity.TenancyID);
 
             // Only add parameters if the corresponding field is provided
-            command.Parameters.AddWithValue("@TenancyStatus", entity.TenancyStatus.HasValue ? (object)entity.TenancyStatus.Value.ToString() : DBNull.Value);
-            command.Parameters.AddWithValue("@MoveInDate", entity.MoveInDate.HasValue ? (object)entity.MoveInDate.Value : DBNull.Value);
-            command.Parameters.AddWithValue("@MoveOutDate", entity.MoveOutDate.HasValue ? (object)entity.MoveOutDate.Value : DBNull.Value);
-            command.Parameters.AddWithValue("@SquareMeter", entity.SquareMeter > 0 ? (object)entity.SquareMeter : DBNull.Value);
-            command.Parameters.AddWithValue("@Rent", entity.Rent.HasValue ? (object)entity.Rent.Value : DBNull.Value);
-            command.Parameters.AddWithValue("@Rooms", entity.Rooms.HasValue ? (object)entity.Rooms.Value : DBNull.Value);
-            command.Parameters.AddWithValue("@Bathrooms", entity.Bathrooms.HasValue ? (object)entity.Bathrooms.Value : DBNull.Value);
-            command.Parameters.AddWithValue("@PetsAllowed", entity.PetsAllowed.HasValue ? (object)entity.PetsAllowed.Value : DBNull.Value);
-            command.Parameters.AddWithValue("@CompanyID", entity.Company != null && entity.Company.CompanyID != 0 ? (object)entity.Company.CompanyID : DBNull.Value);
-            command.Parameters.AddWithValue("@IsDeleted", entity.IsDeleted ? (object)entity.IsDeleted : DBNull.Value);
+            command.Parameters.AddWithValue("@TenancyStatus", entity.TenancyStatus.HasValue ? entity.TenancyStatus.Value.ToString() : DBNull.Value);
+            command.Parameters.AddWithValue("@MoveInDate", entity.MoveInDate.HasValue ? entity.MoveInDate.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@MoveOutDate", entity.MoveOutDate.HasValue ? entity.MoveOutDate.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@SquareMeter", entity.SquareMeter > 0 ? entity.SquareMeter : DBNull.Value);
+            command.Parameters.AddWithValue("@Rent", entity.Rent.HasValue ? entity.Rent.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@Rooms", entity.Rooms.HasValue ? entity.Rooms.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@Bathrooms", entity.Bathrooms.HasValue ? entity.Bathrooms.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@PetsAllowed", entity.PetsAllowed.HasValue ? entity.PetsAllowed.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@CompanyID", entity.Company != null && entity.Company.CompanyID != 0 ? entity.Company.CompanyID : DBNull.Value);
+            command.Parameters.AddWithValue("@IsDeleted", entity.IsDeleted ? entity.IsDeleted : DBNull.Value);
 
             try
             {

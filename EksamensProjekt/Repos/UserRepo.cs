@@ -2,9 +2,9 @@
 using System.Data;
 using System.Data.SqlClient; // Til at arbejde med SQL Server via ADO.NET
 using Microsoft.Data.SqlClient;
+using EksamensProjekt.Models;
 
-
-namespace EksamensProjekt.Models.Repositories;
+namespace EksamensProjekt.Repos;
 
 public class UserRepo : IUserRepo<User>
 {

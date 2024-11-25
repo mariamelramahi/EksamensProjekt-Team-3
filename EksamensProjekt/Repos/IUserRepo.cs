@@ -1,4 +1,4 @@
-﻿namespace EksamensProjekt.Models.Repositories;
+﻿namespace EksamensProjekt.Repos;
 
 public interface IUserRepo<User>
 {
