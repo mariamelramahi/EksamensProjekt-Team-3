@@ -1,40 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace EksamensProjekt.Models;
 
-
-
-namespace EksamensProjekt.Models
+public enum TenancyStatus
 {
-    public enum TenancyStatus
-    {
     Occupied,
     Vacant,
     UnderRenovation
-    }
+}
 
-   public class Tenancy
-    {
-        public int TenancyID { get; set; }
-        public TenancyStatus? TenancyStatus { get; set; }
-        public DateTime? MoveInDate { get; set; }
-        public DateTime? MoveOutDate { get; set; }
-        public int? SquareMeter { get; set; }
-        public int? Rent { get; set; }
-        public int? Rooms { get; set; }
-        public int? Bathrooms { get; set; }
-        public bool? PetsAllowed { get; set; }
-        public List<Tenant>? Tenants { get; set; }
-        public Address? Address { get; set; }
-        public Company? Company { get; set; }
-        public int? OrganizationID { get; set; }
-        public bool IsDeleted { get; set; }
+public class Tenancy
+{
+    public int TenancyID { get; set; }
+    public TenancyStatus? TenancyStatus { get; set; }
+    public DateTime? MoveInDate { get; set; }
+    public DateTime? MoveOutDate { get; set; }
+    public int? SquareMeter { get; set; }
+    public Decimal? Rent { get; set; }
+    public int? Rooms { get; set; }
+    public int? Bathrooms { get; set; }
+    public bool? PetsAllowed { get; set; }
+    public List<Tenant>? Tenants { get; set; }
+    public Address? Address { get; set; }
+    public Company? Company { get; set; }
+    public Organization Organization { get; set; }
+    public bool IsDeleted { get; set; }
 
 
-    }
+
 }
 

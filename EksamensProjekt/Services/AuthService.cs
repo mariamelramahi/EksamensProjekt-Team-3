@@ -1,5 +1,5 @@
 using EksamensProjekt.Models;
-using EksamensProjekt.Models.Repositories;
+using EksamensProjekt.Repos;
 
 
 namespace EksamensProjekt.Services;
@@ -7,9 +7,9 @@ namespace EksamensProjekt.Services;
 
 public class AuthLogin
 {
-    private readonly IRepo<User> _userRepo;
+    private readonly IUserRepo<User> _userRepo;
 
-    public AuthLogin(IRepo<User> userRepo)
+    public AuthLogin(IUserRepo<User> userRepo)
     {
         _userRepo = userRepo;
     }

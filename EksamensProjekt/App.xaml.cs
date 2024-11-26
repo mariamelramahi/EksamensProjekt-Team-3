@@ -1,5 +1,5 @@
 ﻿using EksamensProjekt.Models;
-using EksamensProjekt.Models.Repositories;
+using EksamensProjekt.Repos;
 using EksamensProjekt.Services;
 using EksamensProjekt.Services.Navigation;
 using EksamensProjekt.ViewModels;
@@ -32,7 +32,7 @@ public partial class App : Application
         string connectionString = AppConfig.GetConnectionString("LocalConnection");
 
         // Repositories
-        IRepo<User> userRepo = new UserRepo(connectionString);
+        IUserRepo<User> userRepo = new UserRepo(connectionString);
         IRepo<Tenancy> tenancyRepo = new TenancyRepo(connectionString);
         IRepo<Tenant> tenantRepo = new TenantRepo(connectionString);
         IRepo<Address> AddressRepo = new AddressRepo(connectionString);

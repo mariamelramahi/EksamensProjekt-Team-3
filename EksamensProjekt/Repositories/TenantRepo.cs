@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SqlClient; // Til at arbejde med SQL Server via ADO.NET
 using Microsoft.Data.SqlClient;
 
-namespace EksamensProjekt.Models.Repositories
+namespace EksamensProjekt.Repos
 {
     public class TenantRepo : IRepo<Tenant>
     {
@@ -39,7 +39,7 @@ namespace EksamensProjekt.Models.Repositories
                     // Specifies that the command is a stored procedure
                     CommandType = CommandType.StoredProcedure
                 };
-                
+
                 // Adds a parameter to the SqlCommand for the TenantID, used by the stored procedure to identify the Tenant record
                 command.Parameters.AddWithValue("@TenantID", tenantID);
 
@@ -67,11 +67,6 @@ namespace EksamensProjekt.Models.Repositories
         }
 
         void IRepo<Tenant>.Create(Tenant entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        Tenant IRepo<Tenant>.GetByUsername(string userName)
         {
             throw new NotImplementedException();
         }

@@ -373,7 +373,7 @@
                                     <TextBlock Text="Boligselskab: "
                                                FontWeight="Bold" />
                                     <TextBlock Width="150"
-                                               Text="{Binding Company}"
+                                               Text="{Binding Organization}"
                                                Margin="10,0,0,0" />
                                 </StackPanel>
 
@@ -398,7 +398,7 @@
                                     <TextBlock Text="Ejer: "
                                                FontWeight="Bold" />
                                     <TextBlock Width="150"
-                                               Text="{Binding Owner}"
+                                               Text="{Binding Company}"
                                                Margin="10,0,0,0" />
                                 </StackPanel>
 

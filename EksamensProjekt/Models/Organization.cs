@@ -2,8 +2,14 @@
 
 public class Organization : Party
 {
-
+    public int OrganizationID { get; set; }
     public string OrganizationName { get; set; }
+
+
+    // Parameterless constructor for object initialization
+    public Organization() : base(string.Empty, string.Empty, "Organization")
+    {
+    }
 
 
     // Constructor to initialize the Organization object, including properties inherited from Party.

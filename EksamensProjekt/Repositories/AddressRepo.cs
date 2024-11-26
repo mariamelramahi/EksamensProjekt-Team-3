@@ -2,8 +2,9 @@
 using System.Data;
 using System.Data.SqlClient; // Til at arbejde med SQL Server via ADO.NET
 using Microsoft.Data.SqlClient;
+using EksamensProjekt.Models;
 
-namespace EksamensProjekt.Models.Repositories;
+namespace EksamensProjekt.Repos;
 
 public class AddressRepo : IRepo<Address>
 {
@@ -74,10 +75,6 @@ public class AddressRepo : IRepo<Address>
         throw new NotImplementedException();
     }
 
-    Address IRepo<Address>.GetByUsername(string userName)
-    {
-        throw new NotImplementedException();
-    }
 
     IEnumerable<Address> IRepo<Address>.ReadAll()
     {
