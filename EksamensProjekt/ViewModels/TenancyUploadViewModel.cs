@@ -105,29 +105,19 @@ namespace EksamensProjekt.ViewModels
         }
 
 
-        //private string _filepath;
-        //public string Filepath
-        //{
-        //    get => _filepath;
-        //    set
-        //    {
-        //        _filepath = value;
-        //        OnPropertyChanged();
-        //        LoadImportedAddresses();
-        //    }
-        //}
-
-        private string _XLSXPath;
-
-        public string XLSXPath
+        private string _filepath;
+        public string Filepath
         {
-            get => _XLSXPath;
+            get => _filepath;
             set
             {
-                _XLSXPath = value;
+                _filepath = value;
                 OnPropertyChanged();
+                LoadImportedAddresses();
             }
         }
+
+       
 
 
 
@@ -135,7 +125,7 @@ namespace EksamensProjekt.ViewModels
 
         private void OnFileDropped(string filePath)
         {
-            XLSXPath = filePath; // Opdate property in ViewModel
+            Filepath = filePath; // Opdate property in ViewModel
         }
 
 
@@ -199,7 +189,7 @@ namespace EksamensProjekt.ViewModels
         {
             ImportedAddresses.Clear();
 
-            var importedAddresses = _excelImportService.ImportAddresses(XLSXPath);
+            var importedAddresses = _excelImportService.ImportAddresses(Filepath);
             foreach (var address in importedAddresses)
             {
                 ImportedAddresses.Add(address);

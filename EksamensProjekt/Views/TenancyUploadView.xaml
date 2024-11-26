@@ -323,7 +323,7 @@
                 <Grid>
                     <TextBox Name="DropTextBox"
                  AllowDrop="True"
-                 Text="{Binding XLSXPath, UpdateSourceTrigger=PropertyChanged}"
+                 Text="{Binding Filepath, UpdateSourceTrigger=PropertyChanged}"
                  DragOver="DropTextBox_DragOver"
                  Drop="DropTextBox_Drop"
                  HorizontalAlignment="Center"
