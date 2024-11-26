@@ -69,7 +69,10 @@ public partial class App : Application
         TenancyView tenancyView = new TenancyView(tenancyViewModel);
         tenancyView.Show();
 
-
+        //Allow drag and drop
+        EventManager.RegisterClassHandler(typeof(UIElement),
+        UIElement.PreviewDragOverEvent,
+        new DragEventHandler((sender, args) => args.Handled = true));
 
 
 
