@@ -153,19 +153,19 @@
                 </ControlTemplate>
             </Expander.Template>
             <StackPanel Height="85">
-                <CheckBox Content="Aktiv"
+                <CheckBox Content="Occupied"
                           IsChecked="{Binding IsFilterAEnabled, Mode=TwoWay}"
                           Command="{Binding ApplyFilterCommand}"
                           HorizontalAlignment="Left"
                           Margin="10,10,0,0"
                           VerticalAlignment="Top" />
-                <CheckBox Content="Inaktiv"
+                <CheckBox Content="Vacant"
                           IsChecked="{Binding IsFilterBEnabled, Mode=TwoWay}"
                           Command="{Binding ApplyFilterCommand}"
                           HorizontalAlignment="Left"
                           Margin="10,10,0,0"
                           VerticalAlignment="Top" />
-                <CheckBox Content="Afventer"
+                <CheckBox Content="Under renovation"
                           IsChecked="{Binding IsFilterCEnabled, Mode=TwoWay}"
                           Command="{Binding ApplyFilterCommand}"
                           HorizontalAlignment="Left"
@@ -463,25 +463,8 @@
               VerticalAlignment="Top">
 
             <!-- TextBox filter Zipcode -->
-            <TextBox x:Name="ZipFilterBox"
-                     TextWrapping="Wrap"
-                     VerticalAlignment="Top"
-                     Height="27"
-                     FontSize="18"
-                     FontFamily="Tahoma"
-                     BorderBrush="{x:Null}"
-                     Foreground="Black"
-                     SelectionBrush="{x:Null}"
-                     Margin="-1592,79,1419,0"
-                     Text="{Binding ZipCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <!-- Placeholder TextBlock -->
-            <TextBlock VerticalAlignment="Top"
-                       Margin="-1589,85,1422,0"
-                       Foreground="#FFA4A4A4"
-                       IsHitTestVisible="False"
-                       Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=ZipFilterBox}"
-                       Text="Postnummer" />
         </Grid>
 
         <DataGrid ItemsSource="{Binding FilteredTenancies}"
