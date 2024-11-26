@@ -19,7 +19,7 @@ namespace EksamensProjekt.ViewModels
         private ICollectionView _importedAddressesCollectionView;
 
         // Constructor
-        public TenancyUploadViewModel(INavigationService navigationService, TenancyService tenancyService, FilterService filterService, SearchService searchService, ExcelImportService excelImportService)
+        public TenancyUploadViewModel(INavigationService navigationService, TenancyService tenancyService, FilterService filterService, SearchService searchService, ExcelImportService excelImportService, DragAndDropService dragAndDropService)
         {
             _navigationService = navigationService;
             _tenancyService = tenancyService;
@@ -32,6 +32,9 @@ namespace EksamensProjekt.ViewModels
             //LoadTestData
             //LoadImportedAddresses();
 
+            // Drag-and-Drop service
+            DragAndDropService = dragAndDropService;
+            DragAndDropService.FileDropped = OnFileDropped;
 
             // Set up CollectionView for displaying items
             _importedAddressesCollectionView = CollectionViewSource.GetDefaultView(ImportedAddresses);
@@ -102,17 +105,44 @@ namespace EksamensProjekt.ViewModels
         }
 
 
-        private string _filepath;
-        public string Filepath
+        //private string _filepath;
+        //public string Filepath
+        //{
+        //    get => _filepath;
+        //    set
+        //    {
+        //        _filepath = value;
+        //        OnPropertyChanged();
+        //        LoadImportedAddresses();
+        //    }
+        //}
+
+        private string _XLSXPath;
+
+        public string XLSXPath
         {
-            get => _filepath;
+            get => _XLSXPath;
             set
             {
-                _filepath = value;
+                _XLSXPath = value;
                 OnPropertyChanged();
-                LoadImportedAddresses();
             }
         }
+
+
+
+
+
+        private void OnFileDropped(string filePath)
+        {
+            XLSXPath = filePath; // Opdate property in ViewModel
+        }
+
+
+    
+
+    //Service Properties
+    public DragAndDropService DragAndDropService { get; }
 
 
         // Delegated Filter Properties (delegates to FilterService) exposer
@@ -169,7 +199,7 @@ namespace EksamensProjekt.ViewModels
         {
             ImportedAddresses.Clear();
 
-            var importedAddresses = _excelImportService.ImportAddresses(Filepath);
+            var importedAddresses = _excelImportService.ImportAddresses(XLSXPath);
             foreach (var address in importedAddresses)
             {
                 ImportedAddresses.Add(address);
