@@ -13,4 +13,19 @@ public partial class TenancyUploadView : Window
         InitializeComponent();
         this.DataContext = tuvm;
     }
+    private void DropTextBox_DragOver(object sender, DragEventArgs e)
+    {
+        if (DataContext is TenancyViewModel viewModel)
+        {
+            viewModel.DragAndDropService.HandleDragOver(sender, e);
+        }
+    }
+
+    private void DropTextBox_Drop(object sender, DragEventArgs e)
+    {
+        if (DataContext is TenancyViewModel viewModel)
+        {
+            viewModel.DragAndDropService.HandleDrop(sender, e);
+        }
+    }
 }
