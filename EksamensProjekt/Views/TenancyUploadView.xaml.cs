@@ -15,7 +15,7 @@ public partial class TenancyUploadView : Window
     }
     private void DropTextBox_DragOver(object sender, DragEventArgs e)
     {
-        if (DataContext is TenancyViewModel viewModel)
+        if (DataContext is TenancyUploadViewModel viewModel)
         {
             viewModel.DragAndDropService.HandleDragOver(sender, e);
         }
@@ -23,7 +23,7 @@ public partial class TenancyUploadView : Window
 
     private void DropTextBox_Drop(object sender, DragEventArgs e)
     {
-        if (DataContext is TenancyViewModel viewModel)
+        if (DataContext is TenancyUploadViewModel viewModel)
         {
             viewModel.DragAndDropService.HandleDrop(sender, e);
         }

@@ -117,8 +117,32 @@ namespace EksamensProjekt.ViewModels
             }
         }
 
-        //Service Properties
-        public DragAndDropService DragAndDropService { get; }
+        private string _XLSXPath;
+
+        public string XLSXPath
+        {
+            get => _XLSXPath;
+            set
+            {
+                _XLSXPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+
+
+
+        private void OnFileDropped(string filePath)
+        {
+            XLSXPath = filePath; // Opdate property in ViewModel
+        }
+
+
+    
+
+    //Service Properties
+    public DragAndDropService DragAndDropService { get; }
 
 
         // Delegated Filter Properties (delegates to FilterService) exposer
