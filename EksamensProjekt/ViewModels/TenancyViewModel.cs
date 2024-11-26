@@ -203,7 +203,7 @@ namespace EksamensProjekt.ViewModels
 
         private bool ApplyCombinedFilter(Tenancy tenancy)
         {
-            return _filterService.ApplyCheckboxFilter(tenancy) &&
+            return _filterService.ApplyFilter(tenancy) &&
                    _searchService.ApplySearchFilter(tenancy, SearchInput);
         }
         

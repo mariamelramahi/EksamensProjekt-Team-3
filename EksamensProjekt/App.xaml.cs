@@ -28,18 +28,18 @@ public partial class App : Application
         AppConfig = builder.Build();
 
         // Initialize dependencies
-        string connectionString = AppConfig.GetConnectionString("DefaultConnection");
-        //string connectionString = AppConfig.GetConnectionString("LocalConnection");
+        //string connectionString = AppConfig.GetConnectionString("DefaultConnection");
+        string connectionString = AppConfig.GetConnectionString("LocalConnection");
 
         // Repositories
         IRepo<User> userRepo = new UserRepo(connectionString);
         IRepo<Tenancy> tenancyRepo = new TenancyRepo(connectionString);
         IRepo<Tenant> tenantRepo = new TenantRepo(connectionString);
-        IRepo<StandardAddress> standardAddressRepo = new StandardAddressRepo(connectionString);
+        IRepo<Address> AddressRepo = new AddressRepo(connectionString);
 
         // Services
         AuthLogin authLoginService = new AuthLogin(userRepo);
-        TenancyService tenancyService = new TenancyService(tenancyRepo, tenantRepo, standardAddressRepo);
+        TenancyService tenancyService = new TenancyService(tenancyRepo, tenantRepo, AddressRepo);
         SearchService searchService = new SearchService();
         FilterService filterService = new FilterService();
         HistoryService historyService = new HistoryService();
