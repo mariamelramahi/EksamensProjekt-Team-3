@@ -32,6 +32,9 @@ namespace EksamensProjekt.ViewModels
             //LoadTestData
             //LoadImportedAddresses();
 
+            // Drag-and-Drop service
+            DragAndDropService = dragAndDropService;
+            DragAndDropService.FileDropped = OnFileDropped;
 
             // Set up CollectionView for displaying items
             _importedAddressesCollectionView = CollectionViewSource.GetDefaultView(ImportedAddresses);
