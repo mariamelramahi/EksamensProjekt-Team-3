@@ -319,18 +319,17 @@
         BorderThickness="2"
         CornerRadius="5"
         Margin="256,15,1256,433">
-                <ListBox Background="White"
-             HorizontalAlignment="Center"
-             VerticalAlignment="Center">
-                    <!-- Centered TextBlock within the ListBox -->
-                    <TextBlock Text="Træk og slip din excel fil her"
-                   Foreground="#FF006DA0"
-                   FontSize="16"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   TextWrapping="Wrap"/>
-                </ListBox>
+                <TextBox Name="DropTextBox"
+ AllowDrop="True"
+ Text="{Binding XLSXPath, UpdateSourceTrigger=PropertyChanged}"
+ DragOver="DropTextBox_DragOver"
+ Drop="DropTextBox_Drop"
+ HorizontalAlignment="Center"
+ TextWrapping="Wrap"
+ VerticalAlignment="Center"
+ Width="388"
+ Height="108"
+ FontSize="18" Grid.Row="1" />
             </Border>
 
 
