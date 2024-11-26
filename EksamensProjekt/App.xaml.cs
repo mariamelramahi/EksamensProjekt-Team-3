@@ -45,13 +45,14 @@ public partial class App : Application
         HistoryService historyService = new HistoryService();
         ExcelImportService excelImportService = new ExcelImportService();
         INavigationService navigationService = new NavigationService();
+        DragAndDropService dragAndDropService = new DragAndDropService();
 
         //if (authLoginService == null || navigationService == null) { MessageBox.Show("Error: One or more services failed to initialize."); return; }
 
         // Create ViewModels
         LoginViewModel loginViewModel = new LoginViewModel(authLoginService, navigationService);
         TenancyViewModel tenancyViewModel = new TenancyViewModel(navigationService, tenancyService, filterService, searchService);
-        TenancyUploadViewModel tenancyUploadViewModel = new TenancyUploadViewModel(navigationService, tenancyService, filterService, searchService, excelImportService);
+        TenancyUploadViewModel tenancyUploadViewModel = new TenancyUploadViewModel(navigationService, tenancyService, filterService, searchService, excelImportService, dragAndDropService);
         //HistoryViewModel historyViewModel = new HistoryViewModel(navigationService, historyService, filterService, searchService);
 
         // Set up factory methods for creating views

@@ -19,7 +19,7 @@ namespace EksamensProjekt.ViewModels
         private ICollectionView _importedAddressesCollectionView;
 
         // Constructor
-        public TenancyUploadViewModel(INavigationService navigationService, TenancyService tenancyService, FilterService filterService, SearchService searchService, ExcelImportService excelImportService)
+        public TenancyUploadViewModel(INavigationService navigationService, TenancyService tenancyService, FilterService filterService, SearchService searchService, ExcelImportService excelImportService, DragAndDropService dragAndDropService)
         {
             _navigationService = navigationService;
             _tenancyService = tenancyService;
