@@ -73,16 +73,16 @@
                     </Style>
                 </Button.Resources>
             </Button>
-            <Button Content="Historik"
+            <Button Content="Tilbage til lejemål"
             HorizontalAlignment="Left"
-            Margin="1719,11,0,0"
+            Margin="1652,11,0,0"
             VerticalAlignment="Top"
-            Width="110"
+            Width="182"
             Background="White"
             Foreground="#FF006DA0"
             Height="32"
             FontFamily="Bahnschrift Light"
-            Command="{Binding GoToHistoryCommand}"
+            Command="{Binding GoToTenancyCommand}"
             CommandParameter="{Binding}"
             FontSize="16"
             BorderBrush="#FF006DA0">
@@ -90,6 +90,26 @@
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="CornerRadius"
                         Value="5" />
+                    </Style>
+                </Button.Resources>
+            </Button>
+            <Button Content="Slet lejemål"
+                HorizontalAlignment="Left"
+                Margin="256,378,0,0"
+                VerticalAlignment="Top"
+                Width="254"
+                Background="White"
+                Foreground="#FF006DA0"
+                Height="48"
+                FontFamily="Tahoma"
+                Command="{Binding SaveAddress}"
+                CommandParameter="{Binding}"
+                FontSize="25"
+                BorderBrush="#FF006DA0" Grid.Row="1">
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius"
+                Value="5" />
                     </Style>
                 </Button.Resources>
             </Button>
@@ -152,11 +172,11 @@
                       VerticalAlignment="Top" />
                 </StackPanel>
             </Expander>
-            
+
             <!--Labels-->
             <Label Content="Overblik"
            HorizontalAlignment="Left"
-           Margin="960,22,0,0"
+           Margin="928,35,0,0"
            VerticalAlignment="Top"
            FontSize="64"
            FontFamily="Tahoma"
@@ -174,7 +194,7 @@
             VerticalAlignment="Top"
             FontSize="44"
             FontFamily="Tahoma"
-            Foreground="#FF006DA0" />   
+            Foreground="#FF006DA0" />
 
             <!--Searchbox-->
             <Rectangle HorizontalAlignment="Left"
@@ -216,7 +236,7 @@
                         Stretch="Uniform" />
                 </Rectangle.Fill>
             </Rectangle>
-            
+
             <!--ListBoxes-->
             <ListBox x:Name="AddressListBox"
          ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -292,31 +312,28 @@
                    Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=ZipFilterBox}"
                    Text="Postnummer" />
             </Grid>
-            
-            
-            <!-- ListBox for drag and drop -->
-            <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" Margin="256,61,1256,387"/>
-            <Button Content="Slet lejemål"
-                HorizontalAlignment="Left"
-                Margin="256,378,0,0"
-                VerticalAlignment="Top"
-                Width="254"
-                Background="White"
-                Foreground="#FF006DA0"
-                Height="48"
-                FontFamily="Tahoma"
-                Command="{Binding SaveAddress}"
-                CommandParameter="{Binding}"
-                FontSize="25"
-                BorderBrush="#FF006DA0" Grid.Row="1">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius"
-                            Value="5" />
-                    </Style>
-                </Button.Resources>
-            </Button>
-        </Grid>
 
+
+            <!-- Implementation for ListBox drag and drop -->
+            <Border BorderBrush="#FF006DA0"
+        BorderThickness="2"
+        CornerRadius="5"
+        Margin="256,15,1256,433">
+                <ListBox Background="White"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center">
+                    <!-- Centered TextBlock within the ListBox -->
+                    <TextBlock Text="Træk og slip din excel fil her"
+                   Foreground="#FF006DA0"
+                   FontSize="16"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   TextWrapping="Wrap"/>
+                </ListBox>
+            </Border>
+
+
+        </Grid>
     </Grid>
 </Window>

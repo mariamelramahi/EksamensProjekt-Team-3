@@ -37,11 +37,11 @@ namespace EksamensProjekt.ViewModels
             _importedAddressesCollectionView = CollectionViewSource.GetDefaultView(ImportedAddresses);
 
             //_importedAddressesCollectionView.Filter = item => ApplyCombinedFilter(item as Tenancy);
+            //Address is converted to a mock Tenancy object for filtering
             _importedAddressesCollectionView.Filter = item =>
             {
                 if (item is Address address)
                 {
-                    // Convert the Address object to a mock Tenancy object for filtering
                     var mockTenancy = new Tenancy
                     {
                         Address = new StandardAddress
@@ -161,7 +161,8 @@ namespace EksamensProjekt.ViewModels
         public RelayCommand CreateTenancyCommand { get; }
         public RelayCommand SoftDeleteTenancyCommand { get; }
         public RelayCommand UploadFileCommand { get; }
-        
+        public RelayCommand GoToTenancyCommand => new RelayCommand(() => _navigationService.NavigateTo<TenancyView>());
+
 
         // Methods
         private void LoadImportedAddresses()
