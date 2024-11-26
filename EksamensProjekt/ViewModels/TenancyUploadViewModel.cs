@@ -114,6 +114,9 @@ namespace EksamensProjekt.ViewModels
             }
         }
 
+        //Service Properties
+        public DragAndDropService DragAndDropService { get; }
+
 
         // Delegated Filter Properties (delegates to FilterService) exposer
         public bool IsFilterAEnabled
