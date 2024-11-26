@@ -9,78 +9,85 @@ using System.Windows.Input;
 
 namespace EksamensProjekt.ViewModels
 {
-    public class TenancyViewModel : ViewModelBase
+    public class TenancyUploadViewModel : ViewModelBase
     {
-
         private readonly INavigationService _navigationService;
         private readonly TenancyService _tenancyService;
         private readonly FilterService _filterService;
         private readonly SearchService _searchService;
-        private ICollectionView _tenancyCollectionView;
-
+        private readonly ExcelImportService _excelImportService;
+        private ICollectionView _importedAddressesCollectionView;
 
         // Constructor
-        public TenancyViewModel(INavigationService navigationService, TenancyService tenancyService, FilterService filterService, SearchService searchService)
+        public TenancyUploadViewModel(INavigationService navigationService, TenancyService tenancyService, FilterService filterService, SearchService searchService, ExcelImportService excelImportService)
         {
             _navigationService = navigationService;
             _tenancyService = tenancyService;
             _filterService = filterService;
             _searchService = searchService;
-
+            _excelImportService = excelImportService;
             // Initialize ObservableCollection
-            Tenancies = new ObservableCollection<Tenancy>();
+            ImportedAddresses = new ObservableCollection<Address>();
 
-            // Load initial data
-            LoadTenancies();
+            //LoadTestData
+            //LoadImportedAddresses();
+
 
             // Set up CollectionView for displaying items
-            _tenancyCollectionView = CollectionViewSource.GetDefaultView(Tenancies);
+            _importedAddressesCollectionView = CollectionViewSource.GetDefaultView(ImportedAddresses);
 
-            _tenancyCollectionView.Filter = item => ApplyCombinedFilter(item as Tenancy);
+            //_importedAddressesCollectionView.Filter = item => ApplyCombinedFilter(item as Tenancy);
+            //Address is converted to a mock Tenancy object for filtering
+            _importedAddressesCollectionView.Filter = item =>
+            {
+                if (item is Address address)
+                {
+                    var mockTenancy = new Tenancy
+                    {
+                        Address = new StandardAddress
+                        {
+                            Street = address.Street,
+                            Number = address.Number,
+                            FloorNumber = address.FloorNumber,
+                            Zipcode = address.Zipcode,
+                            Country = address.Country
+                        }
+                    };
+
+                    return ApplyCombinedFilter(mockTenancy);
+                }
+                return false;
+            };
 
 
             // Initialize commands
             //GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);
             //CreateTenancyCommand = new RelayCommand(ExecuteCreateTenancy);
-            UpdateTenancyCommand = new RelayCommand(ExecuteUpdateTenancy, CanExecuteModifyTenancy);
-            SoftDeleteTenancyCommand = new RelayCommand(ExecuteSoftDeleteTenancy, CanExecuteModifyTenancy);
             //UploadFileCommand = new RelayCommand(ExecuteUploadFile);
         }
 
-
         // Observable Collections
-        public ObservableCollection<Tenancy> Tenancies { get; set; }
+        public ObservableCollection<Address> ImportedAddresses { get; set; }
 
 
         // Filtered view of tenancies
-        public ICollectionView FilteredTenancies => _tenancyCollectionView;
-
+        public ICollectionView FilteredImportedAddresses => _importedAddressesCollectionView;
 
         // Properties
-        private Tenancy _selectedTenancy;
-        public Tenancy SelectedTenancy
+        private Address _selectedAddress;
+        public Address SelectedAddress
         {
-            get => _selectedTenancy;
+            get => _selectedAddress;
             set
             {
-                _selectedTenancy = value;
+                _selectedAddress = value;
                 OnPropertyChanged();
+
                 // Raise CanExecuteChanged on commands depending on SelectedAddress
-                UpdateTenancyCommand?.RaiseCanExecuteChanged();
                 SoftDeleteTenancyCommand?.RaiseCanExecuteChanged();
             }
         }
 
-        private Tenant _selectedTenant;
-        public Tenant SelectedTenant
-        {
-            get => _selectedTenant;
-            set
-            {
-                _selectedTenant = value;
-                OnPropertyChanged();
-            }
-        }
 
         private string _searchInput;
         public string SearchInput
@@ -91,6 +98,19 @@ namespace EksamensProjekt.ViewModels
                 _searchInput = value;
                 OnPropertyChanged();
                 OnFilterChanged(); // Automatically apply filters when search input changes
+            }
+        }
+
+
+        private string _filepath;
+        public string Filepath
+        {
+            get => _filepath;
+            set
+            {
+                _filepath = value;
+                OnPropertyChanged();
+                LoadImportedAddresses();
             }
         }
 
@@ -139,19 +159,20 @@ namespace EksamensProjekt.ViewModels
         // Commands
         public RelayCommand GoToHistoryCommand { get; }
         public RelayCommand CreateTenancyCommand { get; }
-        public RelayCommand UpdateTenancyCommand { get; }
         public RelayCommand SoftDeleteTenancyCommand { get; }
         public RelayCommand UploadFileCommand { get; }
-        public RelayCommand GoToTenancyUploadCommand => new RelayCommand(() => _navigationService.NavigateTo<TenancyUploadView>());
+        public RelayCommand GoToTenancyCommand => new RelayCommand(() => _navigationService.NavigateTo<TenancyView>());
+
 
         // Methods
-        private void LoadTenancies()
+        private void LoadImportedAddresses()
         {
-            Tenancies.Clear();
-            var tenancies = _tenancyService.GetAllTenancies();
-            foreach (var tenancy in tenancies)
+            ImportedAddresses.Clear();
+
+            var importedAddresses = _excelImportService.ImportAddresses(Filepath);
+            foreach (var address in importedAddresses)
             {
-                Tenancies.Add(tenancy);
+                ImportedAddresses.Add(address);
             }
         }
 
@@ -160,36 +181,10 @@ namespace EksamensProjekt.ViewModels
         //    _navigationService.NavigateTo<HistoryView>();
         //}
 
-        //private void ExecuteCreateTenancy()
-        //{
-        //    Tenancy newTenancy = _tenancyService.CreateNewTenancy();
-        //    if (newTenancy != null)
-        //    {
-        //        ImportedAddresses.Add(newTenancy);
-        //    }
-        //}
-
-        private void ExecuteUpdateTenancy()
-        {
-            if (SelectedTenancy != null)
-            {
-                _tenancyService.UpdateTenancy(SelectedTenancy);
-                LoadTenancies(); // Refresh the list to reflect changes
-            }
-        }
-
-        private void ExecuteSoftDeleteTenancy()
-        {
-            if (SelectedTenancy != null)
-            {
-                _tenancyService.SoftDeleteTenancy(SelectedTenancy);
-                Tenancies.Remove(SelectedTenancy);
-            }
-        }
 
         private bool CanExecuteModifyTenancy()
         {
-            return SelectedTenancy != null;
+            return SelectedAddress != null;
         }
 
         //private void ExecuteUploadFile(object parameter)
@@ -201,13 +196,13 @@ namespace EksamensProjekt.ViewModels
         //    }
         //}
 
-        private bool ApplyCombinedFilter(Tenancy tenancy)
+        private bool ApplyCombinedFilter(Tenancy importedAddress)
         {
-            return _filterService.ApplyFilter(tenancy) &&
-                   _searchService.ApplySearchFilter(tenancy, SearchInput);
+            return _filterService.ApplyCheckboxFilter(importedAddress) &&
+                   _searchService.ApplySearchFilter(importedAddress, SearchInput);
         }
-        
-        
+
+
         // Refresh new way: Threads (quicker / snappy UI)
         private async void OnFilterChanged()
         {
@@ -217,7 +212,7 @@ namespace EksamensProjekt.ViewModels
                 App.Current.Dispatcher.Invoke(() =>
                 {
                     // Refresh the ICollectionView on the UI thread
-                    _tenancyCollectionView.Refresh();
+                    _importedAddressesCollectionView.Refresh();
                 });
             });
         }

@@ -18,13 +18,13 @@
 //            _tenancies = new ObservableCollection<Tenancy>
 //            {
 //                new Tenancy(Tenancy.Status.Occupied, new DateTime(2023, 6, 1), null, "100m2", 15000, 3, 1, true, new List<Tenant>(),
-//                    new Address { StreetName = "Main St", Number = "10", ZipCode = "12345", City = "Copenhagen", Country = "Denmark" }, new Company()),
+//                    new Tenancy { StreetName = "Main St", Number = "10", ZipCode = "12345", City = "Copenhagen", Country = "Denmark" }, new Company()),
 
 //                new Tenancy(Tenancy.Status.Vacant, new DateTime(2024, 1, 15), null, "85m2", 12000, 2, 1, false, new List<Tenant>(),
-//                    new Address { StreetName = "Elm St", Number = "5", ZipCode = "54321", City = "Aarhus", Country = "Denmark" }, new Company()),
+//                    new Tenancy { StreetName = "Elm St", Number = "5", ZipCode = "54321", City = "Aarhus", Country = "Denmark" }, new Company()),
 
 //                new Tenancy(Tenancy.Status.UnderRenovation, null, new DateTime(2025, 5, 20), "200m2", 18000, 5, 2, true, new List<Tenant>(),
-//                    new Address { StreetName = "Oak St", Number = "7B", ZipCode = "67890", City = "Odense", Country = "Denmark" }, new Company())
+//                    new Tenancy { StreetName = "Oak St", Number = "7B", ZipCode = "67890", City = "Odense", Country = "Denmark" }, new Company())
 //            };
 
 //            // Initialize the FilterService with the sample data

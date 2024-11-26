@@ -38,7 +38,7 @@
 //                new Tenant("John", "Doe", "1234567890", "john.doe@email.com")
 //            };
 
-//            var address = new Address
+//            var address = new Tenancy
 //            {
 //                StreetName = "Oak St",
 //                ZipCode = "12345",

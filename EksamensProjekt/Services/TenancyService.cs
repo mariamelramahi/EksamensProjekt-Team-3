@@ -285,7 +285,7 @@ namespace EksamensProjekt.Services
         //}
 
 
-        //public static string CalculateAddressMatchScore(Address standardAddress, Address importedAddress)
+        //public static string CalculateAddressMatchScore(Tenancy standardAddress, Tenancy importedAddress)
         //{
         //    double streetMatchScore = CalculateLevenshteinMatchScore(standardAddress.StreetName, importedAddress.StreetName) * 0.4;
         //    double zipCodeMatchScore = CalculateLevenshteinMatchScore(standardAddress.ZipCode, importedAddress.ZipCode) * 0.3;

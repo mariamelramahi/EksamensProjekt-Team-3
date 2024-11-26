@@ -10,11 +10,11 @@ public class FilterService
     public bool IsFilterAEnabled { get; set; }
     public bool IsFilterBEnabled { get; set; }
     public bool IsFilterCEnabled { get; set; }
-    public bool IsFilterDEnabled => true;
+    public bool IsFilterDEnabled = true;
 
 
 
-    public bool ApplyFilter(Tenancy tenancy)
+    public bool ApplyCheckboxFilter(Tenancy tenancy)
     {
         if (tenancy == null)
             return false;
@@ -111,10 +111,10 @@ public class FilterService
 
     //public void FilterTenancyMatchType(string matchType, List<MatchResult> matchResults)
     //{
-    //    if (_tenancyCollectionView == null || matchResults == null) return;
+    //    if (_importedAddressesCollectionView == null || matchResults == null) return;
 
     //    // Set the filter predicate based on the selected match type
-    //    _tenancyCollectionView.Filter = tenancy =>
+    //    _importedAddressesCollectionView.Filter = tenancy =>
     //    {
     //        if (tenancy is Tenancy t)
     //        {
@@ -138,7 +138,7 @@ public class FilterService
     //    };
 
     //    // Refresh the view to apply the filter
-    //    _tenancyCollectionView.Refresh();
+    //    _importedAddressesCollectionView.Refresh();
     //}
 
 //}

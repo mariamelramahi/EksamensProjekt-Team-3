@@ -45,8 +45,8 @@ namespace EksamensProjekt.Services
 
     //        // Filter tenancies based on the provided zipCode and street
     //        var filteredTenancies = allTenancies.Where(t =>
-    //            (string.IsNullOrEmpty(zipCode) || t.Address?.Zipcode.Contains(zipCode) == true) &&
-    //            (string.IsNullOrEmpty(street) || t.Address?.Street.Contains(street) == true)
+    //            (string.IsNullOrEmpty(zipCode) || t.Tenancy?.Zipcode.Contains(zipCode) == true) &&
+    //            (string.IsNullOrEmpty(street) || t.Tenancy?.Street.Contains(street) == true)
     //        ).ToList();
 
     //        return filteredTenancies;
