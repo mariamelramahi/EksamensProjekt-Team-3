@@ -44,7 +44,7 @@ namespace EksamensProjekt.ViewModels
                 {
                     var mockTenancy = new Tenancy
                     {
-                        Address = new StandardAddress
+                        Address = new Address
                         {
                             Street = address.Street,
                             Number = address.Number,
@@ -198,7 +198,7 @@ namespace EksamensProjekt.ViewModels
 
         private bool ApplyCombinedFilter(Tenancy importedAddress)
         {
-            return _filterService.ApplyCheckboxFilter(importedAddress) &&
+            return _filterService.ApplyFilter(importedAddress) &&
                    _searchService.ApplySearchFilter(importedAddress, SearchInput);
         }
 

@@ -10,11 +10,11 @@ public class FilterService
     public bool IsFilterAEnabled { get; set; }
     public bool IsFilterBEnabled { get; set; }
     public bool IsFilterCEnabled { get; set; }
-    public bool IsFilterDEnabled = true;
+    public bool IsFilterDEnabled => true;
 
 
 
-    public bool ApplyCheckboxFilter(Tenancy tenancy)
+    public bool ApplyFilter(Tenancy tenancy)
     {
         if (tenancy == null)
             return false;
