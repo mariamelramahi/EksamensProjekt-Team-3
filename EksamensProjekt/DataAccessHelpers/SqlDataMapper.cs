@@ -5,6 +5,11 @@ namespace EksamensProjekt.DataAccess
 {
     public static class SqlDataMapper
     {
+
+        //
+        // Tenancy
+        //
+
         public static Tenancy PopulateTenancyFromReader(SqlDataReader reader)
         {
             var tenancy = new Tenancy
@@ -56,6 +61,32 @@ namespace EksamensProjekt.DataAccess
             return tenancy;
         }
 
+
+        public static void AddTenancyParameters(SqlCommand command, Tenancy tenancy)
+        {
+            // Add parameters to the SqlCommand based on the tenancy fields
+            command.Parameters.AddWithValue("@TenancyID", tenancy.TenancyID);
+            command.Parameters.AddWithValue("@TenancyStatus", tenancy.TenancyStatus.HasValue ? tenancy.TenancyStatus.Value.ToString() : DBNull.Value);
+            command.Parameters.AddWithValue("@MoveInDate", tenancy.MoveInDate.HasValue ? tenancy.MoveInDate.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@MoveOutDate", tenancy.MoveOutDate.HasValue ? tenancy.MoveOutDate.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@SquareMeter", tenancy.SquareMeter > 0 ? tenancy.SquareMeter : DBNull.Value);
+            command.Parameters.AddWithValue("@Rent", tenancy.Rent.HasValue ? tenancy.Rent.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@Rooms", tenancy.Rooms.HasValue ? tenancy.Rooms.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@Bathrooms", tenancy.Bathrooms.HasValue ? tenancy.Bathrooms.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@PetsAllowed", tenancy.PetsAllowed.HasValue ? tenancy.PetsAllowed.Value : DBNull.Value);
+            command.Parameters.AddWithValue("@CompanyID", tenancy.Company != null && tenancy.Company.CompanyID != 0 ? tenancy.Company.CompanyID : DBNull.Value);
+            command.Parameters.AddWithValue("@IsDeleted", tenancy.IsDeleted);
+        }
+
+
+
+
+
+
+        //
+        // Tenant
+        //
+
         public static Tenant PopulateTenantFromReader(SqlDataReader reader)
         {
             return new Tenant
@@ -67,5 +98,17 @@ namespace EksamensProjekt.DataAccess
                 Email = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantEmail")
             };
         }
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
