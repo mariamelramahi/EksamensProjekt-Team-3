@@ -491,7 +491,7 @@
         <Label Content="Efternavn:" HorizontalAlignment="Left" Margin="1182,169,0,0" VerticalAlignment="Top" FontFamily="Tahoma" Height="24" Width="65"/>
         <Label Content="Telefon nr:" HorizontalAlignment="Left" Margin="1182,198,0,0" VerticalAlignment="Top" FontFamily="Tahoma" Height="24" Width="68"/>
         <Label Content="Email:" HorizontalAlignment="Left" Margin="1182,227,0,0" VerticalAlignment="Top" FontFamily="Tahoma" Height="24" Width="43"/>
-        <TextBox HorizontalAlignment="Left" Margin="1262,148,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenant.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
+        <TextBox HorizontalAlignment="Left" Margin="1262,148,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenancyTenant.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
         <TextBox HorizontalAlignment="Left" Margin="1262,177,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenant.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
         <TextBox HorizontalAlignment="Left" Margin="1262,206,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenant.PhoneNum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
         <TextBox HorizontalAlignment="Left" Margin="1262,235,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenant.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
