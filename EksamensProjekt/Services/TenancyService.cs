@@ -159,6 +159,12 @@ namespace EksamensProjekt.Services
             tenancyRepo.Update(tenancyToDelete);
             MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} er blevet slettet.");
         }
+
+        public List<Tenant> GetAllTenants()
+        {
+            // Fetch all tenants from the repository
+            return tenantRepo.ReadAll().ToList();
+        }
         public Tenant CreateNewTenant()
         {
             // Create a new Tenant object with default values (not saved yet)
@@ -176,6 +182,17 @@ namespace EksamensProjekt.Services
             {
                 tenantRepo.Create(tenant);
             }
+        }
+
+        public void DeleteTenancyTenant(int tenancyID, int tenantID)
+        {
+            //remove from tenancytenant table
+            TenantRepo tenantRepo = this.tenantRepo as TenantRepo;
+            if (tenantRepo != null)
+            {
+                tenantRepo.DeleteTenancyTenant(tenancyID, tenantID);
+            }
+
         }
 
         //private void UpdateTenancyDetailsFromExcel(Tenancy tenancy, ModifiedExcelAddress importedAddress)

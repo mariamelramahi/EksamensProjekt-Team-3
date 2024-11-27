@@ -29,9 +29,11 @@ namespace EksamensProjekt.ViewModels
 
             // Initialize ObservableCollection
             Tenancies = new ObservableCollection<Tenancy>();
+            AllTenants = new ObservableCollection<Tenant>();
 
             // Load initial data
             LoadTenancies();
+            LoadTenants();
 
             // Set up CollectionView for displaying items
             _tenancyCollectionView = CollectionViewSource.GetDefaultView(Tenancies);
@@ -45,11 +47,13 @@ namespace EksamensProjekt.ViewModels
             UpdateTenancyCommand = new RelayCommand(ExecuteUpdateTenancy, CanExecuteModifyTenancy);
             SoftDeleteTenancyCommand = new RelayCommand(ExecuteSoftDeleteTenancy, CanExecuteModifyTenancy);
             //UploadFileCommand = new RelayCommand(ExecuteUploadFile);
+            DeleteTenancyTenantCommand = new RelayCommand(ExecuteDeleteTenancyTenant, CanExecuteDeleteTenancyTenant);
         }
 
 
         // Observable Collections
         public ObservableCollection<Tenancy> Tenancies { get; set; }
+        public ObservableCollection<Tenant> AllTenants { get; set; }
 
 
         // Filtered view of tenancies
@@ -71,16 +75,18 @@ namespace EksamensProjekt.ViewModels
             }
         }
 
-        private Tenant _selectedTenant;
-        public Tenant SelectedTenant
+        private Tenant _selectedTenancyTenant;
+        public Tenant SelectedTenancyTenant
         {
-            get => _selectedTenant;
+            get => _selectedTenancyTenant;
             set
             {
-                _selectedTenant = value;
+                _selectedTenancyTenant = value;
                 OnPropertyChanged();
             }
         }
+
+        
 
         private string _searchInput;
         public string SearchInput
@@ -143,6 +149,7 @@ namespace EksamensProjekt.ViewModels
         public RelayCommand SoftDeleteTenancyCommand { get; }
         public RelayCommand UploadFileCommand { get; }
         public RelayCommand GoToTenancyUploadCommand => new RelayCommand(() => _navigationService.NavigateTo<TenancyUploadView>());
+        public RelayCommand DeleteTenancyTenantCommand { get; }
 
         // Methods
         private void LoadTenancies()
@@ -152,6 +159,16 @@ namespace EksamensProjekt.ViewModels
             foreach (var tenancy in tenancies)
             {
                 Tenancies.Add(tenancy);
+            }
+        }
+
+        private void LoadTenants()
+        {
+            //Tenants.Clear();
+            var tenants = _tenancyService.GetAllTenants();
+            foreach (var tenant in tenants)
+            {
+                AllTenants.Add(tenant);
             }
         }
 
@@ -184,6 +201,27 @@ namespace EksamensProjekt.ViewModels
             {
                 _tenancyService.SoftDeleteTenancy(SelectedTenancy);
                 Tenancies.Remove(SelectedTenancy);
+            }
+        }
+
+        private bool CanExecuteDeleteTenancyTenant()
+        {
+            return SelectedTenancy != null && SelectedTenancyTenant != null;
+        }
+
+        private void ExecuteDeleteTenancyTenant()
+        {
+            if (SelectedTenancy != null && SelectedTenancyTenant != null)
+            {
+                _tenancyService.DeleteTenancyTenant(SelectedTenancy.TenancyID, SelectedTenancyTenant.TenantID);
+
+                
+                SelectedTenancy.Tenants.Remove(SelectedTenancyTenant);
+                SelectedTenancyTenant = null;
+
+                
+                OnPropertyChanged(nameof(SelectedTenancy));
+                LoadTenancies();
             }
         }
 

@@ -13,10 +13,6 @@
 
 
 
-        <Rectangle x:Name="regret" HorizontalAlignment="Center" Height="287" Stroke="#FF006DA0" VerticalAlignment="Top" Width="430"/>
-
-
-
         <Label Content="Ny Lejer  " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="24" FontFamily="Tahoma" Foreground="#FF006DA0" Height="39" Width="113"/>
         <Label Content="Lejemåls ID:" HorizontalAlignment="Left" Margin="17,45,0,0" VerticalAlignment="Top" FontFamily="Tahoma" Height="24" Width="77"/>
         <TextBlock Text="{Binding SelectedTenancy.TenancyID}" HorizontalAlignment="Left" Margin="99,50,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontFamily="Tahoma" Width="67" Height="14"/>

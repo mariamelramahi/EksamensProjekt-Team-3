@@ -71,10 +71,7 @@ namespace EksamensProjekt.Repos
             throw new NotImplementedException();
         }
 
-        IEnumerable<Tenant> IRepo<Tenant>.ReadAll()
-        {
-            throw new NotImplementedException();
-        }
+       
 
         public IEnumerable<Tenant> ReadAll()
         {
@@ -128,5 +125,24 @@ namespace EksamensProjekt.Repos
         {
             throw new NotImplementedException();
         }
+
+        public void DeleteTenancyTenant(int tenancyID, int tenantID)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                using (var command = new SqlCommand("usp_DeleteTenancyTenant", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    
+                    command.Parameters.AddWithValue("@TenancyID", tenancyID);
+                    command.Parameters.AddWithValue("@TenantID", tenantID);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
+
