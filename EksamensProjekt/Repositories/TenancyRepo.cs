@@ -2,8 +2,6 @@ using EksamensProjekt.DataAccess;
 using EksamensProjekt.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
-using System.Runtime.Intrinsics.X86;
-using System.Windows;
 
 namespace EksamensProjekt.Repos;
 

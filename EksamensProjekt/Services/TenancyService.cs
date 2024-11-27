@@ -157,7 +157,7 @@ namespace EksamensProjekt.Services
             // Soft delete the tenancy by setting the IsDeleted flag to true
             tenancyToDelete.IsDeleted = true;
 
-            // Save the updated tenancy
+            // Save the updated tenancy (soft delete)
             tenancyRepo.Update(tenancyToDelete);
             MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} er blevet slettet.");
         }

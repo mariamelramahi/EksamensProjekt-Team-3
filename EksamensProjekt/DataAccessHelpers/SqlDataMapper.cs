@@ -28,11 +28,11 @@ namespace EksamensProjekt.DataAccess
                 Address = new Address
                 {
                     AddressID = reader.GetInt32(reader.GetOrdinal("AddressID")),
-                    Street = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Street"),
-                    Number = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Number"),
-                    FloorNumber = SqlDataReaderHelper.GetValueOrNull<string>(reader, "FloorNumber"),
-                    Zipcode = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Zipcode"),
-                    Country = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Country"),
+                    Street = SqlDataReaderHelper.GetValueOrNull<string?>(reader, "Street"),
+                    Number = SqlDataReaderHelper.GetValueOrNull<string?>(reader, "Number"),
+                    FloorNumber = SqlDataReaderHelper.GetValueOrNull<string?>(reader, "FloorNumber"),
+                    Zipcode = SqlDataReaderHelper.GetValueOrNull<string?>(reader, "Zipcode"),
+                    Country = SqlDataReaderHelper.GetValueOrNull<string?>(reader, "Country"),
                     IsStandardized = reader.GetBoolean(reader.GetOrdinal("IsStandardized"))
                 },
 
