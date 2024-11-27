@@ -55,7 +55,7 @@ namespace EksamensProjekt.Repos
                             TenantID = reader.GetInt32(reader.GetOrdinal("TenantID")),
                             FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
                             LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                            PhoneNum = reader.GetString(reader.GetOrdinal("PhoneNumber")),
+                            PhoneNum = reader.GetString(reader.GetOrdinal("PhoneNum")),
                             Email = reader.GetString(reader.GetOrdinal("Email"))
                         };
                     }
@@ -68,12 +68,27 @@ namespace EksamensProjekt.Repos
 
         void IRepo<Tenant>.Create(Tenant entity)
         {
-            throw new NotImplementedException();
+            Tenant tenant = entity;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                using (var command = new SqlCommand("usp_CreateTenant", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@FirstName", tenant.FirstName);
+                    command.Parameters.AddWithValue("@LastName", tenant.LastName);
+                    command.Parameters.AddWithValue("@PhoneNum", tenant.PhoneNum);
+                    command.Parameters.AddWithValue("@Email", tenant.Email);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
         }
 
-       
 
-        public IEnumerable<Tenant> ReadAll()
+            public IEnumerable<Tenant> ReadAll()
         {
             var tenants = new List<Tenant>();
 
@@ -119,7 +134,24 @@ namespace EksamensProjekt.Repos
 
         void IRepo<Tenant>.Update(Tenant entity)
         {
-            throw new NotImplementedException();
+            Tenant tenant = entity;
+
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                using (var command = new SqlCommand("usp_UpdateTenant", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@TenantID", tenant.TenantID);
+                    command.Parameters.AddWithValue("@FirstName", tenant.FirstName);
+                    command.Parameters.AddWithValue("@LastName", tenant.LastName);
+                    command.Parameters.AddWithValue("@PhoneNum", tenant.PhoneNum);
+                    command.Parameters.AddWithValue("@Email", tenant.Email);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
         }
         public void Delete(Tenant entity)
         {
@@ -135,6 +167,23 @@ namespace EksamensProjekt.Repos
                     command.CommandType = CommandType.StoredProcedure;
 
                     
+                    command.Parameters.AddWithValue("@TenancyID", tenancyID);
+                    command.Parameters.AddWithValue("@TenantID", tenantID);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void AddTenantToTenancy(int tenancyID, int tenantID)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                using (var command = new SqlCommand("usp_AddTenantToTenancy", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+
                     command.Parameters.AddWithValue("@TenancyID", tenancyID);
                     command.Parameters.AddWithValue("@TenantID", tenantID);
 

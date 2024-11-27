@@ -4,6 +4,7 @@ using EksamensProjekt.Services.Navigation;
 using EksamensProjekt.Utilities;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -48,6 +49,10 @@ namespace EksamensProjekt.ViewModels
             SoftDeleteTenancyCommand = new RelayCommand(ExecuteSoftDeleteTenancy, CanExecuteModifyTenancy);
             //UploadFileCommand = new RelayCommand(ExecuteUploadFile);
             DeleteTenancyTenantCommand = new RelayCommand(ExecuteDeleteTenancyTenant, CanExecuteDeleteTenancyTenant);
+            TenantMessageboxInfoCommand = new RelayCommand(ExecuteTenantMessageboxInfo, CanExecuteTenantMessageboxInfo);
+            CreateNewTenantCommand = new RelayCommand(ExecuteCreateNewTenant, CanExecuteCreateNewTenant);
+            AddTenantToTenancyCommand = new RelayCommand(ExecuteAddTenantToTenancy, CanExecuteAddTenantToTenancy);
+            UpdateTenantCommand = new RelayCommand(ExecuteUpdateTenant, CanExecuteUpdateTenant);
         }
 
 
@@ -161,6 +166,10 @@ namespace EksamensProjekt.ViewModels
         public RelayCommand UploadFileCommand { get; }
         public RelayCommand GoToTenancyUploadCommand => new RelayCommand(() => _navigationService.NavigateTo<TenancyUploadView>());
         public RelayCommand DeleteTenancyTenantCommand { get; }
+        public RelayCommand TenantMessageboxInfoCommand { get; }
+        public RelayCommand CreateNewTenantCommand { get; }
+        public RelayCommand AddTenantToTenancyCommand { get; }
+        public RelayCommand UpdateTenantCommand { get; }
 
         // Methods
         private void LoadTenancies()
@@ -175,7 +184,7 @@ namespace EksamensProjekt.ViewModels
 
         private void LoadTenants()
         {
-            //Tenants.Clear();
+            AllTenants.Clear();
             var tenants = _tenancyService.GetAllTenants();
             foreach (var tenant in tenants)
             {
@@ -239,6 +248,66 @@ namespace EksamensProjekt.ViewModels
         private bool CanExecuteModifyTenancy()
         {
             return SelectedTenancy != null;
+        }
+
+        private void ExecuteTenantMessageboxInfo()
+        {
+            if (SelectedTenancyTenant != null)
+            {
+                MessageBox.Show($"Tenant ID: {SelectedTenancyTenant.TenantID}\n" +
+                                $"Name: {SelectedTenancyTenant.FirstName} {SelectedTenancyTenant.LastName}\n" +
+                                $"Phone: {SelectedTenancyTenant.PhoneNum}\n" +
+                                $"Email: {SelectedTenancyTenant.Email}\n");
+            }
+        }
+        private bool CanExecuteTenantMessageboxInfo()
+        {
+            return SelectedTenancyTenant != null;
+        }
+
+        private void ExecuteCreateNewTenant()
+        {
+            Tenant newTenant = _tenancyService.CreateNewTenant();
+            if (newTenant != null)
+            {
+                AllTenants.Add(newTenant);
+            }
+        }
+
+        private bool CanExecuteCreateNewTenant()
+        {
+            return true;
+        }
+
+        private void ExecuteAddTenantToTenancy()
+        {
+            if (SelectedTenancy != null && SelectedTenant != null)
+            {
+                _tenancyService.AddTenantToTenancy(SelectedTenancy, SelectedTenant);
+                SelectedTenancy.Tenants.Add(SelectedTenant);
+            }
+            OnPropertyChanged(nameof(SelectedTenancy));
+            LoadTenancies();
+        }
+
+        private bool CanExecuteAddTenantToTenancy()
+        {
+            return SelectedTenancy != null && SelectedTenant != null;
+        }
+
+        private void ExecuteUpdateTenant()
+        {
+            if (SelectedTenant != null)
+            {
+                _tenancyService.UpdateTenant(SelectedTenant);
+                LoadTenants(); // Refresh the list to reflect changes
+                LoadTenancies();
+            }
+        }
+
+        private bool CanExecuteUpdateTenant()
+        {
+            return SelectedTenant != null;
         }
 
         //private void ExecuteUploadFile(object parameter)

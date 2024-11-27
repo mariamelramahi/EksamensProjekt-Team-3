@@ -436,9 +436,9 @@
                                             </Style>
                                         </Button.Resources>
                                     </Button>
-                                    <Button x:Name="NewTenant"
-                                            Content="Tilføj Lejer"
-                                            Command="{Binding AddTenantCommand}"
+                                    <Button x:Name="TenantInfo"
+                                            Content="Lejer Info"
+                                            Command="{Binding DataContext.TenantMessageboxInfoCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
                                             CommandParameter="{Binding}"
                                             Background="#FF006DA0"
                                             Foreground="White"
@@ -475,13 +475,13 @@
                   IsReadOnly="True"
                   Grid.Row="1">
         </DataGrid>
-        <ListBox ItemsSource="{Binding AllTenants}" SelectedItem="{Binding SelectedTenant}" Margin="965,133,761,488" Grid.RowSpan="2" d:ItemsSource="{d:SampleData ItemCount=5}">
+        <ListBox ItemsSource="{Binding AllTenants}" SelectedItem="{Binding SelectedTenant}" Margin="965,133,788,488" Grid.RowSpan="2" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                        <TextBlock Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="70"/>
                         <TextBlock Text=" " Width="10"/>
-                        <TextBlock Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="100"/>
+                        <TextBlock Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="70"/>
 
                     </StackPanel>
                 </DataTemplate>
@@ -491,9 +491,65 @@
         <Label Content="Efternavn:" HorizontalAlignment="Left" Margin="1182,169,0,0" VerticalAlignment="Top" FontFamily="Tahoma" Height="24" Width="65"/>
         <Label Content="Telefon nr:" HorizontalAlignment="Left" Margin="1182,198,0,0" VerticalAlignment="Top" FontFamily="Tahoma" Height="24" Width="68"/>
         <Label Content="Email:" HorizontalAlignment="Left" Margin="1182,227,0,0" VerticalAlignment="Top" FontFamily="Tahoma" Height="24" Width="43"/>
-        <TextBox HorizontalAlignment="Left" Margin="1262,148,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenancyTenant.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
+        <TextBox HorizontalAlignment="Left" Margin="1262,148,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenant.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
         <TextBox HorizontalAlignment="Left" Margin="1262,177,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenant.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
         <TextBox HorizontalAlignment="Left" Margin="1262,206,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenant.PhoneNum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
         <TextBox HorizontalAlignment="Left" Margin="1262,235,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenant.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
+        <Button Content="Opret ny lejer"
+            HorizontalAlignment="Left"
+            Margin="965,85,0,0"
+            VerticalAlignment="Top"
+            Width="109"
+            Background="White"
+            Foreground="#FF006DA0"
+            Height="32"
+            FontFamily="Tahoma"
+            Command="{Binding CreateNewTenantCommand}"
+            CommandParameter="{Binding}"
+            FontSize="16"
+            BorderBrush="#FF006DA0">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius"
+                        Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Content="Tilføj lejer til lejemål"
+            HorizontalAlignment="Left"
+            Margin="1094,84,0,0"
+            VerticalAlignment="Top"
+            Width="156"
+            Background="White"
+            Foreground="#FF006DA0"
+            Height="32"
+            FontFamily="Tahoma"
+            Command="{Binding AddTenantToTenancyCommand}"
+            CommandParameter="{Binding}"
+            FontSize="16"
+            BorderBrush="#FF006DA0">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius"
+                        Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Content="Gem"
+            HorizontalAlignment="Left"
+            Margin="1308,262,0,0"
+            VerticalAlignment="Top"
+            Width="109"
+            Background="#FF006DA0"
+            Foreground="White"
+            Height="32"
+            FontFamily="Tahoma" 
+            Command="{Binding UpdateTenantCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="{x:Null}" Cursor="Hand">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
     </Grid>
 </Window>
