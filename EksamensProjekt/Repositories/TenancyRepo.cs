@@ -1,11 +1,12 @@
 using EksamensProjekt.DataAccess;
 using EksamensProjekt.Models;
+using EksamensProjekt.Repositories;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
 namespace EksamensProjekt.Repos;
 
-public class TenancyRepo : IRepo<Tenancy>
+public class TenancyRepo : IRepo<Tenancy>, ITenantTenancy
 {
 
     private readonly string _connectionString;
@@ -48,13 +49,7 @@ public class TenancyRepo : IRepo<Tenancy>
 
     public void Create(Tenancy tenancy)
     {
-        // Validate the tenancy (check for null)
-        if (tenancy == null)
-        {
-            throw new ArgumentNullException(nameof(tenancy), "The tenancy entity cannot be null.");
-        }
-
-        // Call the stored procedure to create the tenancy in the database
+        // Use service layer for validation
         using (var connection = new SqlConnection(_connectionString))
         {
             var command = new SqlCommand("usp_CreateTenancy", connection)
@@ -62,15 +57,15 @@ public class TenancyRepo : IRepo<Tenancy>
                 CommandType = CommandType.StoredProcedure
             };
 
-            // Use SqlDataMapper to add parameters from the tenancy
-            SqlDataMapper.AddTenancyParameters(command, tenancy);
+            // Explicitly set isUpdate to false
+            SqlDataMapper.AddTenancyParameters(command, tenancy, isUpdate: false);
 
             connection.Open();
             int rowsAffected = command.ExecuteNonQuery();
 
             if (rowsAffected == 0)
             {
-                throw new InvalidOperationException("The tenancy could not be created.");
+                throw new InvalidOperationException("The tenancy could not be created. No rows affected.");
             }
         }
     }
@@ -155,8 +150,7 @@ public class TenancyRepo : IRepo<Tenancy>
 
     public void Update(Tenancy tenancy)
     {
-        // Check for Null in Service layer
-
+        // Use service layer for validation
         using (var connection = new SqlConnection(_connectionString))
         {
             var command = new SqlCommand("usp_UpdateTenancy", connection)
@@ -164,17 +158,65 @@ public class TenancyRepo : IRepo<Tenancy>
                 CommandType = CommandType.StoredProcedure
             };
 
-            SqlDataMapper.AddTenancyParameters(command, tenancy);
+            // Explicitly set isUpdate to true
+            SqlDataMapper.AddTenancyParameters(command, tenancy, isUpdate: true);
 
             connection.Open();
             int rowsAffected = command.ExecuteNonQuery();
 
-            // Check for changes in DB in the repository
             if (rowsAffected == 0)
             {
                 throw new InvalidOperationException($"No rows were updated for TenancyID {tenancy.TenancyID}");
             }
         }
     }
+
+
+
+
+
+
+    // Implemented through ITenancyTenant
+    public void AddTenantToTenancy(int tenancyID, int tenantID)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = new SqlCommand("usp_AddTenantToTenancy", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@TenancyID", tenancyID);
+                command.Parameters.AddWithValue("@TenantID", tenantID);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public void RemoveTenantFromTenancy(int tenancyID, int tenantID)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = new SqlCommand("usp_DeleteTenancyTenant", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@TenancyID", tenancyID);
+                command.Parameters.AddWithValue("@TenantID", tenantID);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+
+
 }
+
+
+
+
+
 

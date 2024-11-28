@@ -233,7 +233,7 @@ namespace EksamensProjekt.ViewModels
         {
             if (SelectedTenancy != null && SelectedTenancyTenant != null)
             {
-                _tenancyService.DeleteTenancyTenant(SelectedTenancy.TenancyID, SelectedTenancyTenant.TenantID);
+                _tenancyService.DeleteTenancyTenant(SelectedTenancy, SelectedTenancyTenant);
 
                 
                 SelectedTenancy.Tenants.Remove(SelectedTenancyTenant);
