@@ -16,7 +16,7 @@
 
     <Window.Resources>
         <util:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
-        
+
 
         <!-- Define the BooleanToVisibilityConverter here -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -26,8 +26,8 @@
                 <x:Type TypeName="local:TenancyStatus"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
-   
-        
+
+
 
     </Window.Resources>
 
@@ -153,19 +153,19 @@
                 </ControlTemplate>
             </Expander.Template>
             <StackPanel Height="85">
-                <CheckBox Content="Aktiv"
+                <CheckBox Content="Occupied"
                           IsChecked="{Binding IsFilterAEnabled, Mode=TwoWay}"
                           Command="{Binding ApplyFilterCommand}"
                           HorizontalAlignment="Left"
                           Margin="10,10,0,0"
                           VerticalAlignment="Top" />
-                <CheckBox Content="Inaktiv"
+                <CheckBox Content="Vacant"
                           IsChecked="{Binding IsFilterBEnabled, Mode=TwoWay}"
                           Command="{Binding ApplyFilterCommand}"
                           HorizontalAlignment="Left"
                           Margin="10,10,0,0"
                           VerticalAlignment="Top" />
-                <CheckBox Content="Afventer"
+                <CheckBox Content="Under renovation"
                           IsChecked="{Binding IsFilterCEnabled, Mode=TwoWay}"
                           Command="{Binding ApplyFilterCommand}"
                           HorizontalAlignment="Left"
@@ -226,10 +226,10 @@
         <ListBox x:Name="AddressListBox"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.CanContentScroll="False"
-                 Margin="226,133,48,488"
+                 Margin="226,133,960,488"
                  Grid.RowSpan="2"
                  ItemsSource="{Binding FilteredTenancies}"
-                 SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}">
+                 SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}" d:ItemsSource="{d:SampleData ItemCount=5}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Expander Header="{Binding Address}"
@@ -385,8 +385,8 @@
                                     <TextBlock Text="Lejer: "
                                                FontWeight="Bold" />
                                     <ComboBox Width="150"
-                                              ItemsSource="{Binding Tenants}"
-                                              SelectedItem="{Binding SelectedTenant}"
+                                              ItemsSource="{Binding Tenants, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedItem="{Binding DataContext.SelectedTenancyTenant, RelativeSource={RelativeSource AncestorType={x:Type Window}}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               Margin="10,0,0,0" />
                                 </StackPanel>
 
@@ -409,7 +409,7 @@
                                             HorizontalAlignment="Right"
                                             Margin="0,10,0,0">
                                     <Button Content="Gem Ændringer"
-                                            Command="{Binding DataContext.UpdateTenancyCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            Command="{Binding DataContext.UpdateTenancyCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
                                             CommandParameter="{Binding}"
                                             Background="#FF006DA0"
                                             Foreground="White"
@@ -423,7 +423,7 @@
                                         </Button.Resources>
                                     </Button>
                                     <Button Content="Slet Lejer"
-                                            Command="{Binding DeleteTenantCommand}"
+                                            Command="{Binding DataContext.DeleteTenancyTenantCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
                                             CommandParameter="{Binding}"
                                             Background="#FF006DA0"
                                             Foreground="White"
@@ -436,9 +436,9 @@
                                             </Style>
                                         </Button.Resources>
                                     </Button>
-                                    <Button x:Name="NewTenant"
-                                            Content="Tilføj Lejer"
-                                            Command="{Binding AddTenantCommand}"
+                                    <Button x:Name="TenantInfo"
+                                            Content="Lejer Info"
+                                            Command="{Binding DataContext.TenantMessageboxInfoCommand, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
                                             CommandParameter="{Binding}"
                                             Background="#FF006DA0"
                                             Foreground="White"
@@ -463,25 +463,8 @@
               VerticalAlignment="Top">
 
             <!-- TextBox filter Zipcode -->
-            <TextBox x:Name="ZipFilterBox"
-                     TextWrapping="Wrap"
-                     VerticalAlignment="Top"
-                     Height="27"
-                     FontSize="18"
-                     FontFamily="Tahoma"
-                     BorderBrush="{x:Null}"
-                     Foreground="Black"
-                     SelectionBrush="{x:Null}"
-                     Margin="-1592,79,1419,0"
-                     Text="{Binding ZipCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             <!-- Placeholder TextBlock -->
-            <TextBlock VerticalAlignment="Top"
-                       Margin="-1589,85,1422,0"
-                       Foreground="#FFA4A4A4"
-                       IsHitTestVisible="False"
-                       Visibility="{Binding Text.Length, Converter={StaticResource EmptyStringToVisibilityConverter}, ElementName=ZipFilterBox}"
-                       Text="Postnummer" />
         </Grid>
 
         <DataGrid ItemsSource="{Binding FilteredTenancies}"
@@ -492,6 +475,82 @@
                   IsReadOnly="True"
                   Grid.Row="1">
         </DataGrid>
+        <ListBox ItemsSource="{Binding AllTenants}" SelectedItem="{Binding SelectedTenant}" Margin="965,133,788,488" Grid.RowSpan="2" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="70"/>
+                        <TextBlock Text=" " Width="10"/>
+                        <TextBlock Text="{Binding LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="70"/>
 
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Label Content="Fornavn:" HorizontalAlignment="Left" Margin="1182,140,0,0" VerticalAlignment="Top" FontFamily="Tahoma" Height="24" Width="57"/>
+        <Label Content="Efternavn:" HorizontalAlignment="Left" Margin="1182,169,0,0" VerticalAlignment="Top" FontFamily="Tahoma" Height="24" Width="65"/>
+        <Label Content="Telefon nr:" HorizontalAlignment="Left" Margin="1182,198,0,0" VerticalAlignment="Top" FontFamily="Tahoma" Height="24" Width="68"/>
+        <Label Content="Email:" HorizontalAlignment="Left" Margin="1182,227,0,0" VerticalAlignment="Top" FontFamily="Tahoma" Height="24" Width="43"/>
+        <TextBox HorizontalAlignment="Left" Margin="1262,148,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenant.FirstName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
+        <TextBox HorizontalAlignment="Left" Margin="1262,177,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenant.LastName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
+        <TextBox HorizontalAlignment="Left" Margin="1262,206,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenant.PhoneNum, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
+        <TextBox HorizontalAlignment="Left" Margin="1262,235,0,0" TextWrapping="Wrap" Text="{Binding SelectedTenant.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="221" FontFamily="Tahoma" Height="16"/>
+        <Button Content="Opret ny lejer"
+            HorizontalAlignment="Left"
+            Margin="965,85,0,0"
+            VerticalAlignment="Top"
+            Width="109"
+            Background="White"
+            Foreground="#FF006DA0"
+            Height="32"
+            FontFamily="Tahoma"
+            Command="{Binding CreateNewTenantCommand}"
+            CommandParameter="{Binding}"
+            FontSize="16"
+            BorderBrush="#FF006DA0">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius"
+                        Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Content="Tilføj lejer til lejemål"
+            HorizontalAlignment="Left"
+            Margin="1094,84,0,0"
+            VerticalAlignment="Top"
+            Width="156"
+            Background="White"
+            Foreground="#FF006DA0"
+            Height="32"
+            FontFamily="Tahoma"
+            Command="{Binding AddTenantToTenancyCommand}"
+            CommandParameter="{Binding}"
+            FontSize="16"
+            BorderBrush="#FF006DA0">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius"
+                        Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Button Content="Gem"
+            HorizontalAlignment="Left"
+            Margin="1308,262,0,0"
+            VerticalAlignment="Top"
+            Width="109"
+            Background="#FF006DA0"
+            Foreground="White"
+            Height="32"
+            FontFamily="Tahoma" 
+            Command="{Binding UpdateTenantCommand}" CommandParameter="{Binding}" FontSize="16" BorderBrush="{x:Null}" Cursor="Hand">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius" Value="5"/>
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Rectangle HorizontalAlignment="Left" Height="422" Margin="1137,133,0,0" Stroke="#FFABADB3" VerticalAlignment="Top" Width="402"/>
     </Grid>
 </Window>

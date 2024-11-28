@@ -27,18 +27,22 @@ namespace EksamensProjekt.Services
                 var files = (string[])e.Data.GetData(DataFormats.FileDrop);
                 foreach (var file in files)
                 {
-                    if (Path.GetExtension(file).Equals(".XLSX", StringComparison.OrdinalIgnoreCase))
+                    var extension = Path.GetExtension(file);
+                    if (extension.Equals(".XLSX", StringComparison.OrdinalIgnoreCase) ||
+                        extension.Equals(".XLS", StringComparison.OrdinalIgnoreCase) ||
+                        extension.Equals(".CSV", StringComparison.OrdinalIgnoreCase))
                     {
                         FileDropped?.Invoke(file); // Call ViewModel when file is dropped
                         break;
                     }
                     else
                     {
-                        MessageBox.Show("Kun filformat (.xlsx) kan bruges.");
+                        MessageBox.Show("Kun filformater (.xlsx, .xls, .csv) kan bruges.");
                     }
                 }
             }
             e.Handled = true;
         }
+
     }
 }
