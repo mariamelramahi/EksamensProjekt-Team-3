@@ -14,6 +14,7 @@ public class TenantRepo : IRepo<Tenant>
         _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
     }
 
+
     public void Delete(int entity)
     {
         throw new NotImplementedException();
@@ -48,47 +49,53 @@ public class TenantRepo : IRepo<Tenant>
                 if (reader.Read())
                 {
 
-                        // Initializes a new Tenant object with the data from the reader
-                        tenant = new Tenant
-                        {
-                            TenantID = reader.GetInt32(reader.GetOrdinal("TenantID")),
-                            FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
-                            LastName = reader.GetString(reader.GetOrdinal("LastName")),
-                            PhoneNum = reader.GetString(reader.GetOrdinal("PhoneNum")),
-                            Email = reader.GetString(reader.GetOrdinal("Email"))
-                        };
-                    
+                    // Initializes a new Tenant object with the data from the reader
+                    tenant = new Tenant
+                    {
+                        TenantID = reader.GetInt32(reader.GetOrdinal("TenantID")),
+                        FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
+                        LastName = reader.GetString(reader.GetOrdinal("LastName")),
+                        PhoneNum = reader.GetString(reader.GetOrdinal("PhoneNum")),
+                        Email = reader.GetString(reader.GetOrdinal("Email"))
+                    };
+
                 }
             }
         }
         // Returns the Tenant object
         return tenant;
     }
-    
-        void IRepo<Tenant>.Create(Tenant entity)
+
+    void IRepo<Tenant>.Create(Tenant entity)
+    {
+        Tenant tenant = entity;
+
+        using (var connection = new SqlConnection(_connectionString))
         {
-            Tenant tenant = entity;
-
-            using (var connection = new SqlConnection(_connectionString))
+            using (var command = new SqlCommand("usp_CreateTenant", connection))
             {
-                using (var command = new SqlCommand("usp_CreateTenant", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
+                command.CommandType = CommandType.StoredProcedure;
 
-                    command.Parameters.AddWithValue("@FirstName", tenant.FirstName);
-                    command.Parameters.AddWithValue("@LastName", tenant.LastName);
-                    command.Parameters.AddWithValue("@PhoneNum", tenant.PhoneNum);
-                    command.Parameters.AddWithValue("@Email", tenant.Email);
+                command.Parameters.AddWithValue("@FirstName", tenant.FirstName);
+                command.Parameters.AddWithValue("@LastName", tenant.LastName);
+                command.Parameters.AddWithValue("@PhoneNum", tenant.PhoneNum);
+                command.Parameters.AddWithValue("@Email", tenant.Email);
 
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
+                connection.Open();
+                command.ExecuteNonQuery();
             }
         }
+    }
 
 
-            public IEnumerable<Tenant> ReadAll()
+    public IEnumerable<Tenant> ReadAll()
+    {
+        var tenants = new List<Tenant>();
+
+
+        using (var conn = new SqlConnection(_connectionString))
         {
+
             // Use the stored procedure instead of a raw SQL query
             var cmd = new SqlCommand("usp_ReadAllTenants", conn)
             {
@@ -125,71 +132,82 @@ public class TenantRepo : IRepo<Tenant>
         }
         return tenants;
     }
-    
 
 
 
 
-        void IRepo<Tenant>.Update(Tenant entity)
+
+
+    public void Update(Tenant entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Delete(Tenant entity)
+    {
+        throw new NotImplementedException();
+    }
+
+
+
+    void IRepo<Tenant>.Update(Tenant entity)
+    {
+        Tenant tenant = entity;
+
+        using (var connection = new SqlConnection(_connectionString))
         {
-            Tenant tenant = entity;
-
-            using (var connection = new SqlConnection(_connectionString))
+            using (var command = new SqlCommand("usp_UpdateTenant", connection))
             {
-                using (var command = new SqlCommand("usp_UpdateTenant", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
+                command.CommandType = CommandType.StoredProcedure;
 
-                    command.Parameters.AddWithValue("@TenantID", tenant.TenantID);
-                    command.Parameters.AddWithValue("@FirstName", tenant.FirstName);
-                    command.Parameters.AddWithValue("@LastName", tenant.LastName);
-                    command.Parameters.AddWithValue("@PhoneNum", tenant.PhoneNum);
-                    command.Parameters.AddWithValue("@Email", tenant.Email);
+                command.Parameters.AddWithValue("@TenantID", tenant.TenantID);
+                command.Parameters.AddWithValue("@FirstName", tenant.FirstName);
+                command.Parameters.AddWithValue("@LastName", tenant.LastName);
+                command.Parameters.AddWithValue("@PhoneNum", tenant.PhoneNum);
+                command.Parameters.AddWithValue("@Email", tenant.Email);
 
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-        public void Delete(Tenant entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteTenancyTenant(int tenancyID, int tenantID)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                using (var command = new SqlCommand("usp_DeleteTenancyTenant", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    
-                    command.Parameters.AddWithValue("@TenancyID", tenancyID);
-                    command.Parameters.AddWithValue("@TenantID", tenantID);
-
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
-            }
-        }
-
-        public void AddTenantToTenancy(int tenancyID, int tenantID)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                using (var command = new SqlCommand("usp_AddTenantToTenancy", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    command.Parameters.AddWithValue("@TenancyID", tenancyID);
-                    command.Parameters.AddWithValue("@TenantID", tenantID);
-
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
+                connection.Open();
+                command.ExecuteNonQuery();
             }
         }
     }
-}
 
+    public void DeleteTenancyTenant(int tenancyID, int tenantID)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = new SqlCommand("usp_DeleteTenancyTenant", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+
+                command.Parameters.AddWithValue("@TenancyID", tenancyID);
+                command.Parameters.AddWithValue("@TenantID", tenantID);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public void AddTenantToTenancy(int tenancyID, int tenantID)
+    {
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            using (var command = new SqlCommand("usp_AddTenantToTenancy", connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+
+                command.Parameters.AddWithValue("@TenancyID", tenancyID);
+                command.Parameters.AddWithValue("@TenantID", tenantID);
+
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+    }
+
+
+
+
+}
