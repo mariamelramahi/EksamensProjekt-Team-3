@@ -6,7 +6,7 @@ using System.Data;
 
 namespace EksamensProjekt.Repos;
 
-public class TenancyRepo : IRepo<Tenancy>, ITenantTenancy
+public class TenancyRepo : IRepo<Tenancy>, ITenancyTenant
 {
 
     private readonly string _connectionString;
