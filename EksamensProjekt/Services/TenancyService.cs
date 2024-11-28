@@ -1,5 +1,6 @@
 ﻿using EksamensProjekt.Models;
 using EksamensProjekt.Repos;
+using EksamensProjekt.Repositories;
 using Microsoft.Data.SqlClient;
 using System.Windows;
 
@@ -7,16 +8,18 @@ namespace EksamensProjekt.Services
 {
     public class TenancyService
     {
-        public IRepo<Tenancy> tenancyRepo;
-        public IRepo<Tenant> tenantRepo;
-        public IRepo<Address> AddressRepo;
+        private readonly IRepo<Tenancy> tenancyRepo;
+        private readonly IRepo<Tenant> tenantRepo;
+        private readonly IRepo<Address> AddressRepo;
+        private readonly ITenancyTenant tenancyTenantRepo;
 
         // Constructor or property injection 
-        public TenancyService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo, IRepo<Address> AddressRepo)
+        public TenancyService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo, IRepo<Address> addressRepo, ITenancyTenant tenancyTenantRepo)
         {
             this.tenancyRepo = tenancyRepo;
             this.tenantRepo = tenantRepo;
-            this.AddressRepo = AddressRepo;
+            this.AddressRepo = addressRepo;
+            this.tenancyTenantRepo = tenancyTenantRepo;
         }
 
 
@@ -205,26 +208,22 @@ namespace EksamensProjekt.Services
 
 
         //remove from tenancytenant table
-        public void RemoveTenancyTenant(Tenancy tenancy, Tenant tenant)
-        {
-            //remove from tenancytenant table
-            TenancyRepo tenancyRepo = this.tenancyRepo as TenancyRepo;
-            if (tenancyRepo != null)
-            {
-                tenancyRepo.RemoveTenantFromTenancy(tenancy.TenancyID, tenant.TenantID);
-            }
-
-        }
-
         public void AddTenantToTenancy(Tenancy tenancy, Tenant tenant)
         {
-            // Check if the tenancy and tenant are not null
-            TenancyRepo tenancyRepo = this.tenancyRepo as TenancyRepo;
-            if (tenancy != null && tenant != null)
-            {
-                tenancyRepo.AddTenantToTenancy(tenancy.TenancyID, tenant.TenantID);
-            }
+            if (tenancy == null || tenant == null)
+                throw new ArgumentNullException("Tenancy or Tenant cannot be null.");
+
+            tenancyTenantRepo.AddTenantToTenancy(tenancy.TenancyID, tenant.TenantID);
         }
+
+        public void RemoveTenancyTenant(Tenancy tenancy, Tenant tenant)
+        {
+            if (tenancy == null || tenant == null)
+                throw new ArgumentNullException("Tenancy or Tenant cannot be null.");
+
+            tenancyTenantRepo.RemoveTenantFromTenancy(tenancy.TenancyID, tenant.TenantID);
+        }
+
 
         public void UpdateTenant(Tenant tenant)
         {
