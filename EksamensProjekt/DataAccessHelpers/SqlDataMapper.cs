@@ -89,17 +89,6 @@ namespace EksamensProjekt.DataAccess
         // Tenant
         //
 
-        //public static Tenant PopulateTenantFromReader(SqlDataReader reader)
-        //{
-        //    return new Tenant
-        //    {
-        //        TenantID = reader.GetInt32(reader.GetOrdinal("TenantID")),
-        //        FirstName = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantFirstName"),
-        //        LastName = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantLastName"),
-        //        PhoneNum = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantPhoneNum"),
-        //        Email = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantEmail")
-        //    };
-        //}
 
         public static Tenant PopulateTenantFromReader(SqlDataReader reader)
         {
