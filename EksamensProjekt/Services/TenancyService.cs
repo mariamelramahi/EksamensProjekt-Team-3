@@ -124,22 +124,24 @@ namespace EksamensProjekt.Services
             tenancyRepo.Update(existingTenancy);
             MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} er blevet opdateret.");
         }
-        public void DeleteTenancy(Tenancy selectedTenancy)
-        {
-            // Fetch the existing tenancy from the repository using its ID
-            Tenancy? tenancyToDelete = tenancyRepo.GetByID(selectedTenancy.TenancyID);
 
-            // Check if the tenancy exists
-            if (tenancyToDelete == null)
-            {
-                MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} blev ikke fundet.");
-                return;
-            }
+        //public void DeleteTenancy(Tenancy selectedTenancy)
+        //{
+        //    // Fetch the existing tenancy from the repository using its ID
+        //    Tenancy? tenancyToDelete = tenancyRepo.GetByID(selectedTenancy.TenancyID);
 
-            // Delete the tenancy from the repository
-            tenancyRepo.Delete(tenancyToDelete);
-            MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} er blevet slettet.");
-        }
+        //    // Check if the tenancy exists
+        //    if (tenancyToDelete == null)
+        //    {
+        //        MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} blev ikke fundet.");
+        //        return;
+        //    }
+
+        //    // Delete the tenancy from the repository
+        //    tenancyRepo.Delete(tenancyToDelete);
+        //    MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} er blevet slettet.");
+        //}
+
 
         public void SoftDeleteTenancy(Tenancy selectedTenancy)
         {
@@ -156,7 +158,7 @@ namespace EksamensProjekt.Services
             // Soft delete the tenancy by setting the IsDeleted flag to true
             tenancyToDelete.IsDeleted = true;
 
-            // Save the updated tenancy
+            // Save the updated tenancy (soft delete)
             tenancyRepo.Update(tenancyToDelete);
             MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} er blevet slettet.");
         }

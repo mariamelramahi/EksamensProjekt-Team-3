@@ -1,54 +1,53 @@
-﻿using Microsoft.Extensions.Configuration; // Til indlæsning af konfigurationsindstillinger fra appsettings.json
+﻿using Microsoft.Data.SqlClient;
 using System.Data;
-using System.Data.SqlClient; // Til at arbejde med SQL Server via ADO.NET
-using Microsoft.Data.SqlClient;
 
-namespace EksamensProjekt.Repos
+namespace EksamensProjekt.Repos;
+
+public class TenantRepo : IRepo<Tenant>
 {
-    public class TenantRepo : IRepo<Tenant>
+    private readonly string _connectionString;
+
+    //Constructor, that initializes the connection string for the database
+    public TenantRepo(string connectionString)
     {
-        private readonly string _connectionString;
+        //the connection string is assigned if it is not null; otherwise, it throws an exception
+        _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+    }
 
-        //Constructor, that initializes the connection string for the database
-        public TenantRepo(string connectionString)
+    public void Delete(int entity)
+    {
+        throw new NotImplementedException();
+    }
+
+    // Method to retrieve a Tenant object by its ID using a stored procedure
+    public Tenant GetByID(int tenantID)
+    {
+        // intializies a Tenant object to null. If the query finds a tenant record, this variable will hold hold the data. 
+        Tenant tenant = null;
+
+        // Establishes a new SQL database connection using the provided connection string
+        using (var connection = new SqlConnection(_connectionString))
         {
-            //the connection string is assigned if it is not null; otherwise, it throws an exception
-            _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
-        }
+            // Opens the connection to the database to allow database operations
+            connection.Open();
 
-        public void Delete(int entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        // Method to retrieve a Tenant object by its ID using a stored procedure
-        public Tenant GetByID(int tenantID)
-        {
-            // intializies a Tenant object to null. If the query finds a tenant record, this variable will hold hold the data. 
-            Tenant tenant = null;
-
-            // Establishes a new SQL database connection using the provided connection string
-            using (var connection = new SqlConnection(_connectionString))
+            // Creates a new SQL command object with the stored procedure name and the connection
+            var command = new SqlCommand("usp_GetTenantByID", connection)
             {
-                // Opens the connection to the database to allow database operations
-                connection.Open();
+                // Specifies that the command is a stored procedure
+                CommandType = CommandType.StoredProcedure
+            };
 
-                // Creates a new SQL command object with the stored procedure name and the connection
-                var command = new SqlCommand("usp_GetTenantByID", connection)
+            // Adds a parameter to the SqlCommand for the TenantID, used by the stored procedure to identify the Tenant record
+            command.Parameters.AddWithValue("@TenantID", tenantID);
+
+            // Executes the command and stores the result in a SqlDataReader object
+            using (var reader = command.ExecuteReader())
+            {
+                // Checks if the reader has any rows to read
+                if (reader.Read())
                 {
-                    // Specifies that the command is a stored procedure
-                    CommandType = CommandType.StoredProcedure
-                };
 
-                // Adds a parameter to the SqlCommand for the TenantID, used by the stored procedure to identify the Tenant record
-                command.Parameters.AddWithValue("@TenantID", tenantID);
-
-                // Executes the command and stores the result in a SqlDataReader object
-                using (var reader = command.ExecuteReader())
-                {
-                    // Checks if the reader has any rows to read
-                    if (reader.Read())
-                    {
                         // Initializes a new Tenant object with the data from the reader
                         tenant = new Tenant
                         {
@@ -58,14 +57,14 @@ namespace EksamensProjekt.Repos
                             PhoneNum = reader.GetString(reader.GetOrdinal("PhoneNum")),
                             Email = reader.GetString(reader.GetOrdinal("Email"))
                         };
-                    }
+                    
                 }
             }
-
-            // Returns the Tenant object
-            return tenant;
         }
-
+        // Returns the Tenant object
+        return tenant;
+    }
+    
         void IRepo<Tenant>.Create(Tenant entity)
         {
             Tenant tenant = entity;
@@ -90,47 +89,46 @@ namespace EksamensProjekt.Repos
 
             public IEnumerable<Tenant> ReadAll()
         {
-            var tenants = new List<Tenant>();
-
-            using (var conn = new SqlConnection(_connectionString))
+            // Use the stored procedure instead of a raw SQL query
+            var cmd = new SqlCommand("usp_ReadAllTenants", conn)
             {
-                // Use the stored procedure instead of a raw SQL query
-                var cmd = new SqlCommand("usp_ReadAllTenants", conn)
-                {
-                    CommandType = CommandType.StoredProcedure
-                };
+                CommandType = CommandType.StoredProcedure
+            };
 
-                try
-                {
-                    conn.Open();
+            try
+            {
+                conn.Open();
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
                     {
-                        while (reader.Read())
+                        // Create a Tenant object from the SQL data reader
+                        var tenant = new Tenant()
                         {
-                            // Create a Tenant object from the SQL data reader
-                            var tenant = new Tenant()
-                            {
-                                TenantID = reader.GetInt32(0),
-                                PartyID = reader.GetInt32(1),
-                                FirstName = reader.GetString(2),
-                                LastName = reader.GetString(3),
-                                PhoneNum = reader.GetString(4),
-                                Email = reader.GetString(5),
-                                PartyRole = reader.GetString(6)
-                            };
-                            tenants.Add(tenant);
-                        }
+                            TenantID = reader.GetInt32(0),
+                            PartyID = reader.GetInt32(1),
+                            FirstName = reader.GetString(2),
+                            LastName = reader.GetString(3),
+                            PhoneNum = reader.GetString(4),
+                            Email = reader.GetString(5),
+                            PartyRole = reader.GetString(6)
+                        };
+                        tenants.Add(tenant);
                     }
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("An error occurred while reading all Tenant entries: " + ex.Message);
-                }
             }
-
-            return tenants;
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred while reading all Tenant entries: " + ex.Message);
+            }
         }
+        return tenants;
+    }
+    
+
+
+
 
         void IRepo<Tenant>.Update(Tenant entity)
         {
