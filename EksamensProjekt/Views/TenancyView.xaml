@@ -551,5 +551,6 @@
                 </Style>
             </Button.Resources>
         </Button>
+        <Rectangle HorizontalAlignment="Left" Height="422" Margin="1137,133,0,0" Stroke="#FFABADB3" VerticalAlignment="Top" Width="402"/>
     </Grid>
 </Window>
