@@ -10,7 +10,7 @@ public class ExcelImportService
 
     public List<Address> ImportAddresses(string filePath)
     {
-        
+
         // Register the encoding provider to support older Excel files (.xls)
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
@@ -19,9 +19,12 @@ public class ExcelImportService
         {
             using (var reader = ExcelReaderFactory.CreateReader(stream))
             {
-                // Skip the header row if present
+
+                // Skip the header row
+                reader.Read();
+
                 while (reader.Read())
-                {
+                {                   
                     // Columns: Street, Number, FloorNumber, Zipcode, Country
                     var address = new Address
                     {

@@ -29,14 +29,14 @@ public class FilterService
 
         if (IsFilterBEnabled)
         {
-            // Filter B: Only include tenancies that allow pets
-            passesFilter &= tenancy.PetsAllowed == true;
+            // Filter B: Only include tenancies that are "Vacant"
+            passesFilter &= tenancy.TenancyStatus == TenancyStatus.Vacant;
         }
 
         if (IsFilterCEnabled)
         {
-            // Filter C: Only include tenancies with rent below 5000 (example threshold)
-            passesFilter &= tenancy.Rent.HasValue && tenancy.Rent < 10000;
+            // Filter C: Only include tenancies that are "UnderRenovation"
+            passesFilter &= tenancy.TenancyStatus == TenancyStatus.UnderRenovation;
         }
 
         if (IsFilterDEnabled)
