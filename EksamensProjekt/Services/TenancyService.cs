@@ -207,7 +207,7 @@ namespace EksamensProjekt.Services
         }
 
 
-        //remove from tenancytenant table
+        
         public void AddTenantToTenancy(Tenancy tenancy, Tenant tenant)
         {
             if (tenancy == null || tenant == null)
@@ -216,6 +216,7 @@ namespace EksamensProjekt.Services
             tenancyTenantRepo.AddTenantToTenancy(tenancy.TenancyID, tenant.TenantID);
         }
 
+        //remove from tenancytenant table
         public void RemoveTenancyTenant(Tenancy tenancy, Tenant tenant)
         {
             if (tenancy == null || tenant == null)
