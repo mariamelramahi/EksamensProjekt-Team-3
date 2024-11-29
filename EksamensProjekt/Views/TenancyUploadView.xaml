@@ -242,7 +242,7 @@
          ScrollViewer.VerticalScrollBarVisibility="Auto"
          ScrollViewer.CanContentScroll="True"
          Margin="256,262,876,165"
-         ItemsSource="{Binding AddressMatches}"
+         ItemsSource="{Binding ImportedAddresses}"
          SelectedItem="{Binding SelectedAddress, Mode=TwoWay}"
          Grid.RowSpan="2">
                 <ListBox.ItemTemplate>
@@ -251,10 +251,10 @@
                         <TextBlock FontSize="16" Padding="5">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}">
-                                    <Binding Path="Street"/>
-                                    <Binding Path="Number"/>
-                                    <Binding Path="Zipcode"/>
-                                    <Binding Path="Country"/>
+                                    <Binding Path="ImportedAddress.Street"/>
+                                    <Binding Path="ImportedAddress.Number"/>
+                                    <Binding Path="ImportedAddress.Zipcode"/>
+                                    <Binding Path="ImportedAddress.Country"/>
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>
@@ -266,7 +266,7 @@
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     ScrollViewer.CanContentScroll="True"
                     Margin="1080,262,52,165"
-                    ItemsSource="{Binding FilteredMatchedAddresses}"
+                    ItemsSource="{Binding FilteredMatches}"
                     SelectedItem="{Binding SelectedAddress, Mode=TwoWay}"
                     Grid.RowSpan="2">
                 <ListBox.ItemTemplate>
@@ -274,11 +274,12 @@
                         <!-- Just a TextBlock to display the combined address -->
                         <TextBlock FontSize="16" Padding="5">
                             <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}">
-                                    <Binding Path="Street"/>
-                                    <Binding Path="Number"/>
-                                    <Binding Path="Zipcode"/>
-                                    <Binding Path="Country"/>
+                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}, {4}">
+                                    <Binding Path="PotentialAddressMatch.Street"/>
+                                    <Binding Path="PotentialAddressMatch.Number"/>
+                                    <Binding Path="PotentialAddressMatch.Zipcode"/>
+                                    <Binding Path="PotentialAddressMatch.Country"/>
+                                    <Binding Path="MatchScore"/>
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>

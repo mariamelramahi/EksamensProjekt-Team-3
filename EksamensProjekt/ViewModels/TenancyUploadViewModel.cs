@@ -32,12 +32,15 @@ namespace EksamensProjekt.ViewModels
             _matchService = matchService;
 
             // Initialize ObservableCollection
-            ImportedAddresses = new ObservableCollection<Address>();
-            AddressMatches = new ObservableCollection<AddressMatchResult>();
+            //ImportedAddresses = new ObservableCollection<Address>(_matchService.GetAddressesWithTypos());
+            //ImportedAddresses = new ObservableCollection<Address>();
+            ImportedAddresses = new ObservableCollection<AddressMatchResult>();
+            FilteredMatches = new ObservableCollection<AddressAndMatchScore>();
+            ExcelAddresses = new ObservableCollection<Address>();
 
             //LoadTestData
-            //LoadImportedAddresses();
-            LoadAddressMatches();
+            //LoadAndMatchImportedAddresses();
+            //LoadAddressMatches();
 
 
             // Drag-and-Drop service
@@ -45,32 +48,31 @@ namespace EksamensProjekt.ViewModels
             DragAndDropService.FileDropped = OnFileDropped;
 
             // Set up CollectionView for displaying items
-            _importedAddressesCollectionView = CollectionViewSource.GetDefaultView(ImportedAddresses);
-            _addressMatchesCollectionView = CollectionViewSource.GetDefaultView(AddressMatches);
+            //_importedAddressesCollectionView = CollectionViewSource.GetDefaultView(ImportedAddresses);
+            //_addressMatchesCollectionView = CollectionViewSource.GetDefaultView(AddressMatches);
 
-            _matchService.CompareImportedAddressesWithDatabase();
             //_importedAddressesCollectionView.Filter = item => ApplyCombinedFilter(item as Tenancy);
             //Address is converted to a mock Tenancy object for filtering
-            _importedAddressesCollectionView.Filter = item =>
-            {
-                if (item is Address address)
-                {
-                    var mockTenancy = new Tenancy
-                    {
-                        Address = new Address
-                        {
-                            Street = address.Street,
-                            Number = address.Number,
-                            FloorNumber = address.FloorNumber,
-                            Zipcode = address.Zipcode,
-                            Country = address.Country
-                        }
-                    };
+            //_importedAddressesCollectionView.Filter = item =>
+            //{
+            //    if (item is Address address)
+            //    {
+            //        var mockTenancy = new Tenancy
+            //        {
+            //            Address = new Address
+            //            {
+            //                Street = address.Street,
+            //                Number = address.Number,
+            //                FloorNumber = address.FloorNumber,
+            //                Zipcode = address.Zipcode,
+            //                Country = address.Country
+            //            }
+            //        };
 
-                    return ApplyCombinedFilter(mockTenancy);
-                }
-                return false;
-            };
+            //        return ApplyCombinedFilter(mockTenancy);
+            //    }
+            //    return false;
+            //};
 
 
             // Initialize commands
@@ -80,31 +82,54 @@ namespace EksamensProjekt.ViewModels
         }
 
         // Observable Collections
-        public ObservableCollection<Address> ImportedAddresses { get; set; }
-        private ObservableCollection<AddressMatchResult> _addressMatches;
-        public ObservableCollection<AddressMatchResult> AddressMatches
+        private ObservableCollection<Address> _excelAddresses;
+        public ObservableCollection<Address> ExcelAddresses
         {
-            get => _addressMatches;
+            get => _excelAddresses;
             set
             {
-                _addressMatches = value;
+                _excelAddresses = value;
                 OnPropertyChanged();
             }
         }
+        private ObservableCollection<AddressMatchResult> _importedAddresses;
+        private ObservableCollection<AddressAndMatchScore> _filteredMatches;
+        public ObservableCollection<AddressAndMatchScore> FilteredMatches
+        {
+            get => _filteredMatches;
+            set
+            {
+                _filteredMatches = value;
+                OnPropertyChanged();
+            }
+        }
+        public ObservableCollection<AddressMatchResult> ImportedAddresses
+        {
+            get => _importedAddresses;
+            set
+            {
+                if (_importedAddresses != value)
+                {
+                    _importedAddresses = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
         // Filtered view of tenancies
-        public ICollectionView FilteredImportedAddresses => _importedAddressesCollectionView;
-        public ICollectionView FilteredAddressMatchResult => _addressMatchesCollectionView;
+        //public ICollectionView FilteredImportedAddresses => _importedAddressesCollectionView;
+        //public ICollectionView FilteredAddressMatchResult => _addressMatchesCollectionView;
+
 
         // Properties
-        private Address _selectedAddress;
-        public Address SelectedAddress
+        private AddressMatchResult _selectedAddress;
+        public AddressMatchResult SelectedAddress
         {
             get => _selectedAddress;
             set
             {
                 _selectedAddress = value;
+                FilterMatchesBySelectedAddress(); // Re-filter the matches based on the new selected address
                 OnPropertyChanged();
-                FilterMatchesBySelectedAddress();
 
                 // Raise CanExecuteChanged on commands depending on SelectedAddress
                 SoftDeleteTenancyCommand?.RaiseCanExecuteChanged();
@@ -133,23 +158,14 @@ namespace EksamensProjekt.ViewModels
             {
                 _filepath = value;
                 OnPropertyChanged();
-                LoadImportedAddresses();
+                LoadAndMatchImportedAddresses();
             }
         }
-
-
-
-
-
-
 
         private void OnFileDropped(string filePath)
         {
             Filepath = filePath; // Opdate property in ViewModel
         }
-
-
-
 
         //Service Properties
         public DragAndDropService DragAndDropService { get; }
@@ -205,15 +221,29 @@ namespace EksamensProjekt.ViewModels
 
 
         // Methods
-        private void LoadImportedAddresses()
+        // Method to trigger address comparison
+        //public async Task CompareImportedAddressesWithDatabaseAsync()
+        //{
+        //    // Call your method to get the comparison results
+        //    var matchResults = await Task.Run(() => _matchService.CompareImportedAddressesWithDatabase(ImportedAddresses.ToList()));
+
+        //    // Update the AddressMatchResults property with the returned match results
+        //    AddressMatches.Clear();
+        //    foreach (var result in matchResults)
+        //    {
+        //        AddressMatches.Add(result);
+        //    }
+        //}
+        private void LoadAndMatchImportedAddresses()
         {
             ImportedAddresses.Clear();
-
             var importedAddresses = _excelImportService.ImportAddresses(Filepath);
-            foreach (var address in importedAddresses)
+            var addressMatches = _matchService.CompareImportedAddressesWithDatabase(importedAddresses);
+            foreach (var address in addressMatches)
             {
                 ImportedAddresses.Add(address);
             }
+
         }
 
         //private void ExecuteGoToHistory()
@@ -264,37 +294,30 @@ namespace EksamensProjekt.ViewModels
         //}
         private void FilterMatchesBySelectedAddress()
         {
-            if (_selectedAddress != null)
+            
+            if (SelectedAddress != null)
             {
-                var matchResult = AddressMatches
-                    .FirstOrDefault(amr => amr.ImportedAddress == _selectedAddress);
+                // Clear the existing matches
+                FilteredMatches.Clear();
 
-                if (matchResult != null)
+                foreach (var match in SelectedAddress.PotentialMatches)
                 {
-                    // Set the potential matches for the selected address
-                    _addressMatchesCollectionView.Filter = o =>
-                    {
-                        var match = o as AddressAndMatchScore;
-                        return match != null && match.PotentialAddressMatch == _selectedAddress;
-                    };
+                        FilteredMatches.Add(match); // Add potential matches
                 }
+                
             }
-            else
-            {
-                _addressMatchesCollectionView.Filter = null; // Show all matches if no address is selected
-            }
-
         }
+
         // Method to load AddressMatches from CompareImportedAddressesWithDatabase
-        public void LoadAddressMatches()
-        {
-            var matchResults = _matchService.CompareImportedAddressesWithDatabase();
+        //public void LoadAddressMatches()
+        //{
+        //    var matchResults = _matchService.CompareImportedAddressesWithDatabase(ImportedAddresses.ToList());
 
-            AddressMatches.Clear();  // Clear any existing data
-            foreach (var result in matchResults)
-            {
-                AddressMatches.Add(result);  // Add new match results
-            }
-        }
+        //    AddressMatches.Clear();  // Clear any existing data
+        //    foreach (var result in matchResults)
+        //    {
+        //        AddressMatches.Add(result);  // Add new match results
+        //    }
+        //}
     }
 }
