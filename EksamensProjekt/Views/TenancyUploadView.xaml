@@ -242,7 +242,7 @@
          ScrollViewer.VerticalScrollBarVisibility="Auto"
          ScrollViewer.CanContentScroll="True"
          Margin="256,262,876,165"
-         ItemsSource="{Binding FilteredImportedAddresses}"
+         ItemsSource="{Binding AddressMatches}"
          SelectedItem="{Binding SelectedAddress, Mode=TwoWay}"
          Grid.RowSpan="2">
                 <ListBox.ItemTemplate>
