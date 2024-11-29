@@ -1,8 +1,6 @@
-﻿using Microsoft.Extensions.Configuration; // Til indlæsning af konfigurationsindstillinger fra appsettings.json
-using System.Data;
-using System.Data.SqlClient; // Til at arbejde med SQL Server via ADO.NET
+﻿using EksamensProjekt.Models;
 using Microsoft.Data.SqlClient;
-using EksamensProjekt.Models;
+using System.Data;
 
 namespace EksamensProjekt.Repos;
 
