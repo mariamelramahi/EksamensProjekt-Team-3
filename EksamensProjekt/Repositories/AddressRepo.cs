@@ -1,4 +1,5 @@
-﻿using EksamensProjekt.Models;
+﻿using EksamensProjekt.DataAccess;
+using EksamensProjekt.Models;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -6,6 +7,7 @@ namespace EksamensProjekt.Repos;
 
 public class AddressRepo : IRepo<Address>
 {
+
     private readonly string _connectionString;
 
     //Constructor that initialzies the connection string
@@ -14,77 +16,128 @@ public class AddressRepo : IRepo<Address>
         _connectionString = connectionString;
     }
 
-    public void Delete(int entity)
-    {
-        throw new NotImplementedException();
-    }
-
-    //Methhod to retrieve a Address object by its ID using a stored procedure
+    // USPs:
+    // usp_GetAddressByID
+    // usp_CreateAddress
+    // usp_ReadAllAddresses
+    // usp_UpdateAddress
+    // usp_DeleteAddress
+     
     public Address GetByID(int id)
     {
-        // Intializes a new AddressContext object with the connection string
         Address address = null;
 
-        // Establishes a new SQL database connection
         using (var connection = new SqlConnection(_connectionString))
         {
-            // Opens the connection to the database
             connection.Open();
 
-            // Creates a new SQL command object with the stored procedure name and the connection
-            var command = new SqlCommand("usp_GetAddressByID", connection)//USP not created in database
+            var command = new SqlCommand("usp_GetAddressByID", connection)
             {
-                // Specifies that the command is a stored procedure
                 CommandType = CommandType.StoredProcedure
             };
-
-            // Adds a parameter to the SqlCommand for the AddressID, used by the stored procedure to identify the Address record
             command.Parameters.AddWithValue("@AddressID", id);
 
-            // Executes the command and stores the result in a SqlDataReader object
             using (var reader = command.ExecuteReader())
             {
-                // Checks if the reader has any rows to read
                 if (reader.Read())
                 {
-                    // Initializes a new Address object with the data from the reader
-                    address = new Address
-                    {
-                        AddressID = reader.GetInt32(reader.GetOrdinal("AddressID")),
-                        Street = reader.GetString(reader.GetOrdinal("Street")),
-                        Number = reader.GetString(reader.GetOrdinal("Number")),
-                        FloorNumber = reader.GetString(reader.GetOrdinal("Floor")),
-                        Zipcode = reader.GetString(reader.GetOrdinal("ZipCode")),
-                        Country = reader.GetString(reader.GetOrdinal("Country"))
-                    };
+                    address = SqlDataMapper.PopulateAddressFromReader(reader);
                 }
             }
         }
+
         return address;
     }
 
-    void IRepo<Address>.Create(Address entity)
+
+    public void Create(Address address)
     {
-        throw new NotImplementedException();
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            var command = new SqlCommand("usp_CreateAddress", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            SqlDataMapper.AddAddressParameters(command, address, isUpdate: false);
+
+            connection.Open();
+            int rowsAffected = command.ExecuteNonQuery();
+
+            if (rowsAffected == 0)
+            {
+                throw new InvalidOperationException("The address could not be created. No rows affected.");
+            }
+        }
     }
 
-    Address IRepo<Address>.GetByID(int id)
+
+    public IEnumerable<Address> ReadAll()
     {
-        throw new NotImplementedException();
+        var addresses = new List<Address>();
+
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            var command = new SqlCommand("usp_ReadAllAddresses", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            connection.Open();
+            using (var reader = command.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    addresses.Add(SqlDataMapper.PopulateAddressFromReader(reader));
+                }
+            }
+        }
+
+        return addresses;
     }
 
 
-    IEnumerable<Address> IRepo<Address>.ReadAll()
+    public void Update(Address address)
     {
-        throw new NotImplementedException();
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            var command = new SqlCommand("usp_UpdateAddress", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            SqlDataMapper.AddAddressParameters(command, address, isUpdate: true);
+
+            connection.Open();
+            int rowsAffected = command.ExecuteNonQuery();
+
+            if (rowsAffected == 0)
+            {
+                throw new InvalidOperationException($"No rows were updated for AddressID {address.AddressID}");
+            }
+        }
     }
 
-    void IRepo<Address>.Update(Address entity)
+
+    public void Delete(int id)
     {
-        throw new NotImplementedException();
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            var command = new SqlCommand("usp_DeleteAddress", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            command.Parameters.AddWithValue("@AddressID", id);
+
+            connection.Open();
+            int rowsAffected = command.ExecuteNonQuery();
+
+            if (rowsAffected == 0)
+            {
+                throw new InvalidOperationException($"No rows were deleted for AddressID {id}");
+            }
+        }
     }
-    public void Delete(Address entity)
-    {
-        throw new NotImplementedException();
-    }
+
 }
