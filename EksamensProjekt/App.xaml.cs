@@ -38,13 +38,14 @@ public partial class App : Application
         ITenancyTenant tenancyTenantRepo = (TenancyRepo)tenancyRepo;
         IRepo<Tenant> tenantRepo = new TenantRepo(connectionString);
         IRepo<Address> addressRepo = new AddressRepo(connectionString);
+        IRepo<History> historyRepo = new HistoryRepo(connectionString);
 
         // Services
         AuthLogin authLoginService = new AuthLogin(userRepo);
         TenancyService tenancyService = new TenancyService(tenancyRepo, tenantRepo, addressRepo, tenancyTenantRepo);
         SearchService searchService = new SearchService();
         FilterService filterService = new FilterService();
-        HistoryService historyService = new HistoryService();
+        HistoryService historyService = new HistoryService(historyRepo);
         ExcelImportService excelImportService = new ExcelImportService();
         INavigationService navigationService = new NavigationService();
         DragAndDropService dragAndDropService = new DragAndDropService();
@@ -55,13 +56,13 @@ public partial class App : Application
         LoginViewModel loginViewModel = new LoginViewModel(authLoginService, navigationService);
         TenancyViewModel tenancyViewModel = new TenancyViewModel(navigationService, tenancyService, filterService, searchService);
         TenancyUploadViewModel tenancyUploadViewModel = new TenancyUploadViewModel(navigationService, tenancyService, filterService, searchService, excelImportService, dragAndDropService);
-        //HistoryViewModel historyViewModel = new HistoryViewModel(navigationService, historyService, filterService, searchService);
+        HistoryViewModel historyViewModel = new HistoryViewModel(navigationService, historyService, searchService);
 
         // Set up factory methods for creating views
         navigationService.RegisterFactory( () => new LoginView(loginViewModel));
         navigationService.RegisterFactory( () => new TenancyView(tenancyViewModel));
         navigationService.RegisterFactory(() => new TenancyUploadView(tenancyUploadViewModel));
-        //navigationService.RegisterFactory( () => new HistoryView(historyViewModel));
+        navigationService.RegisterFactory(() => new HistoryView(historyViewModel));
 
         // Set up the initial window
         //LoginView loginView = new LoginView(loginViewModel);

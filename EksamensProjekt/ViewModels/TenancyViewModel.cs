@@ -159,7 +159,7 @@ namespace EksamensProjekt.ViewModels
 
 
         // Commands
-        public RelayCommand GoToHistoryCommand { get; }
+        public RelayCommand GoToHistoryCommand => new RelayCommand(() => _navigationService.NavigateTo<HistoryView>());
         public RelayCommand CreateTenancyCommand { get; }
         public RelayCommand UpdateTenancyCommand { get; }
         public RelayCommand SoftDeleteTenancyCommand { get; }
