@@ -62,10 +62,7 @@
                                 <TextBlock Grid.Row="1" Grid.Column="7" Text="{Binding TenantName}" Visibility="{Binding TenantName, Converter={StaticResource EmptyStringToVisibilityConverter}}" />
                             </Grid>
 
-                            <!-- Tenant Name (Conditional Visibility) -->
-                            <TextBlock Visibility="{Binding TenantName, Converter={StaticResource EmptyStringToVisibilityConverter}}">
-                                <Run Text="Tenant Name: " /><Run Text="{Binding TenantName}" />
-                            </TextBlock>
+                            
                         </StackPanel>
                     </Expander>
                 </DataTemplate>
