@@ -45,7 +45,7 @@
             <!--Buttons-->
             <Button Margin="1834,0,6,521"
             BorderBrush="{x:Null}"
-            Command="{Binding ExitCommand}"
+            Command="{Binding GoToLoginCommand}"
             CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
             Background="{x:Null}">
                 <StackPanel Orientation="Horizontal">

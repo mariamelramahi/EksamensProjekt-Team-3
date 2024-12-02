@@ -41,9 +41,7 @@
             </Button.Resources>
         </Button>
         <Button Margin="928,0,6,559" BorderBrush="{x:Null}"  Background="{x:Null}" >
-            <StackPanel Orientation="Horizontal">
-                <Image Source="/Images/ExitImage.png" Height="45"/>
-            </StackPanel>
+            <StackPanel Orientation="Horizontal"/>
         </Button>
         
 
