@@ -45,11 +45,13 @@ public class HistoryViewModel : ViewModelBase
 
     // Filtered view of history items
     public ICollectionView FilteredHistoryItems => _historyCollectionView;
+    
 
 
 
     // Commands
     public RelayCommand GoToTenancyCommand => new RelayCommand(() => _navigationService.NavigateTo<TenancyView>());
+    public RelayCommand GoToLoginCommand => new RelayCommand(() => _navigationService.NavigateTo<LoginView>());
     public RelayCommand ApplyFiltersCommand { get; }
 
 

@@ -11,7 +11,7 @@
     </Window.Resources>
 
     <Grid>
-        <ListBox x:Name="HistoryListBox" Margin="10" ItemsSource="{Binding FilteredHistoryItems}" av:ItemsSource="{av:SampleData ItemCount=5}">
+        <ListBox x:Name="HistoryListBox" Margin="249,154,108,60" ItemsSource="{Binding FilteredHistoryItems}" av:ItemsSource="{av:SampleData ItemCount=5}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Expander>
@@ -42,14 +42,14 @@
                                     <ColumnDefinition Width="100" />
                                 </Grid.ColumnDefinitions>
                                 <!-- Headers Row -->
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Change Date" FontWeight="Bold" />
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Dato ændret" FontWeight="Bold" />
                                 <TextBlock Grid.Row="0" Grid.Column="1" Text="Operation" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Field Changed" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="3" Text="Old Value" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="4" Text="New Value" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="5" Text="User ID" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="6" Text="Organization ID" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="7" Text="Tenant Name" FontWeight="Bold" />
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Felt ændret" FontWeight="Bold" />
+                                <TextBlock Grid.Row="0" Grid.Column="3" Text="Gammel værdi" FontWeight="Bold" />
+                                <TextBlock Grid.Row="0" Grid.Column="4" Text="Ny værdi" FontWeight="Bold" />
+                                <TextBlock Grid.Row="0" Grid.Column="5" Text="Bruger ID" FontWeight="Bold" />
+                                <TextBlock Grid.Row="0" Grid.Column="6" Text="Boligselskab" FontWeight="Bold" />
+                                <TextBlock Grid.Row="0" Grid.Column="7" Text="Lejer" FontWeight="Bold" />
 
                                 <!-- Data Row -->
                                 <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding ChangeDate, StringFormat={}{0:yyyy-MM-dd}}" />
@@ -68,5 +68,51 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+        <Button Margin="1845,0,6,998"
+BorderBrush="{x:Null}"
+Command="{Binding GoToLoginCommand}"
+CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+Background="{x:Null}">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Images/ExitImage.png"
+       Height="45" />
+            </StackPanel>
+        </Button>
+        <Rectangle HorizontalAlignment="Left"
+            Height="1064"
+            VerticalAlignment="Center"
+            Width="200"
+            Fill="#FF006DA0"
+    />
+        <Image Margin="0,-31,1822,971"
+            Source="/Images/LogoImage.png"
+            Stretch="Uniform" />
+        <Button Content="Tilbage til lejemål"
+            HorizontalAlignment="Left"
+            Margin="1652,11,0,0"
+            VerticalAlignment="Top"
+            Width="182"
+            Background="White"
+            Foreground="#FF006DA0"
+            Height="32"
+            FontFamily="Bahnschrift Light"
+            Command="{Binding GoToTenancyCommand}"
+            CommandParameter="{Binding}"
+            FontSize="16"
+            BorderBrush="#FF006DA0">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius"
+                        Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Label Content="Historik"
+            HorizontalAlignment="Left"
+            Margin="928,35,0,0"
+            VerticalAlignment="Top"
+            FontSize="64"
+            FontFamily="Tahoma"
+            Foreground="#FF006DA0" />
     </Grid>
 </Window>
