@@ -42,24 +42,24 @@
                                     <ColumnDefinition Width="100" />
                                 </Grid.ColumnDefinitions>
                                 <!-- Headers Row -->
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Dato ændret" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="1" Text="Operation" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Felt ændret" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="3" Text="Gammel værdi" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="4" Text="Ny værdi" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="5" Text="Bruger ID" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="6" Text="Boligselskab" FontWeight="Bold" />
-                                <TextBlock Grid.Row="0" Grid.Column="7" Text="Lejer" FontWeight="Bold" />
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Dato ændret" FontWeight="Bold" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="Operation" FontWeight="Bold" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Felt ændret" FontWeight="Bold" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="0" Grid.Column="3" Text="Gammel værdi" FontWeight="Bold" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="0" Grid.Column="4" Text="Ny værdi" FontWeight="Bold" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="0" Grid.Column="5" Text="Bruger ID" FontWeight="Bold" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="0" Grid.Column="6" Text="Boligselskab" FontWeight="Bold" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="0" Grid.Column="7" Text="Lejer" FontWeight="Bold" FontFamily="Tahoma" />
 
                                 <!-- Data Row -->
-                                <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding ChangeDate, StringFormat={}{0:yyyy-MM-dd}}" />
-                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ChangeOperation}" />
-                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding FieldChanged}" />
-                                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding OldValue}" />
-                                <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding NewValue}" />
-                                <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding UserID}" />
-                                <TextBlock Grid.Row="1" Grid.Column="6" Text="{Binding OrganizationID}" />
-                                <TextBlock Grid.Row="1" Grid.Column="7" Text="{Binding TenantName}" Visibility="{Binding TenantName, Converter={StaticResource EmptyStringToVisibilityConverter}}" />
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding ChangeDate, StringFormat={}{0:yyyy-MM-dd}}" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ChangeOperation}" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding FieldChanged}" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding OldValue}" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding NewValue}" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding UserID}" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="1" Grid.Column="6" Text="{Binding OrganizationID}" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="1" Grid.Column="7" Text="{Binding TenantName}" Visibility="{Binding TenantName, Converter={StaticResource EmptyStringToVisibilityConverter}}" FontFamily="Tahoma"/>
                             </Grid>
 
                             
