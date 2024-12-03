@@ -159,7 +159,10 @@ namespace EksamensProjekt.ViewModels
 
 
         // Commands
-        public RelayCommand GoToHistoryCommand => new RelayCommand(() => _navigationService.NavigateTo<HistoryView>());
+        public RelayCommand GoToHistoryCommand => new RelayCommand(() =>
+        {
+            _navigationService.NavigateToWithViewModel<HistoryView, HistoryViewModel>(vm => vm.RefreshHistory());
+        });
         public RelayCommand GoToTenancyUploadCommand => new RelayCommand(() => _navigationService.NavigateTo<TenancyUploadView>());
         public RelayCommand GoToLoginCommand => new RelayCommand(() => _navigationService.NavigateTo<LoginView>());
         public RelayCommand CreateTenancyCommand { get; }

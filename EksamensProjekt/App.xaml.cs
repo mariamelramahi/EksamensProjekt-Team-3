@@ -63,6 +63,7 @@ public partial class App : Application
         navigationService.RegisterFactory( () => new TenancyView(tenancyViewModel));
         navigationService.RegisterFactory(() => new TenancyUploadView(tenancyUploadViewModel));
         navigationService.RegisterFactory(() => new HistoryView(historyViewModel));
+        
 
         // Set up the initial window
         //LoginView loginView = new LoginView(loginViewModel);

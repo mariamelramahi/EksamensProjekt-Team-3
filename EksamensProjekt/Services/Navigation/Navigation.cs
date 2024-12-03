@@ -66,4 +66,25 @@ public class NavigationService : INavigationService
             throw new InvalidOperationException($"No factory registered for type {typeof(TView).Name}");
         }
     }
+    public void NavigateToWithViewModel<TView, TViewModel>(Action<TViewModel> configureViewModel)
+       where TView : Window
+       where TViewModel : class
+    {
+        if (_factories.TryGetValue(typeof(TView), out var factory))
+        {
+            var newWindow = factory();
+            if (newWindow.DataContext is TViewModel viewModel)
+            {
+                configureViewModel(viewModel);
+            }
+
+            var currentWindow = Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w.IsActive);
+            currentWindow?.Close();
+            newWindow.Show();
+        }
+        else
+        {
+            throw new InvalidOperationException($"No factory registered for type {typeof(TView).Name}");
+        }
+    }
 }

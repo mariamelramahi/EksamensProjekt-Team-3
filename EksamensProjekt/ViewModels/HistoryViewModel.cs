@@ -71,13 +71,18 @@ public class HistoryViewModel : ViewModelBase
         }
     }
 
+    public void RefreshHistory()
+    {
+        LoadHistory(); //public method to refresh the history when navigating from tnancyview
+    }
+
     //private void ExecuteGoToTenancy()
     //{
     //    _navigationService.NavigateTo<TenancyView>();
     //}
 
 
-   
-  
+
+
 
 }
