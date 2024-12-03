@@ -492,7 +492,7 @@
                     <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
 
-                <ListBox Grid.Row="0" Grid.Column="0" ItemsSource="{Binding AllTenants}" SelectedItem="{Binding SelectedTenant}" Margin="10,10,798,10" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="2">
+                <ListBox Grid.Row="0" Grid.Column="0" ItemsSource="{Binding AllTenants}" SelectedItem="{Binding SelectedTenant}" Margin="10,10,798,10" d:ItemsSource="{d:SampleData ItemCount=5}" Grid.ColumnSpan="2" MaxHeight="200">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
