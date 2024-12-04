@@ -47,6 +47,39 @@ public class FilterService
 
         return passesFilter;
     }
+    public bool ApplyFilter(AddressAndMatchScore addressAndScore)
+    {
+        if (addressAndScore == null)
+            return false;
+
+        bool passesFilter = true;
+
+        if (IsFilterAEnabled)
+        {
+            // Filter A: Only include tenancies that are "Occupied"
+            passesFilter &= addressAndScore.MatchScore == "Type A"; // shorthand for passesFilter = passesFilter && condition
+        }
+
+        if (IsFilterBEnabled)
+        {
+            // Filter B: Only include tenancies that are "Vacant"
+            passesFilter &= addressAndScore.MatchScore == "Type B";
+        }
+
+        if (IsFilterCEnabled)
+        {
+            // Filter C: Only include tenancies that are "UnderRenovation"
+            passesFilter &= addressAndScore.MatchScore == "Type C";
+        }
+
+        if (IsFilterDEnabled)
+        {
+            // Filter D: Only include tenancies with IsDeleted set to false
+            passesFilter &= addressAndScore.MatchScore == "Type D";
+        }
+
+        return passesFilter;
+    }
 }
 
 

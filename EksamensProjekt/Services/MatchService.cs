@@ -8,9 +8,13 @@ namespace EksamensProjekt.Services
 {
     public class MatchService
     {
-        TenancyRepo tenancyRepo;
-        AddressRepo addressRepo;
-        ExcelImportService excelImportService;
+        IRepo<Tenancy> tenancyRepo;
+        IRepo<Address> addressRepo;
+        public MatchService(IRepo<Tenancy> tenancyRepo, IRepo<Address> addressRepo)
+        {
+            this.tenancyRepo = tenancyRepo;
+            this.addressRepo = addressRepo;
+        }
 
         public void ApproveMatches(List<AddressMatchResult> addressMatches)
         {
@@ -52,10 +56,10 @@ namespace EksamensProjekt.Services
         {
             // Liste til at gemme resultaterne
             List<AddressMatchResult> matchResults = new List<AddressMatchResult>();
-            //List<Tenancy> tenancies = tenancyRepo.ReadAll().ToList();
-            //List<Address> databaseAddresses = addressRepo.ReadAll().ToList();
+            List<Tenancy> tenancies = tenancyRepo.ReadAll().ToList();
+            List<Address> databaseAddresses = addressRepo.ReadAll().ToList();
             //Samplelist for testing
-            List<Address> databaseAddresses = GetSampleDatabaseAddresses();
+            //List<Address> databaseAddresses = GetSampleDatabaseAddresses();
 
             // Paralleliser matchning af adresser for ydeevne
             Parallel.ForEach(importedAddresses, importedAddress =>
@@ -217,112 +221,112 @@ namespace EksamensProjekt.Services
             if (string.IsNullOrEmpty(input)) return string.Empty;
             return input.Trim().ToLowerInvariant();
         }
-        public List<Address> GetSampleDatabaseAddresses()
-        {
-            return new List<Address>
-            {
-                new Address
-                {
-                    AddressID = 1,
-                    Street = "Østerbrogade",
-                    Number = "12",
-                    FloorNumber = "2. tv.",
-                    Zipcode = "2100",
-                    Country = "Danmark",
-                    IsStandardized = false // This will be ignored if you choose to exclude it
-                },
-                new Address
-            {
-                AddressID = 2,
-                Street = "Vesterbrogade",
-                Number = "56",
-                FloorNumber = "1. th.",
-                Zipcode = "1620",
-                Country = "Danmark",
-                IsStandardized = false // This will be ignored
-            },
-            new Address
-            {
-                AddressID = 3,
-                Street = "Amagerbrogade",
-                Number = "101",
-                FloorNumber = "",
-                Zipcode = "2300",
-                Country = "Danmark",
-                IsStandardized = false // This will be ignored
-            },
-            new Address
-            {
-                AddressID = 4,
-                Street = "Sundholmsvej",
-                Number = "2",
-                FloorNumber = "3. tv.",
-                Zipcode = "2300",
-                Country = "Danmark",
-                IsStandardized = false // This will be ignored
-            },
-            new Address
-            {
-                AddressID = 5,
-                Street = "Nørrebrogade",
-                Number = "45",
-                FloorNumber = "4. th.",
-                Zipcode = "2200",
-                Country = "Danmark",
-                IsStandardized = false // This will be ignored
-            },
-            new Address
-            {
-                AddressID = 6,
-                Street = "H.C. Andersens Boulevard",
-                Number = "27",
-                FloorNumber = "2. tv.",
-                Zipcode = "1553",
-                Country = "Danmark",
-                IsStandardized = false // This will be ignored
-            },
-            new Address
-            {
-                AddressID = 7,
-                Street = "Teglholmsgade",
-                Number = "23",
-                FloorNumber = "",
-                Zipcode = "2450",
-                Country = "Danmark",
-                IsStandardized = false // This will be ignored
-            },
-            new Address
-            {
-                AddressID = 8,
-                Street = "Ballerup Boulevard",
-                Number = "43",
-                FloorNumber = "",
-                Zipcode = "2750",
-                Country = "Danmark",
-                IsStandardized = false // This will be ignored
-            },
-            new Address
-            {
-                AddressID = 9,
-                Street = "Møllebakken",
-                Number = "8",
-                FloorNumber = "1. tv.",
-                Zipcode = "4000",
-                Country = "Danmark",
-                IsStandardized = false // This will be ignored
-            },
-            new Address
-            {
-                AddressID = 10,
-                Street = "Højbro Plads",
-                Number = "10",
-                FloorNumber = "5. tv.",
-                Zipcode = "1200",
-                Country = "Danmark",
-                IsStandardized = false // This will be ignored
-            }
-        };
-        }
+        //public List<Address> GetSampleDatabaseAddresses()
+        //{
+        //    return new List<Address>
+        //    {
+        //        new Address
+        //        {
+        //            AddressID = 1,
+        //            Street = "Østerbrogade",
+        //            Number = "12",
+        //            FloorNumber = "2. tv.",
+        //            Zipcode = "2100",
+        //            Country = "Danmark",
+        //            IsStandardized = false // This will be ignored if you choose to exclude it
+        //        },
+        //        new Address
+        //    {
+        //        AddressID = 2,
+        //        Street = "Vesterbrogade",
+        //        Number = "56",
+        //        FloorNumber = "1. th.",
+        //        Zipcode = "1620",
+        //        Country = "Danmark",
+        //        IsStandardized = false // This will be ignored
+        //    },
+        //    new Address
+        //    {
+        //        AddressID = 3,
+        //        Street = "Amagerbrogade",
+        //        Number = "101",
+        //        FloorNumber = "",
+        //        Zipcode = "2300",
+        //        Country = "Danmark",
+        //        IsStandardized = false // This will be ignored
+        //    },
+        //    new Address
+        //    {
+        //        AddressID = 4,
+        //        Street = "Sundholmsvej",
+        //        Number = "2",
+        //        FloorNumber = "3. tv.",
+        //        Zipcode = "2300",
+        //        Country = "Danmark",
+        //        IsStandardized = false // This will be ignored
+        //    },
+        //    new Address
+        //    {
+        //        AddressID = 5,
+        //        Street = "Nørrebrogade",
+        //        Number = "45",
+        //        FloorNumber = "4. th.",
+        //        Zipcode = "2200",
+        //        Country = "Danmark",
+        //        IsStandardized = false // This will be ignored
+        //    },
+        //    new Address
+        //    {
+        //        AddressID = 6,
+        //        Street = "H.C. Andersens Boulevard",
+        //        Number = "27",
+        //        FloorNumber = "2. tv.",
+        //        Zipcode = "1553",
+        //        Country = "Danmark",
+        //        IsStandardized = false // This will be ignored
+        //    },
+        //    new Address
+        //    {
+        //        AddressID = 7,
+        //        Street = "Teglholmsgade",
+        //        Number = "23",
+        //        FloorNumber = "",
+        //        Zipcode = "2450",
+        //        Country = "Danmark",
+        //        IsStandardized = false // This will be ignored
+        //    },
+        //    new Address
+        //    {
+        //        AddressID = 8,
+        //        Street = "Ballerup Boulevard",
+        //        Number = "43",
+        //        FloorNumber = "",
+        //        Zipcode = "2750",
+        //        Country = "Danmark",
+        //        IsStandardized = false // This will be ignored
+        //    },
+        //    new Address
+        //    {
+        //        AddressID = 9,
+        //        Street = "Møllebakken",
+        //        Number = "8",
+        //        FloorNumber = "1. tv.",
+        //        Zipcode = "4000",
+        //        Country = "Danmark",
+        //        IsStandardized = false // This will be ignored
+        //    },
+        //    new Address
+        //    {
+        //        AddressID = 10,
+        //        Street = "Højbro Plads",
+        //        Number = "10",
+        //        FloorNumber = "5. tv.",
+        //        Zipcode = "1200",
+        //        Country = "Danmark",
+        //        IsStandardized = false // This will be ignored
+        //    }
+        //};
+        //}
 
 
     }

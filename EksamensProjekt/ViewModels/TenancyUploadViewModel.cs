@@ -39,44 +39,16 @@ namespace EksamensProjekt.ViewModels
             FilteredMatches = new ObservableCollection<AddressAndMatchScore>();
             ExcelAddresses = new ObservableCollection<Address>();
 
-            //LoadTestData
-            //LoadAndMatchImportedAddresses();
-            //LoadAddressMatches();
-
-
             // Drag-and-Drop service
             DragAndDropService = dragAndDropService;
             DragAndDropService.FileDropped = OnFileDropped;
 
-            // Set up CollectionView for displaying items
+            //// Set up CollectionView for displaying items
             //_importedAddressesCollectionView = CollectionViewSource.GetDefaultView(ImportedAddresses);
-            //_addressMatchesCollectionView = CollectionViewSource.GetDefaultView(AddressMatches);
-
-            //_importedAddressesCollectionView.Filter = item => ApplyCombinedFilter(item as Tenancy);
-            //Address is converted to a mock Tenancy object for filtering
-            //_importedAddressesCollectionView.Filter = item =>
-            //{
-            //    if (item is Address address)
-            //    {
-            //        var mockTenancy = new Tenancy
-            //        {
-            //            Address = new Address
-            //            {
-            //                Street = address.Street,
-            //                Number = address.Number,
-            //                FloorNumber = address.FloorNumber,
-            //                Zipcode = address.Zipcode,
-            //                Country = address.Country
-            //            }
-            //        };
-
-            //        return ApplyCombinedFilter(mockTenancy);
-            //    }
-            //    return false;
-            //};
+            //_addressMatchesCollectionView = CollectionViewSource.GetDefaultView(FilteredMatches);
 
 
-            // Initialize commands
+             // Initialize commands
             ApproveAllMatchesCommand = new RelayCommand(ExecuteApproveAllMatches);
             //GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);
             //CreateTenancyCommand = new RelayCommand(ExecuteCreateTenancy);
@@ -117,9 +89,9 @@ namespace EksamensProjekt.ViewModels
                 }
             }
         }
-        // Filtered view of tenancies
+        //// Filtered view of Addresses
         //public ICollectionView FilteredImportedAddresses => _importedAddressesCollectionView;
-        //public ICollectionView FilteredAddressMatchResult => _addressMatchesCollectionView;
+        //public ICollectionView FilteredImportedMatches => _addressMatchesCollectionView;
 
 
         // Properties
@@ -241,6 +213,8 @@ namespace EksamensProjekt.ViewModels
         public RelayCommand GoToTenancyCommand => new RelayCommand(() => _navigationService.NavigateTo<TenancyView>());
         public RelayCommand ApproveAllMatchesCommand { get;  }
 
+
+        //Methods
         private void LoadAndMatchImportedAddresses()
         {
             ImportedAddresses.Clear();
@@ -260,10 +234,10 @@ namespace EksamensProjekt.ViewModels
         }
 
 
-        private bool ApplyCombinedFilter(Tenancy importedAddress)
+        private bool ApplyCombinedFilter(AddressMatchResult addressMatchResult, AddressAndMatchScore addressAndMatchScore)
         {
-            return _filterService.ApplyFilter(importedAddress) &&
-                   _searchService.ApplySearchFilter(importedAddress, SearchInput);
+            return _filterService.ApplyFilter(addressAndMatchScore) &&
+                   _searchService.ApplySearchFilter(addressMatchResult, SearchInput);
         }
 
         // Refresh new way: Threads (quicker / snappy UI)
@@ -280,7 +254,6 @@ namespace EksamensProjekt.ViewModels
             });
         }
 
-        //Methods
         // Method to trigger the approval of all matches
         public void ExecuteApproveAllMatches()
         {

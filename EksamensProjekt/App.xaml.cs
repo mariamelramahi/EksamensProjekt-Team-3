@@ -44,7 +44,7 @@ public partial class App : Application
         FilterService filterService = new FilterService();
         HistoryService historyService = new HistoryService();
         ExcelImportService excelImportService = new ExcelImportService();
-        MatchService matchService = new MatchService(); 
+        MatchService matchService = new MatchService(tenancyRepo, AddressRepo); 
         INavigationService navigationService = new NavigationService();
         DragAndDropService dragAndDropService = new DragAndDropService();
 

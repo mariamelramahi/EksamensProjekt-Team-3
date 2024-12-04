@@ -76,11 +76,11 @@ public class AddressRepo : IRepo<Address>
     }
 
 
-    IEnumerable<Address> IRepo<Address>.ReadAll()
+    public IEnumerable<Address> ReadAll()
     {
-        throw new NotImplementedException();
-    }
 
+        return _context.Addresses.FromSqlRaw("EXEC usp_ReadAllAddresses").ToList();
+    }
     void IRepo<Address>.Update(Address entity)
     {
         throw new NotImplementedException();
