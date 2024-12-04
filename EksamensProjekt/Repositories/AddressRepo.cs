@@ -74,7 +74,7 @@ public class AddressRepo : IRepo<Address>
     }
 
 
-    public async Task<IEnumerable<Address>> ReadAllAsync()
+    public IEnumerable<Address> ReadAll()
     {
         var addresses = new List<Address>();
 
@@ -87,10 +87,10 @@ public class AddressRepo : IRepo<Address>
 
             try
             {
-                await connection.OpenAsync();
-                using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                connection.Open(); // Use synchronous Open method
+                using (SqlDataReader reader = cmd.ExecuteReader()) // Use synchronous ExecuteReader
                 {
-                    while (await reader.ReadAsync())
+                    while (reader.Read())
                     {
                         var address = new Address
                         {

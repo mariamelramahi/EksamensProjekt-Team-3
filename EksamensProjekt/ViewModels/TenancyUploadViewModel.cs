@@ -13,7 +13,7 @@ namespace EksamensProjekt.ViewModels
     public class TenancyUploadViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
-        private readonly TenancyService _tenancyService;
+ 
         private readonly FilterService _filterService;
         private readonly SearchService _searchService;
         private readonly ExcelImportService _excelImportService;
@@ -23,10 +23,9 @@ namespace EksamensProjekt.ViewModels
 
 
         // Constructor
-        public TenancyUploadViewModel(INavigationService navigationService, TenancyService tenancyService, FilterService filterService, SearchService searchService, ExcelImportService excelImportService, DragAndDropService dragAndDropService, MatchService matchService)
+        public TenancyUploadViewModel(INavigationService navigationService, FilterService filterService, SearchService searchService, ExcelImportService excelImportService, DragAndDropService dragAndDropService, MatchService matchService)
         {
             _navigationService = navigationService;
-            _tenancyService = tenancyService;
             _filterService = filterService;
             _searchService = searchService;
             _excelImportService = excelImportService;
@@ -257,14 +256,13 @@ namespace EksamensProjekt.ViewModels
         // Method to trigger the approval of all matches
         public void ExecuteApproveAllMatches()
         {
+            // Call the service layer to approve the matches
+            _matchService.ApproveMatches(ImportedAddresses.ToList());
 
             // Check if any matches require user selection
             foreach (var match in ImportedAddresses)
             {
-                // Call the service layer to approve the matches
-                _matchService.ApproveMatches(ImportedAddresses.ToList());
-
-                if (match.IsUserSelectionRequired)
+                if (match.IsUserSelectionRequired == true)
                 {
                     // Trigger UI logic to prompt user for selection
                     PromptUserForSelection(match);

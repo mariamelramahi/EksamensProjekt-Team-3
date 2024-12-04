@@ -46,7 +46,7 @@ public partial class App : Application
         FilterService filterService = new FilterService();
         HistoryService historyService = new HistoryService();
         ExcelImportService excelImportService = new ExcelImportService();
-        MatchService matchService = new MatchService(tenancyRepo, AddressRepo); 
+        MatchService matchService = new MatchService(tenancyRepo, addressRepo); 
         INavigationService navigationService = new NavigationService();
         DragAndDropService dragAndDropService = new DragAndDropService();
 
@@ -55,7 +55,7 @@ public partial class App : Application
         // Create ViewModels
         LoginViewModel loginViewModel = new LoginViewModel(authLoginService, navigationService);
         TenancyViewModel tenancyViewModel = new TenancyViewModel(navigationService, tenancyService, filterService, searchService);
-        TenancyUploadViewModel tenancyUploadViewModel = new TenancyUploadViewModel(navigationService, tenancyService, filterService, searchService, excelImportService, dragAndDropService, matchService);
+        TenancyUploadViewModel tenancyUploadViewModel = new TenancyUploadViewModel(navigationService, filterService, searchService, excelImportService, dragAndDropService, matchService);
         //HistoryViewModel historyViewModel = new HistoryViewModel(navigationService, historyService, filterService, searchService);
 
         // Set up factory methods for creating views

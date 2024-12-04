@@ -1,5 +1,6 @@
 ﻿using EksamensProjekt.Models;
 using EksamensProjekt.Repos;
+using Microsoft.Data.SqlClient;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
@@ -18,11 +19,11 @@ namespace EksamensProjekt.Services
 
         public void ApproveMatches(List<AddressMatchResult> addressMatches)
         {
-            // Fetch all existing tenancies from the repository
             var tenancies = tenancyRepo.ReadAll();
-
+           
             foreach (var match in addressMatches)
             {
+
                 // Check if the selected match corresponds to an existing tenancy
                 var existingTenancy = tenancies.FirstOrDefault(t =>
                     t.Address.Street == match.SelectedMatch?.PotentialAddressMatch.Street &&
@@ -35,7 +36,7 @@ namespace EksamensProjekt.Services
                     // Update the existing tenancy if a match is found
                     tenancyRepo.Update(existingTenancy);
                 }
-                else if (match.SelectedMatch != null)
+                else if (existingTenancy == null && match.SelectedMatch != null)
                 {
                     // Create a new tenancy if no existing tenancy is found
                     tenancyRepo.Create(new Tenancy
