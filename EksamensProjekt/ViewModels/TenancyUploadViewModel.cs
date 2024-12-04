@@ -96,6 +96,7 @@ namespace EksamensProjekt.ViewModels
         private AddressAndMatchScore _userSelectedMatch;
         private bool _isUserSelectionRequired = true;
 
+
         public bool IsUserSelectionRequired
         {
             get => _isUserSelectionRequired;
@@ -330,6 +331,5 @@ namespace EksamensProjekt.ViewModels
                 FilteredMatches.Clear();
             }
         }
-
     }
 }
