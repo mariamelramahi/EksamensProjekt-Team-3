@@ -126,6 +126,39 @@ namespace EksamensProjekt.DataAccess
 
 
 
+        //
+        // Addresses
+        //
+
+
+        public static Address PopulateAddressFromReader(SqlDataReader reader)
+        {
+            return new Address
+            {
+                AddressID = reader.GetInt32(reader.GetOrdinal("AddressID")),
+                Street = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Street"),
+                Number = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Number"),
+                FloorNumber = SqlDataReaderHelper.GetValueOrNull<string>(reader, "FloorNumber"),
+                Zipcode = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Zipcode"),
+                Country = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Country"),
+                IsStandardized = reader.GetBoolean(reader.GetOrdinal("IsStandardized"))
+            };
+        }
+
+        public static void AddAddressParameters(SqlCommand command, Address address, bool isUpdate)
+        {
+            if (isUpdate)
+            {
+                command.Parameters.AddWithValue("@AddressID", address.AddressID);
+            }
+
+            command.Parameters.AddWithValue("@Street", address.Street ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Number", address.Number ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@FloorNumber", address.FloorNumber ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Zipcode", address.Zipcode ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Country", address.Country ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@IsStandardized", address.IsStandardized);
+        }
 
 
 
