@@ -1,6 +1,4 @@
 using EksamensProjekt.Models;
-using EksamensProjekt.Services;
-using System.Windows.Navigation;
 
 
 

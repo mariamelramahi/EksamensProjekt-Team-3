@@ -1,9 +1,5 @@
 ﻿using EksamensProjekt.Models;
 using EksamensProjekt.Repos;
-using Microsoft.Data.SqlClient;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 
 namespace EksamensProjekt.Services
 {

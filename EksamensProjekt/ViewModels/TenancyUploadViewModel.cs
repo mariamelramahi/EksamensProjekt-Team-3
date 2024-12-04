@@ -5,8 +5,6 @@ using EksamensProjekt.Utilities;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Data;
-using System.Windows.Input;
 
 namespace EksamensProjekt.ViewModels
 {
