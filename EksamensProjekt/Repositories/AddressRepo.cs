@@ -74,11 +74,48 @@ public class AddressRepo : IRepo<Address>
     }
 
 
-    public IEnumerable<Address> ReadAll()
+    public async Task<IEnumerable<Address>> ReadAllAsync()
     {
+        var addresses = new List<Address>();
 
-        return _context.Addresses.FromSqlRaw("EXEC usp_ReadAllAddresses").ToList();
+        using (var connection = new SqlConnection(_connectionString))
+        {
+            var cmd = new SqlCommand("usp_ReadAllAddresses", connection)
+            {
+                CommandType = CommandType.StoredProcedure
+            };
+
+            try
+            {
+                await connection.OpenAsync();
+                using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        var address = new Address
+                        {
+                            AddressID = reader.GetInt32(reader.GetOrdinal("AddressID")),
+                            Street = reader.GetString(reader.GetOrdinal("Street")),
+                            Number = reader.GetString(reader.GetOrdinal("Number")),
+                            FloorNumber = reader.IsDBNull(reader.GetOrdinal("FloorNumber")) ? null : reader.GetString(reader.GetOrdinal("FloorNumber")),
+                            Zipcode = reader.GetString(reader.GetOrdinal("Zipcode")),
+                            Country = reader.GetString(reader.GetOrdinal("Country")),
+                            IsStandardized = reader.GetBoolean(reader.GetOrdinal("IsStandardized"))
+                        };
+
+                        addresses.Add(address);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error while fetching addresses: " + ex.Message);
+            }
+        }
+
+        return addresses;
     }
+
     void IRepo<Address>.Update(Address entity)
     {
         throw new NotImplementedException();
