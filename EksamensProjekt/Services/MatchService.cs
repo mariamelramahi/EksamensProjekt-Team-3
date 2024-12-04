@@ -1,4 +1,5 @@
 ﻿using EksamensProjekt.Models;
+using EksamensProjekt.Models.Models.DTO;
 using EksamensProjekt.Repos;
 
 namespace EksamensProjekt.Services
