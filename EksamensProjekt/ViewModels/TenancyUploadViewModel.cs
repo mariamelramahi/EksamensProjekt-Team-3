@@ -11,9 +11,9 @@ namespace EksamensProjekt.ViewModels
     public class TenancyUploadViewModel : ViewModelBase
     {
         private readonly INavigationService _navigationService;
- 
         private readonly FilterService _filterService;
         private readonly SearchService _searchService;
+        private readonly AuthLogin _authLogin;
         private readonly ExcelImportService _excelImportService;
         private readonly MatchService _matchService;
         private ICollectionView _importedAddressesCollectionView;
@@ -30,8 +30,6 @@ namespace EksamensProjekt.ViewModels
             _matchService = matchService;
 
             // Initialize ObservableCollection
-            //ImportedAddresses = new ObservableCollection<Address>(_matchService.GetAddressesWithTypos());
-            //ImportedAddresses = new ObservableCollection<Address>();
             ImportedAddresses = new ObservableCollection<AddressMatchResult>();
             FilteredMatches = new ObservableCollection<AddressAndMatchScore>();
             ExcelAddresses = new ObservableCollection<Address>();
@@ -40,16 +38,15 @@ namespace EksamensProjekt.ViewModels
             DragAndDropService = dragAndDropService;
             DragAndDropService.FileDropped = OnFileDropped;
 
-            //// Set up CollectionView for displaying items
+            //// Set up CollectionView for displaying items when using filters
             //_importedAddressesCollectionView = CollectionViewSource.GetDefaultView(ImportedAddresses);
             //_addressMatchesCollectionView = CollectionViewSource.GetDefaultView(FilteredMatches);
 
 
              // Initialize commands
             ApproveAllMatchesCommand = new RelayCommand(ExecuteApproveAllMatches);
-            //GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);
-            //CreateTenancyCommand = new RelayCommand(ExecuteCreateTenancy);
-            //UploadFileCommand = new RelayCommand(ExecuteUploadFile);
+            GoToTenancyCommand = new RelayCommand(ExecuteGoToTenancyCommand);
+            DeleteTenancyCommand = new RelayCommand(DeleteAddressCommand);
         }
 
         // Observable Collections
@@ -132,7 +129,7 @@ namespace EksamensProjekt.ViewModels
                 OnPropertyChanged();
 
                 // Raise CanExecuteChanged on commands depending on SelectedAddress
-                SoftDeleteTenancyCommand?.RaiseCanExecuteChanged();
+                DeleteTenancyCommand?.RaiseCanExecuteChanged();
             }
         }
         public string SearchInput
@@ -163,6 +160,7 @@ namespace EksamensProjekt.ViewModels
         }
 
         // Delegated Filter Properties (delegates to FilterService) exposer
+        //Not implemented yet
         public bool IsFilterAEnabled
         {
             get => _filterService.IsFilterAEnabled;
@@ -197,6 +195,7 @@ namespace EksamensProjekt.ViewModels
         }
 
         //IsFilterDEnabled always true. ICollectionView returns it false when deciding if it should show in the View
+        //Not implemented yet
         public bool IsFilterDEnabled
         {
             get => _filterService.IsFilterDEnabled;
@@ -204,14 +203,16 @@ namespace EksamensProjekt.ViewModels
 
 
         // Commands
-        public RelayCommand CreateTenancyCommand { get; }
-        public RelayCommand SoftDeleteTenancyCommand { get; }
-        public RelayCommand UploadFileCommand { get; }
-        public RelayCommand GoToTenancyCommand => new RelayCommand(() => _navigationService.NavigateTo<TenancyView>());
+        public RelayCommand GoToTenancyCommand { get; }
         public RelayCommand ApproveAllMatchesCommand { get;  }
+        public RelayCommand DeleteTenancyCommand { get; }
 
 
         //Methods
+        private void ExecuteGoToTenancyCommand()
+        {
+            _navigationService.NavigateTo<TenancyView>();
+        }
         private void LoadAndMatchImportedAddresses()
         {
             ImportedAddresses.Clear();
@@ -250,6 +251,22 @@ namespace EksamensProjekt.ViewModels
                 });
             });
         }
+        public void DeleteAddressCommand()
+        {
+            if (SelectedAddress != null)
+            {
+                // Get the AddressMatchResult from the selected AddressMatchResult
+                AddressMatchResult selectedAddress = SelectedAddress;
+
+                // Remove the AddressMatchResult from the ImportedAddresses collection
+                if (selectedAddress != null)
+                {
+                    ImportedAddresses.Remove(selectedAddress);
+                    SelectedAddress = null;
+                    CheckIfUserSelectionRequired();
+                }
+            }
+        }
 
         // Method to trigger the approval of all matches
         public void ExecuteApproveAllMatches()
@@ -279,7 +296,6 @@ namespace EksamensProjekt.ViewModels
                     // User has selected a match, so use the selected one
                     SelectedAddress.SelectedMatch = UserSelectedMatch;
                     SelectedAddress.IsUserSelectionRequired = false;
-                    CheckIfUserSelectionRequired();
                 }
             }
         }
@@ -308,6 +324,10 @@ namespace EksamensProjekt.ViewModels
                     FilteredMatches.Add(match); // Add potential matches
                 }
 
+            }
+            else if (SelectedAddress == null)
+            {
+                FilteredMatches.Clear();
             }
         }
 

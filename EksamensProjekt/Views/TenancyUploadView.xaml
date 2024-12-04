@@ -103,7 +103,7 @@
                 Foreground="#FF006DA0"
                 Height="48"
                 FontFamily="Tahoma"
-                Command="{Binding SaveAddress}"
+                Command="{Binding DeleteTenancyCommand}"
                 CommandParameter="{Binding}"
                 FontSize="25"
                 BorderBrush="#FF006DA0" Grid.Row="1">
