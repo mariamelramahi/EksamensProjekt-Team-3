@@ -268,7 +268,7 @@ namespace EksamensProjekt.ViewModels
                     PromptUserForSelection(match);
                 }
             }
-            
+            _navigationService.NavigateTo<TenancyView>();
         }   
         private void SetUserSelectedMatch()
         {
