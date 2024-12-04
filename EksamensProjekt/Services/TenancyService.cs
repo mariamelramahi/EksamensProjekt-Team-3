@@ -18,8 +18,6 @@ namespace EksamensProjekt.Services
             this.tenantRepo = tenantRepo;
             this.AddressRepo = AddressRepo;
         }
-
-
         public void CreateNewTenancy(
                 TenancyStatus tenancyStatus,
                 DateTime? moveInDate,

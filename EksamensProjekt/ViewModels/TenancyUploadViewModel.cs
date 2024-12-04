@@ -4,6 +4,7 @@ using EksamensProjekt.Services.Navigation;
 using EksamensProjekt.Utilities;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -76,6 +77,7 @@ namespace EksamensProjekt.ViewModels
 
 
             // Initialize commands
+            ApproveAllMatchesCommand = new RelayCommand(ExecuteApproveAllMatches);
             //GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);
             //CreateTenancyCommand = new RelayCommand(ExecuteCreateTenancy);
             //UploadFileCommand = new RelayCommand(ExecuteUploadFile);
@@ -83,6 +85,8 @@ namespace EksamensProjekt.ViewModels
 
         // Observable Collections
         private ObservableCollection<Address> _excelAddresses;
+        private ObservableCollection<AddressMatchResult> _importedAddresses;
+        private ObservableCollection<AddressAndMatchScore> _filteredMatches;
         public ObservableCollection<Address> ExcelAddresses
         {
             get => _excelAddresses;
@@ -92,8 +96,6 @@ namespace EksamensProjekt.ViewModels
                 OnPropertyChanged();
             }
         }
-        private ObservableCollection<AddressMatchResult> _importedAddresses;
-        private ObservableCollection<AddressAndMatchScore> _filteredMatches;
         public ObservableCollection<AddressAndMatchScore> FilteredMatches
         {
             get => _filteredMatches;
@@ -122,6 +124,35 @@ namespace EksamensProjekt.ViewModels
 
         // Properties
         private AddressMatchResult _selectedAddress;
+        private string _searchInput;
+        private string _filepath;
+        public DragAndDropService DragAndDropService { get; }
+        private AddressAndMatchScore _userSelectedMatch;
+        private bool _isUserSelectionRequired = true;
+
+        public bool IsUserSelectionRequired
+        {
+            get => _isUserSelectionRequired;
+            set
+            {
+                _isUserSelectionRequired = value;
+                OnPropertyChanged();
+            }
+        }
+        public AddressAndMatchScore UserSelectedMatch
+
+        {
+            get => _userSelectedMatch;
+            set
+            {
+                if (_userSelectedMatch != value)
+                {
+                    _userSelectedMatch = value;
+                    SetUserSelectedMatch();
+                    OnPropertyChanged();
+                }
+            }
+        }
         public AddressMatchResult SelectedAddress
         {
             get => _selectedAddress;
@@ -135,9 +166,6 @@ namespace EksamensProjekt.ViewModels
                 SoftDeleteTenancyCommand?.RaiseCanExecuteChanged();
             }
         }
-
-
-        private string _searchInput;
         public string SearchInput
         {
             get => _searchInput;
@@ -149,8 +177,6 @@ namespace EksamensProjekt.ViewModels
             }
         }
 
-
-        private string _filepath;
         public string Filepath
         {
             get => _filepath;
@@ -166,10 +192,6 @@ namespace EksamensProjekt.ViewModels
         {
             Filepath = filePath; // Opdate property in ViewModel
         }
-
-        //Service Properties
-        public DragAndDropService DragAndDropService { get; }
-
 
         // Delegated Filter Properties (delegates to FilterService) exposer
         public bool IsFilterAEnabled
@@ -213,65 +235,36 @@ namespace EksamensProjekt.ViewModels
 
 
         // Commands
-        public RelayCommand GoToHistoryCommand { get; }
         public RelayCommand CreateTenancyCommand { get; }
         public RelayCommand SoftDeleteTenancyCommand { get; }
         public RelayCommand UploadFileCommand { get; }
         public RelayCommand GoToTenancyCommand => new RelayCommand(() => _navigationService.NavigateTo<TenancyView>());
+        public RelayCommand ApproveAllMatchesCommand { get;  }
 
-
-        // Methods
-        // Method to trigger address comparison
-        //public async Task CompareImportedAddressesWithDatabaseAsync()
-        //{
-        //    // Call your method to get the comparison results
-        //    var matchResults = await Task.Run(() => _matchService.CompareImportedAddressesWithDatabase(ImportedAddresses.ToList()));
-
-        //    // Update the AddressMatchResults property with the returned match results
-        //    AddressMatches.Clear();
-        //    foreach (var result in matchResults)
-        //    {
-        //        AddressMatches.Add(result);
-        //    }
-        //}
         private void LoadAndMatchImportedAddresses()
         {
             ImportedAddresses.Clear();
             var importedAddresses = _excelImportService.ImportAddresses(Filepath);
             var addressMatches = _matchService.CompareImportedAddressesWithDatabase(importedAddresses);
-            foreach (var address in addressMatches)
+            foreach (var addressMatch in addressMatches)
             {
-                ImportedAddresses.Add(address);
+                ImportedAddresses.Add(addressMatch);
             }
-
+            // After importing and matching, check if user selection is required for any match
+            CheckIfUserSelectionRequired();
         }
-
-        //private void ExecuteGoToHistory()
-        //{
-        //    _navigationService.NavigateTo<HistoryView>();
-        //}
-
 
         private bool CanExecuteModifyTenancy()
         {
             return SelectedAddress != null;
         }
 
-        //private void ExecuteUploadFile(object parameter)
-        //{
-        //    if (parameter is string filePath)
-        //    {
-        //        _tenancyService.UploadFile(filePath);
-        //        LoadTenancies(); // Reload the tenancies after import
-        //    }
-        //}
 
         private bool ApplyCombinedFilter(Tenancy importedAddress)
         {
             return _filterService.ApplyFilter(importedAddress) &&
                    _searchService.ApplySearchFilter(importedAddress, SearchInput);
         }
-
 
         // Refresh new way: Threads (quicker / snappy UI)
         private async void OnFilterChanged()
@@ -287,14 +280,55 @@ namespace EksamensProjekt.ViewModels
             });
         }
 
-        // Refresh old way
-        //private void RefreshFilteredView()
-        //{
-        //    _importedAddressesCollectionView.Refresh(); // Refresh the view to apply updated filters
-        //}
+        //Methods
+        // Method to trigger the approval of all matches
+        public void ExecuteApproveAllMatches()
+        {
+
+            // Check if any matches require user selection
+            foreach (var match in ImportedAddresses)
+            {
+                // Call the service layer to approve the matches
+                _matchService.ApproveMatches(ImportedAddresses.ToList());
+
+                if (match.IsUserSelectionRequired)
+                {
+                    // Trigger UI logic to prompt user for selection
+                    PromptUserForSelection(match);
+                }
+            }
+            
+        }   
+        private void SetUserSelectedMatch()
+        {
+            // Ensure that SelectedAddress is not null and has potential matches
+            if (SelectedAddress != null && SelectedAddress.PotentialMatches.Any())
+            {
+                // If the user has selected a match, use that
+                if (UserSelectedMatch != null)
+                {
+                    // User has selected a match, so use the selected one
+                    SelectedAddress.SelectedMatch = UserSelectedMatch;
+                    SelectedAddress.IsUserSelectionRequired = false;
+                    CheckIfUserSelectionRequired();
+                }
+            }
+        }
+        // Method to prompt the user for selecting a match (could trigger a UI interaction)
+        private void PromptUserForSelection(AddressMatchResult match)
+        {
+            // Show the message box to prompt the user
+            MessageBox.Show($"Venligst vælg en match for addresse: {match.ImportedAddress}", "Bruger skal vælge en match");
+        }
+        // This method checks if any address has an unselected match and requires user action
+        private void CheckIfUserSelectionRequired()
+        {
+            // Set flag if any address has IsUserSelectionRequired = true
+            IsUserSelectionRequired = ImportedAddresses.Any(address => address.IsUserSelectionRequired);
+        }
         private void FilterMatchesBySelectedAddress()
         {
-            
+
             if (SelectedAddress != null)
             {
                 // Clear the existing matches
@@ -302,22 +336,11 @@ namespace EksamensProjekt.ViewModels
 
                 foreach (var match in SelectedAddress.PotentialMatches)
                 {
-                        FilteredMatches.Add(match); // Add potential matches
+                    FilteredMatches.Add(match); // Add potential matches
                 }
-                
+
             }
         }
 
-        // Method to load AddressMatches from CompareImportedAddressesWithDatabase
-        //public void LoadAddressMatches()
-        //{
-        //    var matchResults = _matchService.CompareImportedAddressesWithDatabase(ImportedAddresses.ToList());
-
-        //    AddressMatches.Clear();  // Clear any existing data
-        //    foreach (var result in matchResults)
-        //    {
-        //        AddressMatches.Add(result);  // Add new match results
-        //    }
-        //}
     }
 }
