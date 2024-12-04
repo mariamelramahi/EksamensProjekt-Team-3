@@ -1,5 +1,6 @@
 ﻿using EksamensProjekt.Models;
 using EksamensProjekt.Repos;
+using EksamensProjekt.Repositories;
 using Microsoft.Data.SqlClient;
 using System.Windows;
 
@@ -7,16 +8,18 @@ namespace EksamensProjekt.Services
 {
     public class TenancyService
     {
-        public IRepo<Tenancy> tenancyRepo;
-        public IRepo<Tenant> tenantRepo;
-        public IRepo<Address> AddressRepo;
-        
+        private readonly IRepo<Tenancy> tenancyRepo;
+        private readonly IRepo<Tenant> tenantRepo;
+        private readonly IRepo<Address> AddressRepo;
+        private readonly ITenancyTenant tenancyTenantRepo;
+
         // Constructor or property injection 
-        public TenancyService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo, IRepo<Address> AddressRepo)
+        public TenancyService(IRepo<Tenancy> tenancyRepo, IRepo<Tenant> tenantRepo, IRepo<Address> addressRepo, ITenancyTenant tenancyTenantRepo)
         {
             this.tenancyRepo = tenancyRepo;
             this.tenantRepo = tenantRepo;
-            this.AddressRepo = AddressRepo;
+            this.AddressRepo = addressRepo;
+            this.tenancyTenantRepo = tenancyTenantRepo;
         }
         public void CreateNewTenancy(
                 TenancyStatus tenancyStatus,
@@ -93,7 +96,7 @@ namespace EksamensProjekt.Services
 
             if (selectedTenancy.SquareMeter != 0)
                 existingTenancy.SquareMeter = selectedTenancy.SquareMeter;
-            
+
             if (selectedTenancy.Rent.HasValue)
                 existingTenancy.Rent = selectedTenancy.Rent;
 
@@ -114,7 +117,7 @@ namespace EksamensProjekt.Services
 
             if (selectedTenancy.Company != null)
                 existingTenancy.Company = selectedTenancy.Company;
-            
+
             if (selectedTenancy.Organization != null)
                 existingTenancy.Organization = selectedTenancy.Organization;
 
@@ -194,26 +197,32 @@ namespace EksamensProjekt.Services
             }
         }
 
-        public void DeleteTenancyTenant(int tenancyID, int tenantID)
-        {
-            //remove from tenancytenant table
-            TenantRepo tenantRepo = this.tenantRepo as TenantRepo;
-            if (tenantRepo != null)
-            {
-                tenantRepo.DeleteTenancyTenant(tenancyID, tenantID);
-            }
 
+        
+        public void DeleteTenant(Tenant tenant)
+        {
+            tenantRepo.Delete(tenant.TenantID);
         }
 
+
+        
         public void AddTenantToTenancy(Tenancy tenancy, Tenant tenant)
         {
-            // Check if the tenancy and tenant are not null
-            TenantRepo tenantRepo = this.tenantRepo as TenantRepo;
-            if (tenancy != null && tenant != null)
-            {
-               tenantRepo.AddTenantToTenancy(tenancy.TenancyID, tenant.TenantID);
-            }
+            if (tenancy == null || tenant == null)
+                throw new ArgumentNullException("Tenancy or Tenant cannot be null.");
+
+            tenancyTenantRepo.AddTenantToTenancy(tenancy.TenancyID, tenant.TenantID);
         }
+
+        //remove from tenancytenant table
+        public void RemoveTenancyTenant(Tenancy tenancy, Tenant tenant)
+        {
+            if (tenancy == null || tenant == null)
+                throw new ArgumentNullException("Tenancy or Tenant cannot be null.");
+
+            tenancyTenantRepo.RemoveTenantFromTenancy(tenancy.TenancyID, tenant.TenantID);
+        }
+
 
         public void UpdateTenant(Tenant tenant)
         {
@@ -268,39 +277,48 @@ namespace EksamensProjekt.Services
                 }
             }
         }
-    
 
-    //private void UpdateTenancyDetailsFromExcel(Tenancy tenancy, ModifiedExcelAddress importedAddress)
-    //{
-    //    // Update the address fields if available
-    //    if (!string.IsNullOrEmpty(importedAddress.StreetName))
-    //        tenancy.StandardAddress.StreetName = importedAddress.StreetName;
 
-    //    if (!string.IsNullOrEmpty(importedAddress.Number))
-    //        tenancy.StandardAddress.Number = importedAddress.Number;
 
-    //    if (!string.IsNullOrEmpty(importedAddress.Floor))
-    //        tenancy.StandardAddress.Floor = importedAddress.Floor;
 
-    //    if (!string.IsNullOrEmpty(importedAddress.ZipCode))
-    //        tenancy.StandardAddress.ZipCode = importedAddress.ZipCode;
 
-    //    if (!string.IsNullOrEmpty(importedAddress.City))
-    //        tenancy.StandardAddress.City = importedAddress.City;
 
-    //    if (!string.IsNullOrEmpty(importedAddress.Country))
-    //        tenancy.StandardAddress.Country = importedAddress.Country;
 
-    //    // Update tenancy-specific fields if available
-    //    if (importedAddress.MoveInDate.HasValue)
-    //        tenancy.MoveInDate = importedAddress.MoveInDate.Value;
 
-    //    if (importedAddress.MoveOutDate.HasValue)
-    //        tenancy.MoveOutDate = importedAddress.MoveOutDate.Value;
 
-    //    if (importedAddress.Rent > 0)
-    //        tenancy.Rent = importedAddress.Rent;
-    //}
+
+
+        //private void UpdateTenancyDetailsFromExcel(Tenancy tenancy, ModifiedExcelAddress importedAddress)
+        //{
+        //    // Update the address fields if available
+        //    if (!string.IsNullOrEmpty(importedAddress.StreetName))
+        //        tenancy.StandardAddress.StreetName = importedAddress.StreetName;
+
+        //    if (!string.IsNullOrEmpty(importedAddress.Number))
+        //        tenancy.StandardAddress.Number = importedAddress.Number;
+
+        //    if (!string.IsNullOrEmpty(importedAddress.Floor))
+        //        tenancy.StandardAddress.Floor = importedAddress.Floor;
+
+        //    if (!string.IsNullOrEmpty(importedAddress.ZipCode))
+        //        tenancy.StandardAddress.ZipCode = importedAddress.ZipCode;
+
+        //    if (!string.IsNullOrEmpty(importedAddress.City))
+        //        tenancy.StandardAddress.City = importedAddress.City;
+
+        //    if (!string.IsNullOrEmpty(importedAddress.Country))
+        //        tenancy.StandardAddress.Country = importedAddress.Country;
+
+        //    // Update tenancy-specific fields if available
+        //    if (importedAddress.MoveInDate.HasValue)
+        //        tenancy.MoveInDate = importedAddress.MoveInDate.Value;
+
+        //    if (importedAddress.MoveOutDate.HasValue)
+        //        tenancy.MoveOutDate = importedAddress.MoveOutDate.Value;
+
+        //    if (importedAddress.Rent > 0)
+        //        tenancy.Rent = importedAddress.Rent;
+        //}
 
     }
 }

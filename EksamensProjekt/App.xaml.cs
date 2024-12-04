@@ -1,5 +1,6 @@
 ﻿using EksamensProjekt.Models;
 using EksamensProjekt.Repos;
+using EksamensProjekt.Repositories;
 using EksamensProjekt.Services;
 using EksamensProjekt.Services.Navigation;
 using EksamensProjekt.ViewModels;
@@ -34,12 +35,13 @@ public partial class App : Application
         // Repositories
         IUserRepo<User> userRepo = new UserRepo(connectionString);
         IRepo<Tenancy> tenancyRepo = new TenancyRepo(connectionString);
+        ITenancyTenant tenancyTenantRepo = (TenancyRepo)tenancyRepo;
         IRepo<Tenant> tenantRepo = new TenantRepo(connectionString);
-        IRepo<Address> AddressRepo = new AddressRepo(connectionString);
+        IRepo<Address> addressRepo = new AddressRepo(connectionString);
 
         // Services
         AuthLogin authLoginService = new AuthLogin(userRepo);
-        TenancyService tenancyService = new TenancyService(tenancyRepo, tenantRepo, AddressRepo);
+        TenancyService tenancyService = new TenancyService(tenancyRepo, tenantRepo, addressRepo, tenancyTenantRepo);
         SearchService searchService = new SearchService();
         FilterService filterService = new FilterService();
         HistoryService historyService = new HistoryService();

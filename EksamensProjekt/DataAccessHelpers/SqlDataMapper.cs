@@ -62,10 +62,12 @@ namespace EksamensProjekt.DataAccess
         }
 
 
-        public static void AddTenancyParameters(SqlCommand command, Tenancy tenancy)
+        public static void AddTenancyParameters(SqlCommand command, Tenancy tenancy, bool isUpdate)
         {
+            if (isUpdate) 
+                command.Parameters.AddWithValue("@TenancyID", tenancy.TenancyID); // Include ID for update operations
+
             // Add parameters to the SqlCommand based on the tenancy fields
-            command.Parameters.AddWithValue("@TenancyID", tenancy.TenancyID);
             command.Parameters.AddWithValue("@TenancyStatus", tenancy.TenancyStatus.HasValue ? tenancy.TenancyStatus.Value.ToString() : DBNull.Value);
             command.Parameters.AddWithValue("@MoveInDate", tenancy.MoveInDate.HasValue ? tenancy.MoveInDate.Value : DBNull.Value);
             command.Parameters.AddWithValue("@MoveOutDate", tenancy.MoveOutDate.HasValue ? tenancy.MoveOutDate.Value : DBNull.Value);
@@ -87,18 +89,34 @@ namespace EksamensProjekt.DataAccess
         // Tenant
         //
 
+
         public static Tenant PopulateTenantFromReader(SqlDataReader reader)
         {
             return new Tenant
             {
-                TenantID = reader.GetInt32(reader.GetOrdinal("TenantID")),
+                TenantID = SqlDataReaderHelper.GetValueOrNull<int>(reader, "TenantID"),
+                PartyID = SqlDataReaderHelper.GetValueOrNull<int>(reader, "PartyID"),
                 FirstName = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantFirstName"),
                 LastName = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantLastName"),
                 PhoneNum = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantPhoneNum"),
-                Email = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantEmail")
+                Email = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantEmail"),
+                PartyRole = SqlDataReaderHelper.GetValueOrNull<string>(reader, "PartyRole")
             };
         }
 
+
+
+        public static void AddTenantParameters(SqlCommand command, Tenant tenant, bool isUpdate)
+        {
+            if (isUpdate)
+                command.Parameters.AddWithValue("@TenantID", tenant.TenantID); // Include ID for update operations
+
+            // Add parameters to the SqlCommand based on the tenant fields
+            command.Parameters.AddWithValue("@FirstName", tenant.FirstName ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@LastName", tenant.LastName ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@PhoneNum", tenant.PhoneNum ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@Email", tenant.Email ?? (object)DBNull.Value);
+        }
 
 
 
