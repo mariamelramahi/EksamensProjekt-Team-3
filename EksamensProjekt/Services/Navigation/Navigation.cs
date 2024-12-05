@@ -37,12 +37,6 @@ public class NavigationService : INavigationService
         currentWindow?.Close();
     }
 
-
-
-
-
-
-
     private readonly Dictionary<Type, Func<Window>> _factories = new();
     public void RegisterFactory<TView>(Func<TView> createView) where TView : Window
     {
@@ -52,6 +46,7 @@ public class NavigationService : INavigationService
     {
         throw new NotImplementedException();
     }
+    
     public void NavigateTo<TView>() where TView : Window
     {
         if (_factories.TryGetValue(typeof(TView), out var factory))
