@@ -110,14 +110,8 @@ public class AddressRepo : IRepo<Address>
 
             connection.Open();
             int rowsAffected = command.ExecuteNonQuery();
-
-            if (rowsAffected == 0)
-            {
-                throw new InvalidOperationException($"No rows were updated for AddressID {address.AddressID}");
-            }
         }
     }
-
 
     public void Delete(int id)
     {

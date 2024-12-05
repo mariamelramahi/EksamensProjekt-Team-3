@@ -68,7 +68,7 @@ namespace EksamensProjekt.DataAccess
                 command.Parameters.AddWithValue("@TenancyID", tenancy.TenancyID); // Include ID for update operations
 
             // Add parameters to the SqlCommand based on the tenancy fields
-            command.Parameters.AddWithValue("@TenancyStatus", tenancy.TenancyStatus.HasValue ? tenancy.TenancyStatus.Value.ToString() : DBNull.Value);
+            command.Parameters.AddWithValue("@TenancyStatus", tenancy.TenancyStatus.HasValue ? tenancy.TenancyStatus.Value.ToString() : TenancyStatus.Vacant.ToString());
             command.Parameters.AddWithValue("@MoveInDate", tenancy.MoveInDate.HasValue ? tenancy.MoveInDate.Value : DBNull.Value);
             command.Parameters.AddWithValue("@MoveOutDate", tenancy.MoveOutDate.HasValue ? tenancy.MoveOutDate.Value : DBNull.Value);
             command.Parameters.AddWithValue("@SquareMeter", tenancy.SquareMeter > 0 ? tenancy.SquareMeter : DBNull.Value);
@@ -78,6 +78,8 @@ namespace EksamensProjekt.DataAccess
             command.Parameters.AddWithValue("@PetsAllowed", tenancy.PetsAllowed.HasValue ? tenancy.PetsAllowed.Value : DBNull.Value);
             command.Parameters.AddWithValue("@CompanyID", tenancy.Company != null && tenancy.Company.CompanyID != 0 ? tenancy.Company.CompanyID : DBNull.Value);
             command.Parameters.AddWithValue("@IsDeleted", tenancy.IsDeleted);
+            command.Parameters.AddWithValue("@AddressID", tenancy.Address.AddressID);
+            command.Parameters.AddWithValue("OrganizationID", 1);
         }
 
 

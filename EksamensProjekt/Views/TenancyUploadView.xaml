@@ -19,7 +19,6 @@
 
         <!-- BooleanToVisibilityConverter for boolean visibility bindings -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-
         <!-- Enum-based binding for TenancyStatus -->
         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="TenancyStatusValues">
             <ObjectDataProvider.MethodParameters>
@@ -54,22 +53,22 @@
                 </StackPanel>
             </Button>
             <Button Content="Godkend addresse"
-            HorizontalAlignment="Left"
-            Margin="1620,378,0,0"
-            VerticalAlignment="Top"
-            Width="254"
-            Background="White"
-            Foreground="#FF006DA0"
-            Height="48"
-            FontFamily="Tahoma"
-            Command="{Binding SaveAddress}"
-            CommandParameter="{Binding}"
-            FontSize="25"
-            BorderBrush="#FF006DA0" Grid.Row="1">
+        HorizontalAlignment="Left"
+        Margin="1620,378,0,0"
+        VerticalAlignment="Top"
+        Width="254"
+        Background="White"
+        Foreground="#FF006DA0"
+        Height="48"
+        FontFamily="Tahoma"
+        Command="{Binding ApproveAllMatchesCommand}"
+        IsEnabled="{Binding}" 
+        FontSize="25"
+        BorderBrush="#FF006DA0"
+        Grid.Row="1">
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius"
-                        Value="5" />
+                        <Setter Property="CornerRadius" Value="5" />
                     </Style>
                 </Button.Resources>
             </Button>
@@ -102,7 +101,7 @@
                 Foreground="#FF006DA0"
                 Height="48"
                 FontFamily="Tahoma"
-                Command="{Binding SaveAddress}"
+                Command="{Binding DeleteTenancyCommand}"
                 CommandParameter="{Binding}"
                 FontSize="25"
                 BorderBrush="#FF006DA0" Grid.Row="1">
@@ -237,26 +236,45 @@
                 </Rectangle.Fill>
             </Rectangle>
 
-            <!--ListBoxes-->
             <ListBox x:Name="AddressListBox"
          ScrollViewer.VerticalScrollBarVisibility="Auto"
          ScrollViewer.CanContentScroll="True"
          Margin="256,262,876,165"
-         ItemsSource="{Binding FilteredImportedAddresses}"
+         ItemsSource="{Binding ImportedAddresses}"
          SelectedItem="{Binding SelectedAddress, Mode=TwoWay}"
          Grid.RowSpan="2">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <!-- Just a TextBlock to display the combined address -->
                         <TextBlock FontSize="16" Padding="5">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}">
-                                    <Binding Path="Street"/>
-                                    <Binding Path="Number"/>
-                                    <Binding Path="Zipcode"/>
-                                    <Binding Path="Country"/>
+                                    <Binding Path="ImportedAddress.Street"/>
+                                    <Binding Path="ImportedAddress.Number"/>
+                                    <Binding Path="ImportedAddress.Zipcode"/>
+                                    <Binding Path="ImportedAddress.Country"/>
                                 </MultiBinding>
                             </TextBlock.Text>
+
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <!-- Default color when IsUserSelectionRequired is false -->
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <!-- or any default color you want -->
+
+                                    <Style.Triggers>
+                                        <!-- Trigger for when IsUserSelectionRequired is true -->
+                                        <DataTrigger Binding="{Binding IsUserSelectionRequired}" Value="True">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                        </DataTrigger>
+
+                                        <!-- Optional: Resetting color when IsUserSelectionRequired is false, this can be redundant if the default is set -->
+                                        <DataTrigger Binding="{Binding SelectedAddress.IsUserSelectionRequired}" Value="False">
+                                            <Setter Property="Foreground" Value="Black"/>
+                                            <!-- reset to default color -->
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
                         </TextBlock>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -266,19 +284,20 @@
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     ScrollViewer.CanContentScroll="True"
                     Margin="1080,262,52,165"
-                    ItemsSource="{Binding FilteredMatchedAddresses}"
-                    SelectedItem="{Binding SelectedAddress, Mode=TwoWay}"
+                    ItemsSource="{Binding FilteredMatches}"
+                    SelectedItem="{Binding UserSelectedMatch, Mode=TwoWay}"
                     Grid.RowSpan="2">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <!-- Just a TextBlock to display the combined address -->
                         <TextBlock FontSize="16" Padding="5">
                             <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}">
-                                    <Binding Path="Street"/>
-                                    <Binding Path="Number"/>
-                                    <Binding Path="Zipcode"/>
-                                    <Binding Path="Country"/>
+                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}, {4}">
+                                    <Binding Path="MatchScore"/>
+                                    <Binding Path="PotentialAddressMatch.Street"/>
+                                    <Binding Path="PotentialAddressMatch.Number"/>
+                                    <Binding Path="PotentialAddressMatch.Zipcode"/>
+                                    <Binding Path="PotentialAddressMatch.Country"/>
                                 </MultiBinding>
                             </TextBlock.Text>
                         </TextBlock>

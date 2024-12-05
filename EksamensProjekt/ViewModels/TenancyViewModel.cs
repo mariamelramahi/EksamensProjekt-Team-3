@@ -53,6 +53,7 @@ namespace EksamensProjekt.ViewModels
             CreateNewTenantCommand = new RelayCommand(ExecuteCreateNewTenant, CanExecuteCreateNewTenant);
             AddTenantToTenancyCommand = new RelayCommand(ExecuteAddTenantToTenancy, CanExecuteAddTenantToTenancy);
             UpdateTenantCommand = new RelayCommand(ExecuteUpdateTenant, CanExecuteUpdateTenant);
+            GoToTenancyUploadCommand = new RelayCommand(ExecuteGoToTenancyUpload);
         }
 
 
@@ -164,7 +165,7 @@ namespace EksamensProjekt.ViewModels
         public RelayCommand UpdateTenancyCommand { get; }
         public RelayCommand SoftDeleteTenancyCommand { get; }
         public RelayCommand UploadFileCommand { get; }
-        public RelayCommand GoToTenancyUploadCommand => new RelayCommand(() => _navigationService.NavigateTo<TenancyUploadView>());
+        public RelayCommand GoToTenancyUploadCommand { get;  }
         public RelayCommand DeleteTenancyTenantCommand { get; }
         public RelayCommand TenantMessageboxInfoCommand { get; }
         public RelayCommand CreateNewTenantCommand { get; }
@@ -190,6 +191,10 @@ namespace EksamensProjekt.ViewModels
             {
                 AllTenants.Add(tenant);
             }
+        }
+        private void ExecuteGoToTenancyUpload()
+        {
+            _navigationService.NavigateTo<TenancyUploadView>();
         }
 
         //private void ExecuteGoToHistory()
@@ -309,15 +314,6 @@ namespace EksamensProjekt.ViewModels
         {
             return SelectedTenant != null;
         }
-
-        //private void ExecuteUploadFile(object parameter)
-        //{
-        //    if (parameter is string filePath)
-        //    {
-        //        _tenancyService.UploadFile(filePath);
-        //        LoadTenancies(); // Reload the tenancies after import
-        //    }
-        //}
 
         private bool ApplyCombinedFilter(Tenancy tenancy)
         {
