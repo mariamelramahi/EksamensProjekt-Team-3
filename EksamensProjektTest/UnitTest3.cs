@@ -24,11 +24,11 @@ public class TenancyServiceTests
         _mockAddressRepo = new Mock<IRepo<Address>>();
 
         // Pass the mocked dependencies to the service constructor
-        _service = new TenancyService(
-            _mockTenancyRepo.Object,    // Mocked tenancy repository
-            _mockTenantRepo.Object,    // Mocked tenant repository
-            _mockAddressRepo.Object    // Mocked address repository
-        );
+        //_service = new TenancyService(
+        //    _mockTenancyRepo.Object,    // Mocked tenancy repository
+        //    _mockTenantRepo.Object,    // Mocked tenant repository
+        //    _mockAddressRepo.Object    // Mocked address repository
+        //);
     }
 
     [TestMethod] // Marks this method as a test

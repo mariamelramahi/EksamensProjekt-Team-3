@@ -1,15 +1,13 @@
 ﻿using EksamensProjekt.Models;
-using EksamensProjekt.Repos;
 using EksamensProjekt.Repositories;
-using Microsoft.Data.SqlClient;
-using System.Windows;
+
 namespace EksamensProjekt.Services;
 
 public class HistoryService
 {
-    private readonly IRepo<History> historyRepo;
+    private readonly IHistoryRepo historyRepo;
 
-    public HistoryService(IRepo<History> historyRepo)
+    public HistoryService(IHistoryRepo historyRepo)
     {
         this.historyRepo = historyRepo;
     }
