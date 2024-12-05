@@ -3,6 +3,7 @@ using EksamensProjekt.Models;
 using EksamensProjekt.Repositories;
 using Microsoft.Data.SqlClient;
 using System.Data;
+using System.Windows;
 
 namespace EksamensProjekt.Repos;
 
@@ -188,8 +189,21 @@ public class TenancyRepo : IRepo<Tenancy>, ITenancyTenant
                 command.Parameters.AddWithValue("@TenancyID", tenancyID);
                 command.Parameters.AddWithValue("@TenantID", tenantID);
 
-                connection.Open();
-                command.ExecuteNonQuery();
+                try
+                {
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+                catch (SqlException ex)
+                {
+                    if (ex.Message.Contains("Denne lejer er allerede tilføjet til lejemålet"))
+                    {
+                        // show message to user
+                        MessageBox.Show("Denne lejer er allerede tilføjet til lejemålet.", "Fejl", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                    
+                }
+              
             }
         }
     }

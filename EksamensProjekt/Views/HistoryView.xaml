@@ -1,0 +1,118 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:util="clr-namespace:EksamensProjekt.Utilities"
+        xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="EksamensProjekt.HistoryView"
+        Title="History View" Height="1080" Width="1920" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+
+    <!-- Reused Resources Section -->
+    <Window.Resources>
+        <util:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
+    </Window.Resources>
+
+    <Grid>
+        <ListBox x:Name="HistoryListBox" Margin="249,154,108,60" ItemsSource="{Binding FilteredHistoryItems}" av:ItemsSource="{av:SampleData ItemCount=5}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Expander>
+                        <Expander.Header>
+                            <TextBlock>
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0} - {1:yyyy-MM-dd}">
+                                        <Binding Path="FullAddress" />
+                                        <Binding Path="ChangeDate" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Expander.Header>
+                        <StackPanel Orientation="Vertical" Margin="5">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="100" />
+                                    <ColumnDefinition Width="100" />
+                                </Grid.ColumnDefinitions>
+                                <!-- Headers Row -->
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Dato ændret" FontWeight="Bold" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="Operation" FontWeight="Bold" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Felt ændret" FontWeight="Bold" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="0" Grid.Column="3" Text="Gammel værdi" FontWeight="Bold" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="0" Grid.Column="4" Text="Ny værdi" FontWeight="Bold" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="0" Grid.Column="5" Text="Bruger ID" FontWeight="Bold" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="0" Grid.Column="6" Text="Boligselskab" FontWeight="Bold" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="0" Grid.Column="7" Text="Lejer" FontWeight="Bold" FontFamily="Tahoma" />
+
+                                <!-- Data Row -->
+                                <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding ChangeDate, StringFormat={}{0:yyyy-MM-dd}}" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding ChangeOperation}" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding FieldChanged}" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding OldValue}" FontFamily="Tahoma" />
+                                <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding NewValue}" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding UserID}" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="1" Grid.Column="6" Text="{Binding OrganizationID}" FontFamily="Tahoma"/>
+                                <TextBlock Grid.Row="1" Grid.Column="7" Text="{Binding TenantName}" Visibility="{Binding TenantName, Converter={StaticResource EmptyStringToVisibilityConverter}}" FontFamily="Tahoma"/>
+                            </Grid>
+
+                            
+                        </StackPanel>
+                    </Expander>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Button Margin="1845,0,6,998"
+BorderBrush="{x:Null}"
+Command="{Binding GoToLoginCommand}"
+CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+Background="{x:Null}">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="/Images/ExitImage.png"
+       Height="45" />
+            </StackPanel>
+        </Button>
+        <Rectangle HorizontalAlignment="Left"
+            Height="1064"
+            VerticalAlignment="Center"
+            Width="200"
+            Fill="#FF006DA0"
+    />
+        <Image Margin="0,-31,1822,971"
+            Source="/Images/LogoImage.png"
+            Stretch="Uniform" />
+        <Button Content="Tilbage til lejemål"
+            HorizontalAlignment="Left"
+            Margin="1652,11,0,0"
+            VerticalAlignment="Top"
+            Width="182"
+            Background="White"
+            Foreground="#FF006DA0"
+            Height="32"
+            FontFamily="Bahnschrift Light"
+            Command="{Binding GoToTenancyCommand}"
+            CommandParameter="{Binding}"
+            FontSize="16"
+            BorderBrush="#FF006DA0">
+            <Button.Resources>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="CornerRadius"
+                        Value="5" />
+                </Style>
+            </Button.Resources>
+        </Button>
+        <Label Content="Historik"
+            HorizontalAlignment="Left"
+            Margin="928,35,0,0"
+            VerticalAlignment="Top"
+            FontSize="64"
+            FontFamily="Tahoma"
+            Foreground="#FF006DA0" />
+    </Grid>
+</Window>

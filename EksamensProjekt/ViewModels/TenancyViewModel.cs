@@ -160,12 +160,20 @@ namespace EksamensProjekt.ViewModels
 
 
         // Commands
-        public RelayCommand GoToHistoryCommand { get; }
+        public RelayCommand GoToHistoryCommand => new RelayCommand(() =>
+        {
+            _navigationService.NavigateToWithViewModel<HistoryView, HistoryViewModel>(vm => vm.RefreshHistory());
+        });
+        
+        public RelayCommand GoToLoginCommand => new RelayCommand(() => _navigationService.NavigateTo<LoginView>());
+        
         public RelayCommand CreateTenancyCommand { get; }
         public RelayCommand UpdateTenancyCommand { get; }
         public RelayCommand SoftDeleteTenancyCommand { get; }
         public RelayCommand UploadFileCommand { get; }
+
         public RelayCommand GoToTenancyUploadCommand { get;  }
+
         public RelayCommand DeleteTenancyTenantCommand { get; }
         public RelayCommand TenantMessageboxInfoCommand { get; }
         public RelayCommand CreateNewTenantCommand { get; }

@@ -206,9 +206,13 @@ namespace EksamensProjekt.ViewModels
 
 
         // Commands
+
+        public RelayCommand GoToLoginCommand => new RelayCommand(() => _navigationService.NavigateTo<LoginView>());
+
         public RelayCommand GoToTenancyCommand { get; }
         public RelayCommand ApproveAllMatchesCommand { get;  }
         public RelayCommand DeleteTenancyCommand { get; }
+
 
 
         //Methods

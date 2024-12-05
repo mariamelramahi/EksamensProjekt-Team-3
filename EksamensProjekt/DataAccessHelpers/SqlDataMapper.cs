@@ -160,6 +160,25 @@ namespace EksamensProjekt.DataAccess
             command.Parameters.AddWithValue("@IsStandardized", address.IsStandardized);
         }
 
+        public static History PopulateHistoryFromReader(SqlDataReader reader)
+        {
+            return new History
+            {
+                ChangeID = reader.GetInt32(reader.GetOrdinal("ChangeID")),
+                ChangeDate = reader.GetDateTime(reader.GetOrdinal("ChangeDate")),
+                ChangeOperation = SqlDataReaderHelper.GetValueOrNull<string>(reader, "ChangeOperation"),
+                FieldChanged = SqlDataReaderHelper.GetValueOrNull<string>(reader, "FieldChanged"),
+                OldValue = SqlDataReaderHelper.GetValueOrNull<string>(reader, "OldValue"),
+                NewValue = SqlDataReaderHelper.GetValueOrNull<string>(reader, "NewValue"),
+                TenancyID = reader.GetInt32(reader.GetOrdinal("TenancyID")),
+                UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
+                OrganizationID = reader.GetInt32(reader.GetOrdinal("OrganizationID")),
+                AddressID = SqlDataReaderHelper.GetValueOrNull<int>(reader, "AddressID"),
+                FullAddress = SqlDataReaderHelper.GetValueOrNull<string>(reader, "FullAddress"),
+                TenantName = SqlDataReaderHelper.GetValueOrNull<string>(reader, "TenantName")
+            };
+        }
+
 
 
 
