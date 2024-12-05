@@ -46,36 +46,36 @@ public class FilterService
 
         return passesFilter;
     }
-    public bool ApplyFilter(AddressAndMatchScore addressAndScore)
+    public bool ApplyFilter(AddressMatchResult addressMatchResult)
     {
-        if (addressAndScore == null)
+        if (addressMatchResult == null)
             return false;
 
         bool passesFilter = true;
 
         if (IsFilterAEnabled)
         {
-            // Filter A: Only include tenancies that are "Occupied"
-            passesFilter &= addressAndScore.MatchScore == "Type A"; // shorthand for passesFilter = passesFilter && condition
+            // Example filter: MatchScore is "Type A"
+            passesFilter &= addressMatchResult.PotentialMatches.Any(match => match.MatchScore == "Type A");
         }
 
         if (IsFilterBEnabled)
         {
-            // Filter B: Only include tenancies that are "Vacant"
-            passesFilter &= addressAndScore.MatchScore == "Type B";
+            // Example filter: MatchScore is "Type B"
+            passesFilter &= addressMatchResult.PotentialMatches.Any(match => match.MatchScore == "Type B");
         }
 
         if (IsFilterCEnabled)
         {
-            // Filter C: Only include tenancies that are "UnderRenovation"
-            passesFilter &= addressAndScore.MatchScore == "Type C";
+            // Example filter: MatchScore is "Type C"
+            passesFilter &= addressMatchResult.PotentialMatches.Any(match => match.MatchScore == "Type C");
         }
 
-        if (IsFilterDEnabled)
-        {
-            // Filter D: Only include tenancies with IsDeleted set to false
-            passesFilter &= addressAndScore.MatchScore == "Type D";
-        }
+        //if (IsFilterDEnabled)
+        //{
+        //    // Example filter: No deleted matches
+        //    passesFilter &= !addressMatchResult.IsDeleted;
+        //}
 
         return passesFilter;
     }
