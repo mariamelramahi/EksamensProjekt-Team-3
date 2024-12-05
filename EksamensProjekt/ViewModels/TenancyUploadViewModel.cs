@@ -235,8 +235,7 @@ namespace EksamensProjekt.ViewModels
         }
         private bool CanExecuteApproveAllAddresses()
         {
-            CheckIfUserSelectionRequired();
-            return IsUserSelectionRequired != true; 
+            return IsUserSelectionRequired != true && ImportedAddresses != null; 
         }
         
         private bool CanExecuteDeleteAddress()
