@@ -19,8 +19,6 @@
 
         <!-- BooleanToVisibilityConverter for boolean visibility bindings -->
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <!-- InverseBooleanConverter for button -->
-        <util:InverseBooleanConverter x:Key="InverseBooleanConverter" />
         <!-- Enum-based binding for TenancyStatus -->
         <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="TenancyStatusValues">
             <ObjectDataProvider.MethodParameters>
@@ -64,7 +62,7 @@
         Height="48"
         FontFamily="Tahoma"
         Command="{Binding ApproveAllMatchesCommand}"
-        IsEnabled="{Binding IsUserSelectionRequired, Converter={StaticResource InverseBooleanConverter}}" 
+        IsEnabled="{Binding}" 
         FontSize="25"
         BorderBrush="#FF006DA0"
         Grid.Row="1">

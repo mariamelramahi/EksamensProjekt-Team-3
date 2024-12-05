@@ -14,7 +14,6 @@ namespace EksamensProjekt.ViewModels
         private readonly INavigationService _navigationService;
         private readonly FilterService _filterService;
         private readonly SearchService _searchService;
-        private readonly AuthLogin _authLogin;
         private readonly ExcelImportService _excelImportService;
         private readonly MatchService _matchService;
         private ICollectionView _importedAddressesCollectionView;
@@ -45,9 +44,9 @@ namespace EksamensProjekt.ViewModels
 
 
              // Initialize commands
-            ApproveAllMatchesCommand = new RelayCommand(ExecuteApproveAllMatches);
+            ApproveAllMatchesCommand = new RelayCommand(ExecuteApproveAllMatches, CanExecuteApproveAllAddresses);
             GoToTenancyCommand = new RelayCommand(ExecuteGoToTenancyCommand);
-            DeleteTenancyCommand = new RelayCommand(DeleteAddressCommand);
+            DeleteTenancyCommand = new RelayCommand(DeleteAddressCommand, CanExecuteDeleteAddress);
         }
 
         // Observable Collections
@@ -84,6 +83,7 @@ namespace EksamensProjekt.ViewModels
                 }
             }
         }
+
         //// Filtered view of Addresses
         //public ICollectionView FilteredImportedAddresses => _importedAddressesCollectionView;
         //public ICollectionView FilteredImportedMatches => _addressMatchesCollectionView;
@@ -117,6 +117,7 @@ namespace EksamensProjekt.ViewModels
                 {
                     _userSelectedMatch = value;
                     SetUserSelectedMatch();
+                    ApproveAllMatchesCommand?.RaiseCanExecuteChanged();
                     OnPropertyChanged();
                 }
             }
@@ -232,8 +233,16 @@ namespace EksamensProjekt.ViewModels
         {
             return SelectedAddress != null;
         }
-
-
+        private bool CanExecuteApproveAllAddresses()
+        {
+            CheckIfUserSelectionRequired();
+            return IsUserSelectionRequired != true; 
+        }
+        
+        private bool CanExecuteDeleteAddress()
+        {
+            return SelectedAddress != null;
+        }
         private bool ApplyCombinedFilter(AddressMatchResult addressMatchResult, AddressAndMatchScore addressAndMatchScore)
         {
             return _filterService.ApplyFilter(addressAndMatchScore) &&
@@ -298,6 +307,7 @@ namespace EksamensProjekt.ViewModels
                     // User has selected a match, so use the selected one
                     SelectedAddress.SelectedMatch = UserSelectedMatch;
                     SelectedAddress.IsUserSelectionRequired = false;
+                    CheckIfUserSelectionRequired();
                 }
             }
         }
