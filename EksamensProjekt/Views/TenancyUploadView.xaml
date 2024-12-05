@@ -120,7 +120,7 @@
             <!--Comboboxes-->
             <Expander HorizontalAlignment="Left"
               Height="99"
-              Header="Status"
+              Header="Match Type"
               Margin="38,212,0,0"
               VerticalAlignment="Top"
               Width="124"
@@ -151,19 +151,19 @@
                     </ControlTemplate>
                 </Expander.Template>
                 <StackPanel Height="85">
-                    <CheckBox Content="Aktiv"
+                    <CheckBox Content="Type A"
                       IsChecked="{Binding IsFilterAEnabled, Mode=TwoWay}"
                       Command="{Binding ApplyFilterCommand}"
                       HorizontalAlignment="Left"
                       Margin="10,10,0,0"
                       VerticalAlignment="Top" />
-                    <CheckBox Content="Inaktiv"
+                    <CheckBox Content="Type B"
                       IsChecked="{Binding IsFilterBEnabled, Mode=TwoWay}"
                       Command="{Binding ApplyFilterCommand}"
                       HorizontalAlignment="Left"
                       Margin="10,10,0,0"
                       VerticalAlignment="Top" />
-                    <CheckBox Content="Afventer"
+                    <CheckBox Content="Type C"
                       IsChecked="{Binding IsFilterCEnabled, Mode=TwoWay}"
                       Command="{Binding ApplyFilterCommand}"
                       HorizontalAlignment="Left"
@@ -240,7 +240,7 @@
          ScrollViewer.VerticalScrollBarVisibility="Auto"
          ScrollViewer.CanContentScroll="True"
          Margin="256,262,876,165"
-         ItemsSource="{Binding ImportedAddresses}"
+         ItemsSource="{Binding FilteredImportedAddresses}"
          SelectedItem="{Binding SelectedAddress, Mode=TwoWay}"
          Grid.RowSpan="2">
                 <ListBox.ItemTemplate>
@@ -284,7 +284,7 @@
                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                     ScrollViewer.CanContentScroll="True"
                     Margin="1080,262,52,165"
-                    ItemsSource="{Binding FilteredMatches}"
+                    ItemsSource="{Binding AddressMatches}"
                     SelectedItem="{Binding UserSelectedMatch, Mode=TwoWay}"
                     Grid.RowSpan="2">
                 <ListBox.ItemTemplate>
