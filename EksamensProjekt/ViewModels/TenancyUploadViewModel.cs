@@ -52,8 +52,10 @@ namespace EksamensProjekt.ViewModels
             // Initialize commands
             ApproveAllMatchesCommand = new RelayCommand(ExecuteApproveAllMatches, CanExecuteApproveAllAddresses);
             GoToTenancyCommand = new RelayCommand(ExecuteGoToTenancyCommand);
+
             DeleteTenancyCommand = new RelayCommand(DeleteAddressCommand, CanExecuteDeleteAddress);
-        }
+
+    }
 
 
 
@@ -275,7 +277,7 @@ namespace EksamensProjekt.ViewModels
                     PromptUserForSelection(match);
                 }
             }
-            _navigationService.NavigateTo<TenancyView>();
+            _navigationService.NavigateToWithViewModel<TenancyView, TenancyViewModel>(vm => vm.RefreshTenancies());
         }
 
 
@@ -291,6 +293,7 @@ namespace EksamensProjekt.ViewModels
                     SelectedAddress.SelectedMatch = UserSelectedMatch;
                     SelectedAddress.IsUserSelectionRequired = false;
                     CheckIfUserSelectionRequired();
+                    _importedAddressesCollectionView.Refresh();
                 }
             }
         }
