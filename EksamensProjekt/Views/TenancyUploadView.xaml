@@ -263,14 +263,8 @@
 
                                     <Style.Triggers>
                                         <!-- Trigger for when IsUserSelectionRequired is true -->
-                                        <DataTrigger Binding="{Binding IsUserSelectionRequired}" Value="True">
+                                        <DataTrigger Binding="{Binding IsUserSelectionRequired, UpdateSourceTrigger=PropertyChanged}" Value="True">
                                             <Setter Property="Foreground" Value="Red"/>
-                                        </DataTrigger>
-
-                                        <!-- Optional: Resetting color when IsUserSelectionRequired is false, this can be redundant if the default is set -->
-                                        <DataTrigger Binding="{Binding SelectedAddress.IsUserSelectionRequired}" Value="False">
-                                            <Setter Property="Foreground" Value="Black"/>
-                                            <!-- reset to default color -->
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
