@@ -38,7 +38,7 @@ public partial class App : Application
         ITenancyTenant tenancyTenantRepo = (TenancyRepo)tenancyRepo;
         IRepo<Tenant> tenantRepo = new TenantRepo(connectionString);
         IRepo<Address> addressRepo = new AddressRepo(connectionString);
-        IRepo<History> historyRepo = new HistoryRepo(connectionString);
+        IHistoryRepo historyRepo = new HistoryRepo(connectionString);
 
         // Services
         AuthLogin authLoginService = new AuthLogin(userRepo);

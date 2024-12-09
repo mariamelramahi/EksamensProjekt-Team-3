@@ -1,5 +1,6 @@
 ﻿using EksamensProjekt.DataAccess;
 using EksamensProjekt.Models;
+using EksamensProjekt.Repositories;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Windows;
@@ -7,7 +8,7 @@ using System.Windows;
 
 namespace EksamensProjekt.Repos
 {
-    public class HistoryRepo : IRepo<History>
+    public class HistoryRepo : IHistoryRepo
     {
 
         private readonly string _connectionString;
@@ -18,20 +19,6 @@ namespace EksamensProjekt.Repos
             _connectionString = connectionString;
         }
 
-        public void Create(History entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public History GetByID(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         public IEnumerable<History> ReadAll()
         {
@@ -66,10 +53,6 @@ namespace EksamensProjekt.Repos
         }
 
 
-        public void Update(History entity)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
 
