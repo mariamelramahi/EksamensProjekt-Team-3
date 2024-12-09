@@ -16,6 +16,7 @@ namespace EksamensProjekt.Services
 
         public void ApproveMatches(List<AddressMatchResult> addressMatches)
         {
+            //Fetching all current tenancies
             var tenancies = tenancyRepo.ReadAll();
            
             foreach (var match in addressMatches)
@@ -52,26 +53,25 @@ namespace EksamensProjekt.Services
 
         public List<AddressMatchResult> CompareImportedAddressesWithDatabase(List<Address> importedAddresses)
         {
-            // Liste til at gemme resultaterne
+            // List for results
             List<AddressMatchResult> matchResults = new List<AddressMatchResult>();
-            List<Tenancy> tenancies = tenancyRepo.ReadAll().ToList();
+            //Fetching all standardized addresses
             List<Address> databaseAddresses = addressRepo.ReadAll().ToList();
-            //Samplelist for testing
-            //List<Address> databaseAddresses = GetSampleDatabaseAddresses();
 
-            // Paralleliser matchning af adresser for ydeevne
+
+            // Parallel foreach, for performance when handling large amount of data
             Parallel.ForEach(importedAddresses, importedAddress =>
             {
-                // Liste over potentielle matches
+                // List of potential matches
                 List<AddressAndMatchScore> potentialMatches = new List<AddressAndMatchScore>();
 
-                // Find potentielle matches i database-adresser
+                // Find potential matches in database
                 foreach (var dbAddress in databaseAddresses)
                 {
                     string matchType = CalculateAddressMatchScore(dbAddress, importedAddress);
                     double score = GetMatchScoreValue(matchType);
 
-                    // Tilføj kun matches, der har en relevant score (eksempel: Type A-C)
+                    // Add matches with score 
                     if (score > 0)
                     {
                         potentialMatches.Add(new AddressAndMatchScore
@@ -82,12 +82,12 @@ namespace EksamensProjekt.Services
                     }
                 }
 
-                // Sortér de potentielle matches efter score (højeste først)
+                // Sort matches by score, highest first (Type A)
                 potentialMatches = potentialMatches
                     .OrderByDescending(pm => GetMatchScoreValue(pm.MatchScore))
                     .ToList();
 
-                // Tilføj resultaterne til den samlede liste
+                // Add results to list. Lock ensures no results is compromized during execution.
                 lock (matchResults)
                 {
                     var automaticMatchScore = FindAutomaticMatchScore(potentialMatches);
@@ -96,6 +96,10 @@ namespace EksamensProjekt.Services
                         ImportedAddress = importedAddress,
                         PotentialMatches = potentialMatches,
                         SelectedMatch = automaticMatchScore, 
+                        //If user selection is requiered (automaticMatchScore == null),
+                        //it sets IsUserSelectionRequiered to true. 
+                        //If user selection is not requiered it is because the criteria of being
+                        //Type A or B is met, therefore it is set to false.
                         IsUserSelectionRequired = automaticMatchScore == null
                     });
                 }
@@ -103,13 +107,17 @@ namespace EksamensProjekt.Services
             return matchResults;
         }
 
+        //Method for criteria to determine if user selection requiered are set to true or false
         private AddressAndMatchScore? FindAutomaticMatchScore(List<AddressAndMatchScore> potentialMatches)
         {
+            // First result of list is stored as bestmatch
             var bestMatch = potentialMatches.First();
+            //No user selection is requiered by these types
             if (bestMatch.MatchScore == "Type A" || bestMatch.MatchScore == "Type B")
             {
                 return bestMatch;
             }
+            // Assumes match is Type C or D, which means user selection is requiered, boolean will be set to true. 
             else
             {
                 return null;
@@ -151,40 +159,46 @@ namespace EksamensProjekt.Services
         {
             if (string.IsNullOrEmpty(standardValue) && string.IsNullOrEmpty(importedValue))
             {
-                return 100.0; // Fuldt match, hvis begge værdier er tomme.
+                return 100.0; // Match, if both values are empty.
             }
 
             if (string.IsNullOrEmpty(standardValue) || string.IsNullOrEmpty(importedValue))
             {
-                return 0.0; // Ingen match, hvis kun én værdi er tom.
+                return 0.0; // No match, if one of the values are empty.
             }
 
-            // Brug Damerau-Levenshtein-afstand
+            // Use of Damerau-Levenshtein-distance
             int distance = DamerauLevenshteinDistance(NormalizeString(standardValue), NormalizeString(importedValue));
 
+            //Finds the longest string. This is the value that is going to be used to 
+            //normalize into percent
             int maxLength = Math.Max(standardValue.Length, importedValue.Length);
 
-            // Normaliser scoren til en procentværdi
+            // Normalize score to percent
             return (1 - (double)distance / maxLength) * 100;
         }
 
-        // DamerauLevenshtein Distance algorithm
+        // DamerauLevenshtein Distance algorithm  
         public static int DamerauLevenshteinDistance(string source, string target)
         {
             int n = source.Length;
             int m = target.Length;
 
+            //If source or target euqals 0, return the length of the other string,
+            //because all characters must be added or removed.  
             if (n == 0) return m;
             if (m == 0) return n;
 
-            // Matrix til distanceberegning
+            // Matrix for distancecalculation
             int[,] distance = new int[n + 1, m + 1];
 
-            // Initialisering
+            // Initializing
             for (int i = 0; i <= n; i++) distance[i, 0] = i;
             for (int j = 0; j <= m; j++) distance[0, j] = j;
 
-            // Beregning af Damerau-Levenshtein-afstand
+            // Calculation Damerau-Levenshtein distance. For each position cost is 0
+            // if the characters are the same, source [i-1] and target [j-1]. 
+            // Otherwise cost is 1. 
             for (int i = 1; i <= n; i++)
             {
                 for (int j = 1; j <= m; j++)
@@ -196,7 +210,7 @@ namespace EksamensProjekt.Services
                         distance[i - 1, j - 1] + cost
                     );
 
-                    // Damerau-transposition: bytte af to nærliggende tegn
+                    // Damerau-transposition: exchange of two characters beside each other
                     if (i > 1 && j > 1 &&
                         source[i - 1] == target[j - 2] &&
                         source[i - 2] == target[j - 1])
@@ -213,7 +227,10 @@ namespace EksamensProjekt.Services
         }
         public static string NormalizeString(string input)
         {
+            //returns empty string if string is null or empty
             if (string.IsNullOrEmpty(input)) return string.Empty;
+            //trim removes spaces before or after string, also ensures case-insensitivity
+            //by converting all characters to lower
             return input.Trim().ToLowerInvariant();
         }
     }

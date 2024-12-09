@@ -24,9 +24,7 @@ namespace EksamensProjektTest
         {
             //ARRANGE
             var filePath = Path.Combine("Resources", "TestAddresses.xlsx");
-            //var fullPath = Path.GetFullPath(filePath);
-            //var fullPath = @"C:\Users\marle\Desktop\Datamatiker anden semester\ValhalConnect\EksamensProjektTest";
-
+            
             //ACT
             List<Address> addresses = excelImporterService.ImportAddresses(filePath);
             

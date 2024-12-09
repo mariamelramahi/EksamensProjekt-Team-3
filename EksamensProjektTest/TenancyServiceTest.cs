@@ -1,9 +1,8 @@
 ﻿using EksamensProjekt.Models;
-using EksamensProjekt.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting; // MSTest namespace for testing
-using Moq; // Moq library for mocking dependencies
-using System;
 using EksamensProjekt.Repos;
+using EksamensProjekt.Repositories;
+using EksamensProjekt.Services;
+using Moq; // Moq library for mocking dependencies
 
 [TestClass] // Marks this class as containing unit tests
 public class TenancyServiceTests
@@ -12,9 +11,9 @@ public class TenancyServiceTests
     private Mock<IRepo<Tenancy>> _mockTenancyRepo;
     private Mock<IRepo<Tenant>> _mockTenantRepo;
     private Mock<IRepo<Address>> _mockAddressRepo;
+    private Mock<ITenancyTenant> _mockTenancyTenantRepo;
     private TenancyService _service;
 
-    // This method runs before each test and sets up the mocks and service
     [TestInitialize]
     public void TestInitialize()
     {
@@ -22,16 +21,18 @@ public class TenancyServiceTests
         _mockTenancyRepo = new Mock<IRepo<Tenancy>>();
         _mockTenantRepo = new Mock<IRepo<Tenant>>();
         _mockAddressRepo = new Mock<IRepo<Address>>();
+        _mockTenancyTenantRepo = new Mock<ITenancyTenant>();
 
         // Pass the mocked dependencies to the service constructor
-        //_service = new TenancyService(
-        //    _mockTenancyRepo.Object,    // Mocked tenancy repository
-        //    _mockTenantRepo.Object,    // Mocked tenant repository
-        //    _mockAddressRepo.Object    // Mocked address repository
-        //);
+        _service = new TenancyService(
+            _mockTenancyRepo.Object,    // Mocked tenancy repository
+            _mockTenantRepo.Object,    // Mocked tenant repository
+            _mockAddressRepo.Object,    // Mocked address repository
+            _mockTenancyTenantRepo.Object
+        );
     }
 
-    [TestMethod] // Marks this method as a test
+    [TestMethod]
     public void UpdateTenancy_WithNewValues_UpdatesSuccessfully()
     {
         // Arrange: Set up the existing tenancy in the mock repository
