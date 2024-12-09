@@ -191,6 +191,11 @@ namespace EksamensProjekt.ViewModels
             }
         }
 
+        public void RefreshTenancies() //public method to be used in other viewmodels to refresh the tenancies using LoadTenancies
+        {
+            LoadTenancies();
+        }
+
         private void LoadTenants()
         {
             AllTenants.Clear();
