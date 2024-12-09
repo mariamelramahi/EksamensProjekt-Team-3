@@ -14,7 +14,6 @@ public class TenancyServiceTests
     private Mock<ITenancyTenant> _mockTenancyTenantRepo;
     private TenancyService _service;
 
-    // This method runs before each test and sets up the mocks and service
     [TestInitialize]
     public void TestInitialize()
     {
@@ -33,7 +32,7 @@ public class TenancyServiceTests
         );
     }
 
-    [TestMethod] // Marks this method as a test
+    [TestMethod]
     public void UpdateTenancy_WithNewValues_UpdatesSuccessfully()
     {
         // Arrange: Set up the existing tenancy in the mock repository
