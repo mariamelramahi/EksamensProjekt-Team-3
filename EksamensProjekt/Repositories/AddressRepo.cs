@@ -22,7 +22,7 @@ public class AddressRepo : IRepo<Address>
     // usp_ReadAllAddresses
     // usp_UpdateAddress
     // usp_DeleteAddress
-     
+
     public Address GetByID(int id)
     {
         Address address = null;
