@@ -179,6 +179,16 @@ namespace EksamensProjekt.DataAccess
             };
         }
 
+        public static User PopulateUserFromReader(SqlDataReader reader)
+        {
+            return new User
+            {
+                UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
+                Username = reader.GetString(reader.GetOrdinal("Username")),
+                UserPasswordHash = reader.GetString(reader.GetOrdinal("UserPasswordHash"))
+            };
+        }
+
 
 
 
