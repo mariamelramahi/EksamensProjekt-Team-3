@@ -1,6 +1,7 @@
 ﻿using EksamensProjekt.Services;
 using EksamensProjekt.Services.Navigation;
 using EksamensProjekt.Utilities;
+using System.Windows;
 
 namespace EksamensProjekt.ViewModels;
 
@@ -78,15 +79,16 @@ public class LoginViewModel : ViewModelBase
     {
         if (_authLogin.ValidateLogin(UsernameInput, PasswordInput))
         {
-            IsLoginErrorVisible = false;
+            
             _navigationService.NavigateTo<TenancyView>();
         }
         else
         {
-            LoginErrorMessage = "Invalid username or password. Please try again.";
-            IsLoginErrorVisible = true;
+            
+            MessageBox.Show("Forkert brugernavn eller adgangskode. Prøv igen.", "Login Fejl", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
+
 
     private bool CanExecuteLogin()
     {
