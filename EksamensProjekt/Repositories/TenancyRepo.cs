@@ -20,7 +20,6 @@ public class TenancyRepo : IRepo<Tenancy>, ITenancyTenant
         _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
     }
 
-
     public Tenancy GetByID(int tenancyID)
     {
         // Initializes a Tenancy object to null
