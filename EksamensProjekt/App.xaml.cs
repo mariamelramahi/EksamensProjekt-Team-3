@@ -59,10 +59,15 @@ public partial class App : Application
         HistoryViewModel historyViewModel = new HistoryViewModel(navigationService, historyService, searchService);
 
         TenancyUploadViewModel tenancyUploadViewModel = new TenancyUploadViewModel(navigationService, filterService, searchService, excelImportService, dragAndDropService, matchService);
-        
+
 
         // Set up factory methods for creating views
-        navigationService.RegisterFactory( () => new LoginView(loginViewModel));
+        navigationService.RegisterFactory(() =>
+        {
+            var loginViewModel = new LoginViewModel(authLoginService, navigationService);
+            return new LoginView(loginViewModel);
+        });
+
         navigationService.RegisterFactory( () => new TenancyView(tenancyViewModel));
         navigationService.RegisterFactory(() => new TenancyUploadView(tenancyUploadViewModel));
         navigationService.RegisterFactory(() => new HistoryView(historyViewModel));
