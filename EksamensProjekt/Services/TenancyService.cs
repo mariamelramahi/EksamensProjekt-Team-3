@@ -126,23 +126,6 @@ namespace EksamensProjekt.Services
             MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} er blevet opdateret.");
         }
 
-        //public void DeleteTenancy(Tenancy selectedTenancy)
-        //{
-        //    // Fetch the existing tenancy from the repository using its ID
-        //    Tenancy? tenancyToDelete = tenancyRepo.GetByID(selectedTenancy.TenancyID);
-
-        //    // Check if the tenancy exists
-        //    if (tenancyToDelete == null)
-        //    {
-        //        MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} blev ikke fundet.");
-        //        return;
-        //    }
-
-        //    // Delete the tenancy from the repository
-        //    tenancyRepo.Delete(tenancyToDelete);
-        //    MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} er blevet slettet.");
-        //}
-
 
         public void SoftDeleteTenancy(Tenancy selectedTenancy)
         {
@@ -277,48 +260,6 @@ namespace EksamensProjekt.Services
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-        //private void UpdateTenancyDetailsFromExcel(Tenancy tenancy, ModifiedExcelAddress importedAddress)
-        //{
-        //    // Update the address fields if available
-        //    if (!string.IsNullOrEmpty(importedAddress.StreetName))
-        //        tenancy.StandardAddress.StreetName = importedAddress.StreetName;
-
-        //    if (!string.IsNullOrEmpty(importedAddress.Number))
-        //        tenancy.StandardAddress.Number = importedAddress.Number;
-
-        //    if (!string.IsNullOrEmpty(importedAddress.Floor))
-        //        tenancy.StandardAddress.Floor = importedAddress.Floor;
-
-        //    if (!string.IsNullOrEmpty(importedAddress.ZipCode))
-        //        tenancy.StandardAddress.ZipCode = importedAddress.ZipCode;
-
-        //    if (!string.IsNullOrEmpty(importedAddress.City))
-        //        tenancy.StandardAddress.City = importedAddress.City;
-
-        //    if (!string.IsNullOrEmpty(importedAddress.Country))
-        //        tenancy.StandardAddress.Country = importedAddress.Country;
-
-        //    // Update tenancy-specific fields if available
-        //    if (importedAddress.MoveInDate.HasValue)
-        //        tenancy.MoveInDate = importedAddress.MoveInDate.Value;
-
-        //    if (importedAddress.MoveOutDate.HasValue)
-        //        tenancy.MoveOutDate = importedAddress.MoveOutDate.Value;
-
-        //    if (importedAddress.Rent > 0)
-        //        tenancy.Rent = importedAddress.Rent;
-        //}
 
     }
 }

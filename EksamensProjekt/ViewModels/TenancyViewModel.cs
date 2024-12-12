@@ -42,12 +42,9 @@ namespace EksamensProjekt.ViewModels
             _tenancyCollectionView.Filter = item => ApplyCombinedFilter(item as Tenancy);
 
 
-            // Initialize commands
-            //GoToHistoryCommand = new RelayCommand(ExecuteGoToHistory);
-            //CreateTenancyCommand = new RelayCommand(ExecuteCreateTenancy);
+            // Initialize commands            
             UpdateTenancyCommand = new RelayCommand(ExecuteUpdateTenancy, CanExecuteModifyTenancy);
-            SoftDeleteTenancyCommand = new RelayCommand(ExecuteSoftDeleteTenancy, CanExecuteModifyTenancy);
-            //UploadFileCommand = new RelayCommand(ExecuteUploadFile);
+            SoftDeleteTenancyCommand = new RelayCommand(ExecuteSoftDeleteTenancy, CanExecuteModifyTenancy);          
             DeleteTenancyTenantCommand = new RelayCommand(ExecuteDeleteTenancyTenant, CanExecuteDeleteTenancyTenant);
             TenantMessageboxInfoCommand = new RelayCommand(ExecuteTenantMessageboxInfo, CanExecuteTenantMessageboxInfo);
             CreateNewTenantCommand = new RelayCommand(ExecuteCreateNewTenant, CanExecuteCreateNewTenant);
@@ -210,20 +207,6 @@ namespace EksamensProjekt.ViewModels
             _navigationService.NavigateTo<TenancyUploadView>();
         }
 
-        //private void ExecuteGoToHistory()
-        //{
-        //    _navigationService.NavigateTo<HistoryView>();
-        //}
-
-        //private void ExecuteCreateTenancy()
-        //{
-        //    Tenancy newTenancy = _tenancyService.CreateNewTenancy();
-        //    if (newTenancy != null)
-        //    {
-        //        ImportedAddresses.Add(newTenancy);
-        //    }
-        //}
-
         private void ExecuteUpdateTenancy()
         {
             if (SelectedTenancy != null)
@@ -354,13 +337,5 @@ namespace EksamensProjekt.ViewModels
                 });
             });
         }
-
-        // Refresh old way
-        //private void RefreshFilteredView()
-        //{
-        //    _importedAddressesCollectionView.Refresh(); // Refresh the view to apply updated filters
-        //}
-
-
     }
 }

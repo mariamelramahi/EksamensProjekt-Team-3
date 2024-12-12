@@ -31,11 +31,7 @@ public class HistoryViewModel : ViewModelBase
 
         // Set up CollectionView for displaying items
         _historyCollectionView = CollectionViewSource.GetDefaultView(_historyItems);
-       
-
-        // Initialize commands
-        //GoToTenancyCommand = new RelayCommand(ExecuteGoToTenancy);
-        
+              
     }
 
 
@@ -75,14 +71,5 @@ public class HistoryViewModel : ViewModelBase
     {
         LoadHistory(); //public method to refresh the history when navigating from tnancyview
     }
-
-    //private void ExecuteGoToTenancy()
-    //{
-    //    _navigationService.NavigateTo<TenancyView>();
-    //}
-
-
-
-
 
 }
