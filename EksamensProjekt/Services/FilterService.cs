@@ -71,12 +71,6 @@ public class FilterService
             passesFilter &= addressMatchResult.PotentialMatches.Any(match => match.MatchScore == "Type C");
         }
 
-        //if (IsFilterDEnabled)
-        //{
-        //    // Example filter: No deleted matches
-        //    passesFilter &= !addressMatchResult.IsDeleted;
-        //}
-
         return passesFilter;
     }
 }
