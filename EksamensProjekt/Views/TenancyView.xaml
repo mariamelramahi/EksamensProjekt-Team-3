@@ -226,7 +226,7 @@
         <ListBox x:Name="AddressListBox"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.CanContentScroll="False"
-                 Margin="226,133,694,488"
+                 Margin="226,133,694,117"
                  Grid.RowSpan="2"
                  ItemsSource="{Binding FilteredTenancies}"
                  SelectedItem="{Binding SelectedTenancy, Mode=TwoWay}" d:ItemsSource="{d:SampleData ItemCount=5}">
@@ -466,15 +466,6 @@
 
             <!-- Placeholder TextBlock -->
         </Grid>
-
-        <DataGrid ItemsSource="{Binding FilteredTenancies}"
-                  AutoGenerateColumns="true"
-                  Margin="334,95,852,117"
-                  CanUserAddRows="False"
-                  CanUserDeleteRows="False"
-                  IsReadOnly="True"
-                  Grid.Row="1">
-        </DataGrid>
 
         <Expander  IsExpanded="False" Margin="1249,133,-35,117" FontFamily="Tahoma" Grid.RowSpan="2">
             <Expander.Header>

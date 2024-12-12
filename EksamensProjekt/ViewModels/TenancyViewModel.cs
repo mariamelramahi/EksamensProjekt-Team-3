@@ -255,6 +255,9 @@ namespace EksamensProjekt.ViewModels
 
                 
                 SelectedTenancy.Tenants.Remove(SelectedTenancyTenant);
+                MessageBox.Show($"Lejer: {SelectedTenancyTenant.FirstName} {SelectedTenancyTenant.LastName}\n" +
+                                $"Er blevet fjernet fra lejemål.\n" +
+                                $"TenancyID: {SelectedTenancy.TenancyID}");
                 SelectedTenancyTenant = null;
 
                 
@@ -303,6 +306,9 @@ namespace EksamensProjekt.ViewModels
             {
                 _tenancyService.AddTenantToTenancy(SelectedTenancy, SelectedTenant);
                 SelectedTenancy.Tenants.Add(SelectedTenant);
+                MessageBox.Show($"Lejer: {SelectedTenant.FirstName} {SelectedTenant.LastName}\n" +
+                                $"Er blevet tilføjet til lejemål.\n" +
+                                $"TenancyID: {SelectedTenancy.TenancyID}");
             }
             OnPropertyChanged(nameof(SelectedTenancy));
             LoadTenancies();
