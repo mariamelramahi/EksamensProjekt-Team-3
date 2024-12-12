@@ -24,13 +24,13 @@ public class HistoryViewModel : ViewModelBase
         _searchService = searchService;
 
         // Initialize ObservableCollection
-        HistoryItems = new ObservableCollection<History>();
+        _historyItems = new ObservableCollection<History>();
 
         // Load initial data
         LoadHistory();
 
         // Set up CollectionView for displaying items
-        _historyCollectionView = CollectionViewSource.GetDefaultView(HistoryItems);
+        _historyCollectionView = CollectionViewSource.GetDefaultView(_historyItems);
        
 
         // Initialize commands
@@ -40,7 +40,7 @@ public class HistoryViewModel : ViewModelBase
 
 
     // Observable Collection
-    public ObservableCollection<History> HistoryItems { get; set; }
+    private ObservableCollection<History> _historyItems;
 
 
     // Filtered view of history items
@@ -62,12 +62,12 @@ public class HistoryViewModel : ViewModelBase
         var historyItems = _historyService.GetAllHistories();
 
         // Clear the existing collection
-        HistoryItems.Clear();
+        _historyItems.Clear();
 
         // Add the fetched items to the collection
         foreach (var item in historyItems)
         {
-            HistoryItems.Add(item);
+            _historyItems.Add(item);
         }
     }
 
