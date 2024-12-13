@@ -49,7 +49,9 @@ public class MatchServiceTest
 
         var expectedResults = new List<(string street, string matchScore, bool isUserSelectionRequired)>
         {
+            //Type A match, så IsUserSelectionRequiered should be false
             ("Høvejen", "Type A", false),
+            //No selectedMatch, so IsUserSelectionRequiered should be true
             ("Kastanjevej", null, true)
         };
 
