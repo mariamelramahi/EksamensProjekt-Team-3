@@ -163,7 +163,7 @@
                       HorizontalAlignment="Left"
                       Margin="10,10,0,0"
                       VerticalAlignment="Top" />
-                    <CheckBox Content="Type C"
+                    <CheckBox Content="Type C og D"
                       IsChecked="{Binding IsFilterCEnabled, Mode=TwoWay}"
                       Command="{Binding ApplyFilterCommand}"
                       HorizontalAlignment="Left"

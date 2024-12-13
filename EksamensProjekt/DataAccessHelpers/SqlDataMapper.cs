@@ -80,7 +80,7 @@ namespace EksamensProjekt.DataAccess
             command.Parameters.AddWithValue("@CompanyID", tenancy.Company != null && tenancy.Company.CompanyID != 0 ? tenancy.Company.CompanyID : DBNull.Value);
             command.Parameters.AddWithValue("@IsDeleted", tenancy.IsDeleted);
             command.Parameters.AddWithValue("@AddressID", tenancy.Address.AddressID);
-            command.Parameters.AddWithValue("OrganizationID", 1);
+            command.Parameters.AddWithValue("@OrganizationID", 1);
         }
 
 
