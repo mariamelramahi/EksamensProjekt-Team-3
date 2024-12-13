@@ -250,7 +250,9 @@
                                 <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}">
                                     <Binding Path="ImportedAddress.Street"/>
                                     <Binding Path="ImportedAddress.Number"/>
+                                    <Binding Path="ImportedAddress.FloorNumber"/>
                                     <Binding Path="ImportedAddress.Zipcode"/>
+                                    <Binding Path="ImportedAddress.City"/>
                                     <Binding Path="ImportedAddress.Country"/>
                                 </MultiBinding>
                             </TextBlock.Text>
@@ -290,7 +292,9 @@
                                     <Binding Path="MatchScore"/>
                                     <Binding Path="PotentialAddressMatch.Street"/>
                                     <Binding Path="PotentialAddressMatch.Number"/>
+                                    <Binding Path="PotentialAddressMatch.FloorNumber"/>
                                     <Binding Path="PotentialAddressMatch.Zipcode"/>
+                                    <Binding Path="PotentialAddressMatch.City"/>
                                     <Binding Path="PotentialAddressMatch.Country"/>
                                 </MultiBinding>
                             </TextBlock.Text>

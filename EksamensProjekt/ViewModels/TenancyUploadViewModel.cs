@@ -84,9 +84,21 @@ namespace EksamensProjekt.ViewModels
             get => _filepath;
             set
             {
+                // Set the new value
                 _filepath = value;
-                OnPropertyChanged();
-                LoadAndMatchImportedAddresses();
+
+                // Only call LoadAndMatchImportedAddresses if the Filepath is not null or empty
+                if (!string.IsNullOrEmpty(_filepath))
+                {
+                    OnPropertyChanged();
+                    LoadAndMatchImportedAddresses();
+                }
+                else
+                {
+                    // Optionally, you can handle the null case here if needed
+                    // For example, clear any imported addresses
+                    ImportedAddresses.Clear();
+                }
             }
         }
 
@@ -277,6 +289,7 @@ namespace EksamensProjekt.ViewModels
                     PromptUserForSelection(match);
                 }
             }
+            Filepath = null;
             _navigationService.NavigateToWithViewModel<TenancyView, TenancyViewModel>(vm => vm.RefreshTenancies());
         }
 

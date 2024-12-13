@@ -25,7 +25,7 @@ public class ExcelImportService
 
                 while (reader.Read())
                 {                   
-                    // Columns: Street, Number, FloorNumber, Zipcode, Country
+                    // Columns: Street, Number, FloorNumber, Zipcode, City, Country
                     var address = new Address
                     {
                         // AddressID is auto-incremented in DB, so it's not set here
@@ -33,7 +33,8 @@ public class ExcelImportService
                         Number = reader.GetValue(1)?.ToString() ?? string.Empty,
                         FloorNumber = reader.GetValue(2)?.ToString() ?? string.Empty,
                         Zipcode = reader.GetValue(3)?.ToString() ?? string.Empty,
-                        Country = reader.GetValue(4)?.ToString() ?? string.Empty
+                        City = reader.GetValue(4)?.ToString() ?? string.Empty,
+                        Country = reader.GetValue(5)?.ToString() ?? string.Empty
                     };
 
                     addresses.Add(address);
