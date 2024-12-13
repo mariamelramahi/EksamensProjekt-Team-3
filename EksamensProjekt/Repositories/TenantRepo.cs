@@ -151,10 +151,11 @@ public class TenantRepo : IRepo<Tenant>
 
             if (rowsAffected == 0)
             {
-                throw new InvalidOperationException($"No tenant was deleted with TenantID {tenantID}");
+                throw new InvalidOperationException($"No tenant was deleted with TenantID {tenantID}.");
             }
         }
     }
+
 
 
 

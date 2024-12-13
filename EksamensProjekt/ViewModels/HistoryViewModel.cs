@@ -24,23 +24,19 @@ public class HistoryViewModel : ViewModelBase
         _searchService = searchService;
 
         // Initialize ObservableCollection
-        HistoryItems = new ObservableCollection<History>();
+        _historyItems = new ObservableCollection<History>();
 
         // Load initial data
         LoadHistory();
 
         // Set up CollectionView for displaying items
-        _historyCollectionView = CollectionViewSource.GetDefaultView(HistoryItems);
-       
-
-        // Initialize commands
-        //GoToTenancyCommand = new RelayCommand(ExecuteGoToTenancy);
-        
+        _historyCollectionView = CollectionViewSource.GetDefaultView(_historyItems);
+              
     }
 
 
     // Observable Collection
-    public ObservableCollection<History> HistoryItems { get; set; }
+    private ObservableCollection<History> _historyItems;
 
 
     // Filtered view of history items
@@ -62,12 +58,12 @@ public class HistoryViewModel : ViewModelBase
         var historyItems = _historyService.GetAllHistories();
 
         // Clear the existing collection
-        HistoryItems.Clear();
+        _historyItems.Clear();
 
         // Add the fetched items to the collection
         foreach (var item in historyItems)
         {
-            HistoryItems.Add(item);
+            _historyItems.Add(item);
         }
     }
 
@@ -75,14 +71,5 @@ public class HistoryViewModel : ViewModelBase
     {
         LoadHistory(); //public method to refresh the history when navigating from tnancyview
     }
-
-    //private void ExecuteGoToTenancy()
-    //{
-    //    _navigationService.NavigateTo<TenancyView>();
-    //}
-
-
-
-
 
 }

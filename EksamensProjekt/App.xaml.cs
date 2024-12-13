@@ -49,62 +49,35 @@ public partial class App : Application
         ExcelImportService excelImportService = new ExcelImportService();
         MatchService matchService = new MatchService(tenancyRepo, addressRepo); 
         INavigationService navigationService = new NavigationService();
-        DragAndDropService dragAndDropService = new DragAndDropService();
-
-        //if (authLoginService == null || navigationService == null) { MessageBox.Show("Error: One or more services failed to initialize."); return; }
+        DragAndDropService dragAndDropService = new DragAndDropService();       
 
         // Create ViewModels
         LoginViewModel loginViewModel = new LoginViewModel(authLoginService, navigationService);
         TenancyViewModel tenancyViewModel = new TenancyViewModel(navigationService, tenancyService, filterService, searchService);
         HistoryViewModel historyViewModel = new HistoryViewModel(navigationService, historyService, searchService);
-
         TenancyUploadViewModel tenancyUploadViewModel = new TenancyUploadViewModel(navigationService, filterService, searchService, excelImportService, dragAndDropService, matchService);
-        
 
         // Set up factory methods for creating views
-        navigationService.RegisterFactory( () => new LoginView(loginViewModel));
+        navigationService.RegisterFactory(() =>
+        {
+            var loginViewModel = new LoginViewModel(authLoginService, navigationService);
+            return new LoginView(loginViewModel);
+        });
+
         navigationService.RegisterFactory( () => new TenancyView(tenancyViewModel));
         navigationService.RegisterFactory(() => new TenancyUploadView(tenancyUploadViewModel));
         navigationService.RegisterFactory(() => new HistoryView(historyViewModel));
-        
 
         // Set up the initial window
-        //LoginView loginView = new LoginView(loginViewModel);
-        //loginView.Show();
+        LoginView loginView = new LoginView(loginViewModel);
+        loginView.Show();
 
-        //skip login
-        TenancyView tenancyView = new TenancyView(tenancyViewModel);
-        tenancyView.Show();
-
-        //Allow drag and drop
+        // Allow drag and drop
         EventManager.RegisterClassHandler(typeof(UIElement),
         UIElement.PreviewDragOverEvent,
         new DragEventHandler((sender, args) => args.Handled = true));
 
 
-
-
-        //// Create repository - here we instantiate a concrete implementation of IRepo<User>
-        //IRepo<User> userRepo = new UserRepository();
-
-        //// Create service using repository - instantiate AuthLogin with the userRepository
-        //AuthLogin authLoginService = new AuthLogin(userRepository);
-
-        //// Create navigation service - instantiate it (assuming it's a singleton or can be reused)
-        //INavigationService navigationService = new NavigationService();
-
-        //// Create ViewModel using the service
-        //var loginViewModel = new LoginViewModel(authLoginService, navigationService);
-
-        //// Instantiate and show LoginView with its ViewModel
-        //var loginView = new LoginView(loginViewModel);
-        //loginView.Show();
-
-
-
-
     }
-
-
 
 }

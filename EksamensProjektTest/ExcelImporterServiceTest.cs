@@ -47,6 +47,14 @@ namespace EksamensProjektTest
                 Country = country
             };
         }
+        
+        [TestMethod]
+        [ExpectedException(typeof(FileNotFoundException))]
+        public void UploadAddresses_FileNotFound_ThrowsException()
+        {
+            var filePath = Path.Combine("Resources", "NonExistentFile.xlsx");
+            List<Address> addresses = excelImporterService.ImportAddresses(filePath);
+        }
 
     }
 }
