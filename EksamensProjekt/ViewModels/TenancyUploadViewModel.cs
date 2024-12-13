@@ -55,7 +55,7 @@ namespace EksamensProjekt.ViewModels
 
             DeleteTenancyCommand = new RelayCommand(DeleteAddressCommand, CanExecuteDeleteAddress);
 
-    }
+        }
 
 
 
