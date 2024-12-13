@@ -28,14 +28,14 @@ public class MatchServiceTest
         // ARRANGE
         var databaseAddresses = new List<Address>
         {
-            new Address { Street = "Høvejen", Number = "12", Zipcode = "9000", Country = "Danmark", FloorNumber = "1" },
+            new Address { Street = "Høvejen", Number = "12", Zipcode = "9000", City = "Aalborg", Country = "Danmark", FloorNumber = "1" },
             new Address { Street = "Kastanjevej", Number = "456", Zipcode = "9000", Country = "Danmark", FloorNumber = "2" }
         };
 
         var importedAddresses = new List<Address>
         {
-            new Address { Street = "Høvejen", Number = "12", Zipcode = "9000", Country = "Danmark", FloorNumber = "1" },
-            new Address { Street = "Fasta vej", Number = "46", Zipcode = "9000", Country = "Danmark", FloorNumber = "2" }
+            new Address { Street = "Høvejen", Number = "12", Zipcode = "9000", City = "Aalborg", Country = "Danmark", FloorNumber = "1" },
+            new Address { Street = "Fasta vej", Number = "46", Zipcode = "8000", Country = "Danmark", FloorNumber = "2" }
         };
 
         // Mock the repository to return the database addresses
@@ -49,7 +49,9 @@ public class MatchServiceTest
 
         var expectedResults = new List<(string street, string matchScore, bool isUserSelectionRequired)>
         {
+            //Type A match, så IsUserSelectionRequiered should be false
             ("Høvejen", "Type A", false),
+            //No selectedMatch, so IsUserSelectionRequiered should be true
             ("Kastanjevej", null, true)
         };
 

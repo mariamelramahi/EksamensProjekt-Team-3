@@ -32,6 +32,7 @@ namespace EksamensProjekt.DataAccess
                     Number = SqlDataReaderHelper.GetValueOrNull<string?>(reader, "Number"),
                     FloorNumber = SqlDataReaderHelper.GetValueOrNull<string?>(reader, "FloorNumber"),
                     Zipcode = SqlDataReaderHelper.GetValueOrNull<string?>(reader, "Zipcode"),
+                    City = SqlDataReaderHelper.GetValueOrNull<string?>(reader, "AddressCity"),
                     Country = SqlDataReaderHelper.GetValueOrNull<string?>(reader, "Country"),
                     IsStandardized = reader.GetBoolean(reader.GetOrdinal("IsStandardized"))
                 },
@@ -79,7 +80,7 @@ namespace EksamensProjekt.DataAccess
             command.Parameters.AddWithValue("@CompanyID", tenancy.Company != null && tenancy.Company.CompanyID != 0 ? tenancy.Company.CompanyID : DBNull.Value);
             command.Parameters.AddWithValue("@IsDeleted", tenancy.IsDeleted);
             command.Parameters.AddWithValue("@AddressID", tenancy.Address.AddressID);
-            command.Parameters.AddWithValue("OrganizationID", 1);
+            command.Parameters.AddWithValue("@OrganizationID", 1);
         }
 
 
@@ -140,6 +141,7 @@ namespace EksamensProjekt.DataAccess
                 Number = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Number"),
                 FloorNumber = SqlDataReaderHelper.GetValueOrNull<string>(reader, "FloorNumber"),
                 Zipcode = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Zipcode"),
+                City = SqlDataReaderHelper.GetValueOrNull<string?>(reader, "AddressCity"),
                 Country = SqlDataReaderHelper.GetValueOrNull<string>(reader, "Country"),
                 IsStandardized = reader.GetBoolean(reader.GetOrdinal("IsStandardized"))
             };
@@ -156,6 +158,7 @@ namespace EksamensProjekt.DataAccess
             command.Parameters.AddWithValue("@Number", address.Number ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("@FloorNumber", address.FloorNumber ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("@Zipcode", address.Zipcode ?? (object)DBNull.Value);
+            command.Parameters.AddWithValue("@AddressCity", address.City ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("@Country", address.Country ?? (object)DBNull.Value);
             command.Parameters.AddWithValue("@IsStandardized", address.IsStandardized);
         }

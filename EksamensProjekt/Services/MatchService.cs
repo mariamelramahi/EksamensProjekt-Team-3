@@ -27,6 +27,7 @@ namespace EksamensProjekt.Services
                     t.Address.Street == match.SelectedMatch?.PotentialAddressMatch.Street &&
                     t.Address.Number == match.SelectedMatch?.PotentialAddressMatch.Number &&
                     t.Address.Zipcode == match.SelectedMatch?.PotentialAddressMatch.Zipcode &&
+                    t.Address.City == match.SelectedMatch?.PotentialAddressMatch.City &&
                     t.Address.Country == match.SelectedMatch?.PotentialAddressMatch.Country);
 
                 if (existingTenancy != null)
@@ -123,17 +124,16 @@ namespace EksamensProjekt.Services
                 return null;
             }
         }
-
-
         public static string CalculateAddressMatchScore(Address databaseAddress, Address importedAddress)
         {
             double streetMatchScore = CalculateDamerauLevenshteinMatchScore(databaseAddress.Street, importedAddress.Street) * 0.5;
-            double numberCodeMatchScore = CalculateDamerauLevenshteinMatchScore(databaseAddress.Number, importedAddress.Number) * 0.25;
+            double numberCodeMatchScore = CalculateDamerauLevenshteinMatchScore(databaseAddress.Number, importedAddress.Number) * 0.15;
             double floorNumberMatchScore = CalculateDamerauLevenshteinMatchScore(databaseAddress.FloorNumber, importedAddress.FloorNumber) * 0.05;
-            double zipCodeMatchScore = CalculateDamerauLevenshteinMatchScore(databaseAddress.Zipcode, importedAddress.Zipcode) * 0.15;
-            double countryMatchScore = CalculateDamerauLevenshteinMatchScore(databaseAddress.Country, importedAddress.Country) * 0.05;
+            double zipCodeMatchScore = CalculateDamerauLevenshteinMatchScore(databaseAddress.Zipcode, importedAddress.Zipcode) * 0.10;
+            double cityCodeMatchScore = CalculateDamerauLevenshteinMatchScore(databaseAddress.City, importedAddress.City) * 0.10;
+            double countryMatchScore = CalculateDamerauLevenshteinMatchScore(databaseAddress.Country, importedAddress.Country) * 0.10;
 
-            double totalMatchScore = streetMatchScore + zipCodeMatchScore + floorNumberMatchScore + numberCodeMatchScore + countryMatchScore;
+            double totalMatchScore = streetMatchScore + zipCodeMatchScore + cityCodeMatchScore + floorNumberMatchScore + numberCodeMatchScore + countryMatchScore;
 
             if (totalMatchScore >= 90) return "Type A";
             else if (totalMatchScore >= 75) return "Type B";
@@ -155,24 +155,24 @@ namespace EksamensProjekt.Services
         }
 
         // Helper method to calculate Damerau-Levenshtein match score
-        public static double CalculateDamerauLevenshteinMatchScore(string standardValue, string importedValue)
+        public static double CalculateDamerauLevenshteinMatchScore(string standardAddress, string importedAddress)
         {
-            if (string.IsNullOrEmpty(standardValue) && string.IsNullOrEmpty(importedValue))
+            if (string.IsNullOrEmpty(standardAddress) && string.IsNullOrEmpty(importedAddress))
             {
                 return 100.0; // Match, if both values are empty.
             }
 
-            if (string.IsNullOrEmpty(standardValue) || string.IsNullOrEmpty(importedValue))
+            if (string.IsNullOrEmpty(standardAddress) || string.IsNullOrEmpty(importedAddress))
             {
                 return 0.0; // No match, if one of the values are empty.
             }
 
             // Use of Damerau-Levenshtein-distance
-            int distance = DamerauLevenshteinDistance(NormalizeString(standardValue), NormalizeString(importedValue));
+            int distance = DamerauLevenshteinDistance(NormalizeString(standardAddress), NormalizeString(importedAddress));
 
             //Finds the longest string. This is the value that is going to be used to 
             //normalize into percent
-            int maxLength = Math.Max(standardValue.Length, importedValue.Length);
+            int maxLength = Math.Max(standardAddress.Length, importedAddress.Length);
 
             // Normalize score to percent
             return (1 - (double)distance / maxLength) * 100;

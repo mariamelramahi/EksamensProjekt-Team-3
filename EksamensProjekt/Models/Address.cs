@@ -7,12 +7,13 @@ public class Address
     public string? Number { get; set; }
     public string? FloorNumber { get; set; }
     public string? Zipcode { get; set; }
+    public string? City { get; set; }
     public string? Country { get; set; }
     public bool IsStandardized { get; set; }
 
     public override string ToString()
     {
-        return Street + " " + Number + ", " + FloorNumber + ", " + Zipcode + ", " + Country;
+        return Street + " " + Number + ", " + FloorNumber + ", " + Zipcode + ", " + City + ", " + Country;
     }
 
     // Override Equals, because two objects with the same data can be percieved as different
@@ -29,6 +30,7 @@ public class Address
                string.Equals(Number, other.Number, StringComparison.OrdinalIgnoreCase) &&
                string.Equals(FloorNumber, other.FloorNumber, StringComparison.OrdinalIgnoreCase) &&
                string.Equals(Zipcode, other.Zipcode, StringComparison.OrdinalIgnoreCase) &&
+               string.Equals(City, other.City, StringComparison.OrdinalIgnoreCase) &&
                string.Equals(Country, other.Country, StringComparison.OrdinalIgnoreCase);
     }
 
@@ -42,6 +44,7 @@ public class Address
             Number?.ToLowerInvariant(),
             FloorNumber?.ToLowerInvariant(),
             Zipcode?.ToLowerInvariant(),
+            City?.ToLowerInvariant(),
             Country?.ToLowerInvariant()
         );
     }

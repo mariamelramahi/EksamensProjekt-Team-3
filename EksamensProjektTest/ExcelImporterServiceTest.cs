@@ -31,11 +31,11 @@ namespace EksamensProjektTest
             //ASSERT
             Assert.AreEqual(addresses.Count, 3);
             //testing if address objects are equal using equals override
-            Assert.AreEqual(addresses[0], CreateAddress("Main Street", "123", "1A", "1000", "Denmark"));
-            Assert.AreEqual(addresses[1], CreateAddress("Second Street", "456", "2B", "2000", "Sweden"));
-            Assert.AreEqual(addresses[2], CreateAddress("Third Avenue", "789", "3C", "3000", "Norway"));
+            Assert.AreEqual(addresses[0], CreateAddress("Main Street", "123", "1A", "1000", "København", "Denmark"));
+            Assert.AreEqual(addresses[1], CreateAddress("Second Street", "456", "2B", "2000", "Malmö", "Sweden"));
+            Assert.AreEqual(addresses[2], CreateAddress("Third Avenue", "789", "3C", "3000", "Oslo", "Norway"));
         }
-        private Address CreateAddress(string street, string number, string floor, string zipcode, string country)
+        private Address CreateAddress(string street, string number, string floor, string zipcode, string city, string country)
         {
             return new Address()
             {
@@ -43,6 +43,7 @@ namespace EksamensProjektTest
                 Number = number,
                 FloorNumber = floor,
                 Zipcode = zipcode,
+                City = city,
                 Country = country
             };
         }
