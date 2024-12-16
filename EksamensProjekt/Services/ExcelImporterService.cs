@@ -6,7 +6,7 @@ namespace EksamensProjekt.Services;
 
 public class ExcelImportService
 {
-    public string FilePath { get; set; }
+    //public string FilePath { get; set; }
 
     public List<Address> ImportAddresses(string filePath)
     {
