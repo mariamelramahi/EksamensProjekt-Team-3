@@ -277,13 +277,13 @@
             </ListBox>
 
             <ListBox x:Name="StandarisedAddressListBox"
-         ItemsSource="{Binding AddressMatches}"
-         SelectedItem="{Binding SelectedAddress.SelectedMatch, Mode=TwoWay}"
          ScrollViewer.VerticalScrollBarVisibility="Auto"
          ScrollViewer.CanContentScroll="True"
-         Margin="1080,262,52,165" Grid.RowSpan="2">
+         Margin="1080,262,52,165"
+         ItemsSource="{Binding AddressMatches}"
+         SelectedItem="{Binding UserSelectedMatch, Mode=TwoWay}"
+         Grid.RowSpan="2">
 
-                <!-- Style der farver det valgte item grønt -->
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Foreground" Value="Black"/>
@@ -299,7 +299,7 @@
                     <DataTemplate>
                         <TextBlock FontSize="16" Padding="5">
                             <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}, {4}, {5}, {6}">
+                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}, {4}">
                                     <Binding Path="MatchScore"/>
                                     <Binding Path="PotentialAddressMatch.Street"/>
                                     <Binding Path="PotentialAddressMatch.Number"/>
@@ -313,6 +313,8 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
+
+
 
 
 
