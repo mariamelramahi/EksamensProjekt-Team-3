@@ -20,24 +20,32 @@ namespace EksamensProjekt.Services
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
                 var files = (string[])e.Data.GetData(DataFormats.FileDrop);
-                foreach (var file in files)
-                {
-                    var extension = Path.GetExtension(file);
-                    if (extension.Equals(".XLSX", StringComparison.OrdinalIgnoreCase) ||
-                        extension.Equals(".XLS", StringComparison.OrdinalIgnoreCase) ||
-                        extension.Equals(".CSV", StringComparison.OrdinalIgnoreCase))
-                    {
-                        FileDropped?.Invoke(file); // Call ViewModel when file is dropped
-                        break;
-                    }
-                    else
-                    {
-                        MessageBox.Show("Kun filformater (.xlsx, .xls, .csv) kan bruges.");
-                    }
-                }
+                ValidateFileFormat(files);
             }
             e.Handled = true;
         }
+
+
+        public void ValidateFileFormat(string[] files)
+        {
+            foreach (var file in files)
+            {
+                var extension = Path.GetExtension(file);
+                if (extension.Equals(".XLSX", StringComparison.OrdinalIgnoreCase) ||
+                    extension.Equals(".XLS", StringComparison.OrdinalIgnoreCase) ||
+                    extension.Equals(".CSV", StringComparison.OrdinalIgnoreCase))
+                {
+                    FileDropped?.Invoke(file); // Call ViewModel when file is dropped
+                    break;
+                }
+                else
+                {
+                    throw new FormatException($"Unsupported file format: {extension}");
+                }
+            }
+        }
+
+
 
     }
 }

@@ -52,7 +52,6 @@ namespace EksamensProjekt.ViewModels
             // Initialize commands
             ApproveAllMatchesCommand = new RelayCommand(ExecuteApproveAllMatches, CanExecuteApproveAllAddresses);
             GoToTenancyCommand = new RelayCommand(ExecuteGoToTenancyCommand);
-
             DeleteTenancyCommand = new RelayCommand(DeleteAddressCommand, CanExecuteDeleteAddress);
 
         }
@@ -84,7 +83,6 @@ namespace EksamensProjekt.ViewModels
             get => _filepath;
             set
             {
-                // Set the new value
                 _filepath = value;
 
                 // Only call LoadAndMatchImportedAddresses if the Filepath is not null or empty
@@ -95,8 +93,7 @@ namespace EksamensProjekt.ViewModels
                 }
                 else
                 {
-                    // Optionally, you can handle the null case here if needed
-                    // For example, clear any imported addresses
+                    // clear any imported addresses
                     ImportedAddresses.Clear();
                 }
             }
