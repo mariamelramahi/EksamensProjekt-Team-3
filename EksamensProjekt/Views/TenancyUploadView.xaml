@@ -13,7 +13,7 @@
          ResizeMode="NoResize"
          WindowStartupLocation="CenterScreen">
 
-    <!-- Reused Resources Section -->
+    <!-- Resources Section -->
     <Window.Resources>
         <util:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
 
@@ -315,25 +315,12 @@
             </ListBox>
 
 
-
-
-
-            <Grid HorizontalAlignment="Left"
-          Margin="1600,89,0,0"
-          VerticalAlignment="Top">
-
-                <!-- TextBox filter Zipcode -->
-
-                <!-- Placeholder TextBlock -->
-            </Grid>
-
-
-            <!-- Implementation for ListBox drag and drop -->
+            <!-- Implementation for drag and drop -->
             <Border BorderBrush="#FF006DA0"
         BorderThickness="2"
         CornerRadius="5"
         Margin="256,15,1256,433">
-                <!-- Brug en container til at indeholde flere -->
+                
                 <Grid>
                     <TextBox Name="DropTextBox"
                  AllowDrop="True"

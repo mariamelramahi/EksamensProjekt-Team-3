@@ -458,14 +458,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Grid HorizontalAlignment="Left"
-              Margin="1600,89,0,0"
-              VerticalAlignment="Top">
-
-            <!-- TextBox filter Zipcode -->
-
-            <!-- Placeholder TextBlock -->
-        </Grid>
+        
 
         <Expander  IsExpanded="False" Margin="1249,133,-35,117" FontFamily="Tahoma" Grid.RowSpan="2">
             <Expander.Header>
