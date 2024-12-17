@@ -52,7 +52,7 @@
                    Height="45" />
                 </StackPanel>
             </Button>
-            <Button Content="Godkend addresse"
+            <Button Content="Godkend adresser"
         HorizontalAlignment="Left"
         Margin="1620,378,0,0"
         VerticalAlignment="Top"
@@ -163,7 +163,7 @@
                       HorizontalAlignment="Left"
                       Margin="10,10,0,0"
                       VerticalAlignment="Top" />
-                    <CheckBox Content="Type C og D"
+                    <CheckBox Content="Type C"
                       IsChecked="{Binding IsFilterCEnabled, Mode=TwoWay}"
                       Command="{Binding ApplyFilterCommand}"
                       HorizontalAlignment="Left"
@@ -180,14 +180,14 @@
            FontSize="64"
            FontFamily="Tahoma"
            Foreground="#FF006DA0" />
-            <Label Content="Lejemålsaddresser"
+            <Label Content="Lejemålsadresser"
             HorizontalAlignment="Left"
             Margin="531,194,0,0"
             VerticalAlignment="Top"
             FontSize="44"
             FontFamily="Tahoma"
             Foreground="#FF006DA0" />
-            <Label Content="Matchende addresser"
+            <Label Content="Matchende adresser"
             HorizontalAlignment="Left"
             Margin="1247,193,0,0"
             VerticalAlignment="Top"
@@ -247,7 +247,7 @@
                     <DataTemplate>
                         <TextBlock FontSize="16" Padding="5">
                             <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}">
+                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}, {4}, {5}">
                                     <Binding Path="ImportedAddress.Street"/>
                                     <Binding Path="ImportedAddress.Number"/>
                                     <Binding Path="ImportedAddress.FloorNumber"/>
@@ -299,7 +299,7 @@
                     <DataTemplate>
                         <TextBlock FontSize="16" Padding="5">
                             <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}, {4}">
+                                <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}, {4}, {5}, {6}">
                                     <Binding Path="MatchScore"/>
                                     <Binding Path="PotentialAddressMatch.Street"/>
                                     <Binding Path="PotentialAddressMatch.Number"/>
