@@ -18,6 +18,36 @@ namespace EksamensProjektTest
 
 
         [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        [DeploymentItem("Resources/TestAddressesMissingColumns.xlsx", "Resources")]
+        public void UploadAddresses_MissingColumns_ThrowsFormatException()
+        {
+            // Arrange: Fil med færre end forventede kolonner
+            var filePath = Path.Combine("Resources", "TestAddressesMissingColumns.xlsx");
+
+            // Act
+            excelImporterService.ImportAddresses(filePath);
+
+            // Assert: Håndteres af [ExpectedException]
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        [DeploymentItem("Resources/TestAddressesExtraColumns.xlsx", "Resources")]
+        public void UploadAddresses_ExtraColumns_ThrowsFormatException()
+        {
+            // Arrange: Fil med flere end forventede kolonner
+            var filePath = Path.Combine("Resources", "TestAddressesExtraColumns.xlsx");
+
+            // Act
+            excelImporterService.ImportAddresses(filePath);
+
+            // Assert: Håndteres af [ExpectedException]
+        }
+
+
+
+        [TestMethod]
         [DeploymentItem("Resources/TestAddresses.xlsx", "Resources")]
 
         public void UploadAddresses_ValidFiles_ReturnsAddressList() 
