@@ -52,7 +52,6 @@ namespace EksamensProjekt.ViewModels
             // Initialize commands
             ApproveAllMatchesCommand = new RelayCommand(ExecuteApproveAllMatches, CanExecuteApproveAllAddresses);
             GoToTenancyCommand = new RelayCommand(ExecuteGoToTenancyCommand);
-
             DeleteTenancyCommand = new RelayCommand(DeleteAddressCommand, CanExecuteDeleteAddress);
 
         }
@@ -84,7 +83,6 @@ namespace EksamensProjekt.ViewModels
             get => _filepath;
             set
             {
-                // Set the new value
                 _filepath = value;
 
                 // Only call LoadAndMatchImportedAddresses if the Filepath is not null or empty
@@ -95,8 +93,7 @@ namespace EksamensProjekt.ViewModels
                 }
                 else
                 {
-                    // Optionally, you can handle the null case here if needed
-                    // For example, clear any imported addresses
+                    // clear any imported addresses
                     ImportedAddresses.Clear();
                 }
             }
@@ -202,12 +199,21 @@ namespace EksamensProjekt.ViewModels
         private void LoadAndMatchImportedAddresses()
         {
             ImportedAddresses.Clear();
-            var importedAddresses = _excelImportService.ImportAddresses(Filepath);
-            var addressMatches = _matchService.CompareImportedAddressesWithDatabase(importedAddresses);
-            foreach (var addressMatch in addressMatches)
+
+            try
             {
-                ImportedAddresses.Add(addressMatch);
+                var importedAddresses = _excelImportService.ImportAddresses(Filepath);
+                var addressMatches = _matchService.CompareImportedAddressesWithDatabase(importedAddresses);
+                foreach (var addressMatch in addressMatches)
+                {
+                    ImportedAddresses.Add(addressMatch);
+                }
             }
+            catch (Exception e)
+            {
+                MessageBox.Show("Der mangler nødvendig data i din fil. Ret filens data og træk-og-slip en ny fil. Kontakt support hvis fejlen er vedvarende");
+            }
+
             // After importing and matching, check if user selection is required for any match
             CheckIfUserSelectionRequired();
         }

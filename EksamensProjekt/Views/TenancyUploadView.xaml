@@ -277,15 +277,26 @@
             </ListBox>
 
             <ListBox x:Name="StandarisedAddressListBox"
-                    ScrollViewer.VerticalScrollBarVisibility="Auto"
-                    ScrollViewer.CanContentScroll="True"
-                    Margin="1080,262,52,165"
-                    ItemsSource="{Binding AddressMatches}"
-                    SelectedItem="{Binding UserSelectedMatch, Mode=TwoWay}"
-                    Grid.RowSpan="2">
+         ScrollViewer.VerticalScrollBarVisibility="Auto"
+         ScrollViewer.CanContentScroll="True"
+         Margin="1080,262,52,165"
+         ItemsSource="{Binding AddressMatches}"
+         SelectedItem="{Binding UserSelectedMatch, Mode=TwoWay}"
+         Grid.RowSpan="2">
+
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="Green"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <!-- Just a TextBlock to display the combined address -->
                         <TextBlock FontSize="16" Padding="5">
                             <TextBlock.Text>
                                 <MultiBinding StringFormat="{}{0}, {1}, {2}, {3}, {4}">
@@ -304,6 +315,9 @@
             </ListBox>
 
 
+
+
+
             <Grid HorizontalAlignment="Left"
           Margin="1600,89,0,0"
           VerticalAlignment="Top">
@@ -319,7 +333,7 @@
         BorderThickness="2"
         CornerRadius="5"
         Margin="256,15,1256,433">
-                <!-- Brug en container til at indeholde flere børn -->
+                <!-- Brug en container til at indeholde flere -->
                 <Grid>
                     <TextBox Name="DropTextBox"
                  AllowDrop="True"

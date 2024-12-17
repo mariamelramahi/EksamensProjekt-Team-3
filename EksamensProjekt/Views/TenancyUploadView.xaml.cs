@@ -25,7 +25,14 @@ public partial class TenancyUploadView : Window
     {
         if (DataContext is TenancyUploadViewModel viewModel)
         {
-            viewModel.DragAndDropService.HandleDrop(sender, e);
+            try
+            {
+                viewModel.DragAndDropService.HandleDrop(sender, e);
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show("Kun filformater (.xlsx, .xls, .csv) kan bruges.");
+            }
         }
     }
 }
