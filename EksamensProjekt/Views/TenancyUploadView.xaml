@@ -333,7 +333,7 @@
         BorderThickness="2"
         CornerRadius="5"
         Margin="256,15,1256,433">
-                <!-- Brug en container til at indeholde flere børn -->
+                <!-- Brug en container til at indeholde flere -->
                 <Grid>
                     <TextBox Name="DropTextBox"
                  AllowDrop="True"
