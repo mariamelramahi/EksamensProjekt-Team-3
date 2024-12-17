@@ -566,6 +566,7 @@
                         </Button.Resources>
                     </Button>
                     <Button Content="Slet lejer"
+                            Margin="10,0,0,0"
                         Width="109"
                         Background="White"
                         Foreground="#FF006DA0"

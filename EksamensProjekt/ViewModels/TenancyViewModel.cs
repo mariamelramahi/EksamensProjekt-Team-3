@@ -211,6 +211,7 @@ namespace EksamensProjekt.ViewModels
             {
                 _tenancyService.DeleteTenant(SelectedTenant);
                 AllTenants.Remove(SelectedTenant);
+                LoadTenants(); // Refresh the list to reflect changes
             }
         }
 
