@@ -565,6 +565,24 @@
                             </Style>
                         </Button.Resources>
                     </Button>
+                    <Button Content="Slet lejer"
+                            Margin="10,0,0,0"
+                        Width="109"
+                        Background="White"
+                        Foreground="#FF006DA0"
+                        Height="32"
+                        FontFamily="Tahoma"
+                        Command="{Binding DeleteTenantCommand}"
+                        CommandParameter="{Binding}"
+                        FontSize="16"
+                        BorderBrush="#FF006DA0">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius"
+                                    Value="5" />
+                            </Style>
+                        </Button.Resources>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Expander>

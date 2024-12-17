@@ -50,6 +50,7 @@ namespace EksamensProjekt.ViewModels
             CreateNewTenantCommand = new RelayCommand(ExecuteCreateNewTenant, CanExecuteCreateNewTenant);
             AddTenantToTenancyCommand = new RelayCommand(ExecuteAddTenantToTenancy, CanExecuteAddTenantToTenancy);
             UpdateTenantCommand = new RelayCommand(ExecuteUpdateTenant, CanExecuteUpdateTenant);
+            DeleteTenantCommand = new RelayCommand(ExecuteDeleteTenant, CanExecuteDeleteTenant);
             GoToTenancyUploadCommand = new RelayCommand(ExecuteGoToTenancyUpload);
         }
 
@@ -176,6 +177,7 @@ namespace EksamensProjekt.ViewModels
         public RelayCommand CreateNewTenantCommand { get; }
         public RelayCommand AddTenantToTenancyCommand { get; }
         public RelayCommand UpdateTenantCommand { get; }
+        public RelayCommand DeleteTenantCommand { get; }
 
         // Methods
         private void LoadTenancies()
@@ -202,6 +204,18 @@ namespace EksamensProjekt.ViewModels
                 AllTenants.Add(tenant);
             }
         }
+        
+        private void ExecuteDeleteTenant()
+        {
+            if (SelectedTenant != null)
+            {
+                _tenancyService.DeleteTenant(SelectedTenant);
+                AllTenants.Remove(SelectedTenant);
+                LoadTenants(); // Refresh the list to reflect changes
+            }
+        }
+
+
         private void ExecuteGoToTenancyUpload()
         {
             _navigationService.NavigateTo<TenancyUploadView>();
@@ -230,6 +244,10 @@ namespace EksamensProjekt.ViewModels
             return SelectedTenancy != null && SelectedTenancyTenant != null;
         }
 
+        private bool CanExecuteDeleteTenant()
+        {
+            return SelectedTenant != null;
+        }
         private void ExecuteDeleteTenancyTenant()
         {
             if (SelectedTenancy != null && SelectedTenancyTenant != null)
