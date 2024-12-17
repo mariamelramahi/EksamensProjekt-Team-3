@@ -8,10 +8,10 @@ public class ExcelImportService
 {
     public List<Address> ImportAddresses(string filePath)
     {
+        // Register the encoding provider to support older Excel files (.xls)
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
         var addresses = new List<Address>();
-
         using (var stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
         {
             using (var reader = ExcelReaderFactory.CreateReader(stream))
@@ -39,7 +39,6 @@ public class ExcelImportService
                     addresses.Add(address);
                 }
             }
-
             return addresses;
         }
     }
