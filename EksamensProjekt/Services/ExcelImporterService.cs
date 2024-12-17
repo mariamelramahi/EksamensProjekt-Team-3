@@ -22,34 +22,31 @@ public class ExcelImportService
 
                 // Skip the header row
                 reader.Read();
-                try
+                while (reader.Read())
                 {
-                    while (reader.Read())
+                    const int expectedColumnCount = 6; // Expected Columns: Street, Number, FloorNumber, Zipcode, City, Country
+                    if (reader.FieldCount != expectedColumnCount)
+                        throw new Exception($"The file contains an incorrect number of columns. Expected {expectedColumnCount}, but got {reader.FieldCount}.");
+
+                    // Columns: Street, Number, FloorNumber, Zipcode, City, Country
+                    var address = new Address
                     {
-                        // Columns: Street, Number, FloorNumber, Zipcode, City, Country
-                        var address = new Address
-                        {
-                            // AddressID is auto-incremented in DB, so it's not set here
-                            Street = reader.GetValue(0)?.ToString() ?? string.Empty,
-                            Number = reader.GetValue(1)?.ToString() ?? string.Empty,
-                            FloorNumber = reader.GetValue(2)?.ToString() ?? string.Empty,
-                            Zipcode = reader.GetValue(3)?.ToString() ?? string.Empty,
-                            City = reader.GetValue(4)?.ToString() ?? string.Empty,
-                            Country = reader.GetValue(5)?.ToString() ?? string.Empty
-                        };
+                        // AddressID is auto-incremented in DB, so it's not set here
+                        Street = reader.GetValue(0)?.ToString() ?? string.Empty,
+                        Number = reader.GetValue(1)?.ToString() ?? string.Empty,
+                        FloorNumber = reader.GetValue(2)?.ToString() ?? string.Empty,
+                        Zipcode = reader.GetValue(3)?.ToString() ?? string.Empty,
+                        City = reader.GetValue(4)?.ToString() ?? string.Empty,
+                        Country = reader.GetValue(5)?.ToString() ?? string.Empty
+                    };
 
-                        addresses.Add(address);
-                    }
+                    addresses.Add(address);
                 }
-                catch (Exception e)
-                {
-                    throw new Exception($"The file is missing necessary data");
-                }
-                
             }
-            return addresses;
-        }
 
+        }
+        return addresses;
     }
+
 }
 

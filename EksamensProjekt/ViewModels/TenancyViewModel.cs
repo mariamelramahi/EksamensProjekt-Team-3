@@ -294,6 +294,7 @@ namespace EksamensProjekt.ViewModels
             {
                 AllTenants.Add(newTenant);
             }
+            LoadTenants();
         }
 
         private bool CanExecuteCreateNewTenant()
