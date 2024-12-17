@@ -211,7 +211,8 @@ namespace EksamensProjekt.ViewModels
             }
             catch (Exception e)
             {
-                MessageBox.Show("Der mangler nødvendig data i din fil. Ret filens data og træk-og-slip en ny fil. Kontakt support hvis fejlen er vedvarende");
+                MessageBox.Show("Filen mangler nødvendig data.\n" +                               
+                                "Ret filen og prøv igen eller kontakt support for hjælp.");
             }
 
             // After importing and matching, check if user selection is required for any match
