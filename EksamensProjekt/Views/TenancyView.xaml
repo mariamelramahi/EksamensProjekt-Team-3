@@ -153,13 +153,13 @@
                 </ControlTemplate>
             </Expander.Template>
             <StackPanel Height="85">
-                <CheckBox Content="Occupied"
+                <CheckBox Content="Udlejet"
                           IsChecked="{Binding IsFilterAEnabled, Mode=TwoWay}"
                           Command="{Binding ApplyFilterCommand}"
                           HorizontalAlignment="Left"
                           Margin="10,10,0,0"
                           VerticalAlignment="Top" />
-                <CheckBox Content="Vacant"
+                <CheckBox Content="Ledig"
                           IsChecked="{Binding IsFilterBEnabled, Mode=TwoWay}"
                           Command="{Binding ApplyFilterCommand}"
                           HorizontalAlignment="Left"
