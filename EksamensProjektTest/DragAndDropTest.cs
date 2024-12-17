@@ -13,7 +13,7 @@ public class DragAndDropServiceTests
 
     [TestMethod]
     [ExpectedException(typeof(FormatException))]
-    [DeploymentItem("Resources/FileWithInvalidFormat.ods", "Resources")]
+    [DeploymentItem("Resources/Files", "Resources")]
     public void ValidateFileFormat_InvalidFileFormat_ThrowsFormatException()
     {
         // Arrange: Path to the invalid file

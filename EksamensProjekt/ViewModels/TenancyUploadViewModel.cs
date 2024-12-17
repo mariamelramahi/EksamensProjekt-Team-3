@@ -199,12 +199,21 @@ namespace EksamensProjekt.ViewModels
         private void LoadAndMatchImportedAddresses()
         {
             ImportedAddresses.Clear();
-            var importedAddresses = _excelImportService.ImportAddresses(Filepath);
-            var addressMatches = _matchService.CompareImportedAddressesWithDatabase(importedAddresses);
-            foreach (var addressMatch in addressMatches)
+
+            try
             {
-                ImportedAddresses.Add(addressMatch);
+                var importedAddresses = _excelImportService.ImportAddresses(Filepath);
+                var addressMatches = _matchService.CompareImportedAddressesWithDatabase(importedAddresses);
+                foreach (var addressMatch in addressMatches)
+                {
+                    ImportedAddresses.Add(addressMatch);
+                }
             }
+            catch (Exception e)
+            {
+                MessageBox.Show("Der mangler nødvendig data i din fil. Ret filens data og prøv igen. Kontakt support hvis fejlen er vedvarende");
+            }
+
             // After importing and matching, check if user selection is required for any match
             CheckIfUserSelectionRequired();
         }
