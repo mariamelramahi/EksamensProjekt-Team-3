@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace EksamensProjekt.Utilities
+namespace EksamensProjekt.ViewsUtilities
 {
     public class EmptyStringToVisibilityConverter : IValueConverter
     {
