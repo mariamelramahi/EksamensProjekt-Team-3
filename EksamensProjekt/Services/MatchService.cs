@@ -142,7 +142,7 @@ namespace EksamensProjekt.Services
         }
 
         // Method to convert match type to numerical score for sorting
-        private double GetMatchScoreValue(string matchType)//can be removed if matchType are enums
+        private double GetMatchScoreValue(string matchType)
         {
             return matchType switch
             {

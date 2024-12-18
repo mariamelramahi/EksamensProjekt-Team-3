@@ -154,7 +154,7 @@ namespace EksamensProjekt.Services
         }
         public Tenant CreateNewTenant()
         {
-            // Create a new Tenant object with default values (not saved yet)
+            // Create a new Tenant object with default values
             Tenant tenant = new Tenant
             {
                 FirstName = "Fornavn",

@@ -5,7 +5,7 @@
         xmlns:av="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="av" x:Class="EksamensProjekt.HistoryView"
         Title="History View" Height="1080" Width="1920" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
 
-    <!-- Reused Resources Section -->
+    <!-- Resources Section -->
     <Window.Resources>
         <util:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter" />
     </Window.Resources>
