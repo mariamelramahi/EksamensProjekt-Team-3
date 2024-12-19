@@ -83,7 +83,15 @@ namespace EksamensProjekt.Services
                 MessageBox.Show($"Lejemål med ID {selectedTenancy.TenancyID} finnes ikke.");
                 return;
             }
-
+            //validate the input
+            if (selectedTenancy.SquareMeter < 0 || selectedTenancy.Rent < 0 || selectedTenancy.Rooms < 0 || selectedTenancy.Bathrooms < 0)
+            {
+                MessageBox.Show("Værdierne for kvadratmeter, husleje, antal rum og badeværelser kan ikke være negative.", "Fejl", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            {
+                
+            }
             // Update only non-null properties
             if (selectedTenancy.TenancyStatus.HasValue)
                 existingTenancy.TenancyStatus = selectedTenancy.TenancyStatus;
