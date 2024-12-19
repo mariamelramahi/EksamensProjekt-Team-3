@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace EksamensProjekt.Utilities
+namespace EksamensProjekt.ViewsUtilities
 {
     public static class PasswordBoxHelper
     {
